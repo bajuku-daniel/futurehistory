@@ -1,0 +1,257 @@
+<?php
+
+/**
+ * Google Maps widget and formaters for FutureHistory.
+ */
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function futurehistory_field_formatter_info() {
+  return array(
+    'futurehistory' => array(
+      'label' => t('Future History Google Map v3'),
+      'field types' => array('geofield'),
+      'settings' => array(
+        'map_width' => '300px',
+        'map_height' => '300px',
+        'map_zoomlevel' => '7',
+        'map_imageformat' => 'png8',
+        'map_maptype' => 'roadmap',
+        'marker_icon' => '',
+        'map_scrollwheel' => FALSE,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function futurehistory_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+
+  $display = $instance['display'][$view_mode];
+  $type = $display['type'];
+  $settings = $display['settings'];
+
+  $element = array();
+
+  // Implement some configuration options.
+  $element['map_width'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Map width'),
+    '#description' => t('Enter custom map width (e.g. 300px or 300%), default is 300px. Percentages do not work with static maps.'),
+    '#default_value' => $settings['map_width'],
+  );
+
+  $element['map_height'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Map height'),
+    '#description' => t('Enter custom map height (e.g. 300px or 300%), default is 300px. Percentages do not work with static maps.'),
+    '#default_value' => $settings['map_height'],
+  );
+
+  $element['marker_icon'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Marker icon'),
+    '#description' => t('Set the path to the icon marker you wish to use. Path can be absolute (with http://) or relative to the Drupal instalation. If left blank, the default will be used'),
+    '#default_value' => $settings['marker_icon'],
+  );
+
+  $element['map_scrollwheel'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Scroll Zoom'),
+    '#description' => t('By default zooming is done with double click and/or using the map controls to avoid interrupting the normal window scroll. It can optionally be enabled here.'),
+    '#default_value' => $settings['map_scrollwheel'],
+   );
+
+  $element['map_maptype'] = array(
+    '#type' => 'select',
+    '#title' => t('Map Type'),
+    '#options' => array(
+      'roadmap' => 'Roadmap (default)',
+      'satellite' => 'Satellite',
+      'terrain' => 'Terrain',
+      'hybrid' => 'Hybrid',
+    ),
+    '#description' => t('Choose map type. <em>roadmap</em> (default) specifies a standard roadmap image, as is normally shown on the Google Maps website. <em>satellite</em> specifies a satellite image. <em>terrain</em> specifies a physical relief map image, showing terrain and vegetation. <em>hybrid</em> specifies a hybrid of the satellite and roadmap image, showing a transparent layer of major streets and place names on the satellite image.'),
+    '#default_value' => $settings['map_maptype'],
+  );
+
+  $element['map_zoomlevel'] = array(
+    '#type' => 'select',
+    '#title' => t('Zoom level'),
+    '#options' => array(
+      '1' => '1',
+      '2' => '2',
+      '3' => '3',
+      '4' => '4',
+      '5' => '5',
+      '6' => '6',
+      '7' => '7 (default)',
+      '8' => '8',
+      '9' => '9',
+      '10' => '10',
+      '11' => '11',
+      '12' => '12',
+      '13' => '13',
+      '14' => '14',
+      '15' => '15',
+      '16' => '16',
+      '17' => '17',
+      '18' => '18',
+      '19' => '19',
+    ),
+    '#description' => t('Choose a custom zoom level - the higher the number the closer. <em>High zoom warning:</em> Google might not return images for any combination of Map Type and Zoom Level.'),
+    '#default_value' => $settings['map_zoomlevel'],
+  );
+
+  return $element;
+}
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function futurehistory_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $type = $display['type'];
+  $settings = $display['settings'];
+
+  $summary = t("<strong>Map:</strong> !mapwidth by !mapheight", array('!mapwidth' => $settings['map_width'], '!mapheight' => $settings['map_height']));
+  $summary .= '<br />';
+  $scrl = $settings['map_scrollwheel'] ? t('Yes') : t('No');
+  $summary .= '<strong>Scrollable:</strong> ' . $scrl . '<br />';
+  $summary .= '<strong>Type:</strong> ' . $settings['map_maptype'] . '<br />';
+  $summary .= '<strong>Zoom:</strong> ' . $settings['map_zoomlevel'];
+
+  if (!empty($settings['marker_icon'])) {
+    $vars = array(
+      'path' => $settings['marker_icon'],
+    );
+    $summary .= '<br /><strong>Icon:</strong> ' . theme('image', $vars);
+  }
+  return $summary;
+}
+
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function futurehistory_field_widget_info() {
+  return array(
+    'futurehistory' => array(
+      'label' => t('Future History Google Map'),
+      'field types' => array('geofield'),
+    ),
+  );
+}
+
+function futurehistory_field_widget_settings_form($field, $instance) {
+  $widget = $instance['widget'];
+  $settings = $widget['settings'];
+
+  $form['scrollwheel'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Scroll Zoom'),
+    '#description' => t('By default zooming is done with double click and/or using the map controls to avoid interrupting the normal window scroll. It can optionally be enabled here.'),
+    '#default_value' => isset($settings['scrollwheel']) ? $settings['scrollwheel'] : FALSE,
+  );
+  $form['marker_draggable'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Draggable Marker'),
+    '#description' => t('Enabling this will allow the user to drag/drop the marker to select a location.'),
+    '#default_value' => isset($settings['marker_draggable']) ? $settings['marker_draggable'] : FALSE,
+  );
+
+  return $form;
+}
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+
+  // In order to make Geolocation field work with the popular Field collection module
+  // we check if our map widget is part of a Field collection and add the
+  // #field_parents delta.
+  if ($instance['entity_type'] == 'field_collection_item') {
+    $depth = count($element['#field_parents']) - 1;
+    $parent_delta = $element['#field_parents'][$depth];
+    $id = $instance['id'] . '-' . $parent_delta . '-' . $delta;
+  }
+  else {
+    $id = $instance['id'] . '-' . $delta;
+  }
+
+  $lat_value = isset($items[$delta]['lat']) ? $items[$delta]['lat'] : NULL;
+  // To make this widget compatible with geofiled we need to rename the keys for
+  // longitude. Geofield uses "lon" while Geolocation Field uses "lng".
+  if ($field['type'] == 'geofield') {
+    $lng_value = isset($items[$delta]['lon']) ? $items[$delta]['lon'] : NULL;
+  }
+  else {
+    $lng_value = isset($items[$delta]['lng']) ? $items[$delta]['lng'] : NULL;
+  }
+  $element += array(
+    '#delta' => $delta,
+  );
+
+  switch ($instance['widget']['type']) {
+    case 'futurehistory':
+      $element['googlemap'] = array(
+        '#prefix' => '<div id="futurehistory-map-' . $id . '" class="futurehistory" style="width:100%;height:400px;">',
+        '#suffix' => '</div>',
+      );
+
+      // Attach CSS and JS files via FAPI '#attached'.
+      $element['googlemap']['#attached']['js'][] = array(
+        'data' => drupal_get_path('module', 'futurehistory') . '/futurehistory_widget.js',
+        'type' => 'file',
+        'scope' => 'footer',
+      );
+      futurehistory_attach_google_js($element);
+
+      // Make defaults available as javascript settings. In JS files use:
+      // Drupal.settings.mapDefaults.lat
+      $map_defaults_lat = ($lat_value) ? $lat_value : '';
+      $map_defaults_lng = ($lng_value) ? $lng_value : '';
+      $map_defaults = array(
+        $id => array(
+          'lat' => $map_defaults_lat,
+          'lng' => $map_defaults_lng,
+        ),
+      );
+      $data = array(
+        'defaults' => $map_defaults,
+        'settings' => $instance['widget']['settings'],
+      );
+      $element['googlemap']['#attached']['js'][] = array(
+        'data' => array('geolocation' => $data),
+        'type' => 'setting',
+      );
+      $element['field_type'] = array('#type' => 'value', '#value' => $field['type']);
+      break;
+  }
+  return $element;
+}
+
+/**
+ * Helper function that attaches JS to the given element.
+ * @param array $element
+ */
+function futurehistory_attach_google_js(&$element) {
+  $js_added_already = &drupal_static(__FUNCTION__, FALSE);
+  if (!$js_added_already) {
+    $element['#attached']['js'][] = array(
+      'data' => '//maps.google.com/maps/api/js?sensor=false',
+      'type' => 'external',
+    );
+    $element['#attached']['js'][] = array(
+      'data' => '//www.google.com/jsapi',
+      'type' => 'external',
+    );
+    $js_added_already = TRUE;
+  }
+}
+
+
+

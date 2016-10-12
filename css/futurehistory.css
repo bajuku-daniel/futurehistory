@@ -1,0 +1,273 @@
+
+/**
+ * General form Styles for "Ansicht erstellen screens
+ */
+
+
+h4.addAnsicht {
+  text-transform:uppercase;
+  color: #954e94;
+  margin-bottom:20px;
+}
+
+.node-ansicht-form .form-control {
+  width:initial;
+}
+.node-ansicht-form .form-group {
+ margin-bottom: 25px;
+}
+
+.panel {
+  margin-bottom: 0px!important; 
+}
+
+.addAnsichtButtons {
+  display: block;
+  margin-top: 10px;
+}
+
+.addAnsichtButtons .form-actions {
+  float:right;
+}
+
+.addAnsichtButtons #edit-submit {
+  background-color:#954e94;
+  border-color:#954e94;
+}
+.addAnsichtButtons #edit-submit span {
+  display:none;
+}
+
+.addAnsichtButtons #edit-submit.ansicht-submit-green {
+  color: #ffffff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+
+.addAnsichtButtons #edit-submit.ansicht-submit-green span {
+  display:inline;
+}
+
+li.validation_error a {
+  color: #bb4946!important;
+}
+
+#group_add_picture .validation_error .droppable {
+  border: 1px solid #bb4946;
+}
+
+/* style the first screen: "bild Informationen" */
+
+.field-name-field-jahr {
+  display: block; 
+  position: relative;
+  float: left;
+  margin-right: 60px;
+}
+
+.field-name-field-genauigkeit {
+  float: left;
+  display: block;
+  position: relative;
+}
+
+.field-name-field-genauigkeit  .form-item {
+  float:left;
+  margin-right:10px;
+}
+.field-name-field-genauigkeit  .radio + .radio, .checkbox + .checkbox {
+  margin-top: 0px;/
+}
+
+.field-name-field-genauigkeit   .checkbox:first-child, .radio:first-child {
+  margin-top: -5px;
+}
+
+.field-name-field-genauigkeit  .control-label {
+  margin-bottom: 10px;
+}
+
+.field-name-field-teaser-kurzetext {
+  clear: both;
+  display: block;
+  margin-right: 60px;
+  position: relative;
+  float: left;
+}
+
+.field-name-field-kategorie {
+  float:left;
+  display:block;
+}
+
+.field-name-field-kategorie .form-item {
+  float:left;
+  margin-right:10px;
+}
+.field-name-field-kategorie .radio + .radio, .checkbox + .checkbox {
+  margin-top: 0px;/
+}
+
+.field-name-field-kategorie  .checkbox:first-child, .radio:first-child {
+  margin-top: -5px;
+}
+
+.field-name-field-kategorie .control-label {
+  margin-bottom: 10px;
+}
+
+.field-name-field-tags {
+  clear:both;
+  max-width: 800px;
+}
+
+.field-name-field-lizenz {
+  float: left;
+  width: 400px;
+}
+
+.field-name-field-bildquelle {
+  display: block;
+  width: 400px;
+  float: left;
+}
+
+.field-name-field-urheber {
+  display: block;
+  width: 400px;
+  float: left;
+}
+
+
+/**
+ * 
+ * CSS for Goole Map widget of Geolocation field.
+ *
+ */
+
+.futurehistory-address-geocode,
+.futurehistory-coordinate-geocode
+ {
+  background-color:#954e94;
+  color:#FFF;
+  padding:2px 10px 3px 10px;
+  cursor:pointer;
+  margin:2px 0 0 4px;
+}
+.form-group:last-child {
+ margin-bottom:15px!important;
+}
+
+#futurehistory-coordinate_known-checkbox_53-0 {
+  float:right;
+  margin-top:20px;
+}
+
+#futurehistory-view_direction-slider-item-53-0 {
+  margin-top:20px;
+}
+
+.field-widget-futurehistory-googlemap {
+  /* Clear floated elements */
+  overflow: auto;
+}
+
+.futurehistory-address-geocode:hover,
+.futurehistory-coordinate-geocode:hover {
+  background-color:#999;
+}
+
+.futurehistory-help,
+.futurehistory-map {
+  margin: 1em 0;
+}
+
+.futurehistory-lat-item,
+.futurehistory-lng-item {
+  float: left;
+  margin-right: 1em;
+}
+.futurehistory-lat,
+.futurehistory-lng {
+  display: none;
+}
+
+.futurehistory-lng-item label,
+.futurehistory-lat-item label {
+  display: inline;
+}
+
+.futurehistory-lng .form-disabled input.form-text,
+.futurehistory-lat .form-disabled input.form-text {
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
+
+.futurehistory-address .form-type-textfield {
+}
+
+.futurehistory-remove {
+  float: right;
+}
+
+.futurehistory-remove span {
+  background-color: #CC0000;
+  color: #FFF;
+  padding: 2px 10px 3px 10px;
+  cursor: pointer;
+  margin: 2px 0 0 4px;
+}
+
+.futurehistory-remove span:hover {
+  background-color: #999;
+}
+
+/* style the round sliders */
+.rs-control .rs-range-color {
+    background-color: #ffffff;
+}
+.rs-control .rs-path-color {
+    background-color: #fffff;
+}
+.rs-control .rs-handle {
+    background-color: #a04e9c;
+}
+.rs-control .rs-bg-color {
+    background-color: #ffffff;
+}
+
+#futurehistory-angle-slider-53-0 .ui-slider-range {
+  background: #a04e9c none repeat scroll 0 0;
+}
+
+#direction_wrapper {
+    display: block;
+    float: left;
+    position: relative;
+    margin-left: 190px;
+    margin-top: 10px;
+}
+
+#angle_wrapper {
+    display: block;
+    float: right;
+    position: relative;
+    margin-top: 30px;
+    margin-right: 190px;
+}
+
+#futurehistory-view_direction-slider-53-0  .rs-seperator {
+  border-color:#ffffff;
+  width:0px!important;
+}
+
+.rs-block .rs-inner {
+    background-image: url(/sites/default/files/futurehistory_module_pictures/himmelsrichtungen.png);
+    background-size: 100%;
+}
+
+
+#futurehistory-arview-53-0 {
+  margin-top:100px;
+}

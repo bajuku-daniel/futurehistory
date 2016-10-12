@@ -1,0 +1,692 @@
+<?php
+
+/**
+ * Implements hook_theme() to style the form_edit "ansicht erstellen".
+ *
+*/
+
+function futurehistory_theme($existing, $type, $theme, $path) {
+  return array(
+    'ansicht_node_form' => array(
+      'render element' => 'form',
+      'template' => 'ansicht-node-form',
+      'path' => drupal_get_path('module', 'futurehistory'),
+    ),
+  );
+}
+
+function futurehistory_form_alter(&$form, &$form_state, $form_id) {
+  
+    if ($form_id == "ansicht_node_form") {
+      $node_status = $form['#node']->status;
+      if ($node_status == 0) {
+        $form['actions']['submit']['#value'] = t('Speichern als Entwurf');
+      } else {
+        $form['actions']['submit']['#value'] = t('Speichern'); 
+        $form['actions']['submit']['#attributes']['class'][] = 'ansicht-submit-green';  
+      }
+      $form['actions']['publish']['#value'] = t('Speichern und Publizieren');
+    }
+}
+
+//preprocess some variables for the ansicht-node-form.tpl
+function futurehistory_preprocess_ansicht_node_form(&$variables) {
+    
+    global $user;
+    $user_full = user_load($user->uid);
+    $user_place =  $user_full->field_wohnort['und']['0']['value'];
+    
+    if (!isset($variables['form']['#validated']) && !$variables['form']['#node']->title) {
+      $initial_run = 1;
+    } else {
+      $initial_run = 0;
+    }
+    
+    if (!empty($variables['form']['#node']->title)) {
+      $submit_button_static = 1;
+    } else {
+      $submit_button_static = 0;
+    }
+    $variables['ansicht_initial'] = array(
+      'initial' => $initial_run,
+      'place' => $user_place,
+      'submit_button_static' => $submit_button_static,
+     );
+    
+    $variables['buttons'] = $variables['form']['actions'];
+    hide($variables['form']['actions']);
+
+    $tabs_id = array(
+      'group_add_picture',
+      'group_picture_info',
+      'group_position_der_ansicht',
+      'group_media'
+    );
+    foreach ($tabs_id as $tab_id) {
+      $tab_name = $variables['form'][$tab_id]['#title'];
+      $variables['form']['ansicht_tabs'][$tab_id] = array(
+        'tab_name' => $tab_name,
+        'validation_error' => '0',
+      );
+    }
+
+    $errors = form_get_errors();
+    if (!empty($errors)) {
+      foreach ($errors as $error_field => $error_message ){
+        $error_field_name = explode("]", $error_field);
+        $error_field_name = $error_field_name[0];
+
+        $error_group_name = $variables['form']['#group_children'][$error_field_name];
+        $variables['form']['ansicht_tabs'][$error_group_name]['validation_error'] = '1';
+      }
+    }
+}
+
+
+
+
+/**
+ * A futurehistory field using the Field API.
+ */
+
+/**
+ * Implements hook_field_info().
+ */
+function futurehistory_field_info() {
+  return array(
+    'futurehistory_field' => array(
+      'label' => t('Futurehistory'),
+      'description' => t('futurehistory input.'),
+      'default_widget' => 'futurehistory_field',
+      'default_formatter' => 'futurehistory',
+      'property_type' => 'futurehistory',
+      'property_callbacks' => array('futurehistory_property_info_callback'),
+    ),
+  );
+}
+
+/**
+ * Callback to alter the property info of futurehistory fields.
+ */
+function futurehistory_property_info_callback(&$info, $entity_type, $field, $instance, $field_type) {
+  $name = $field['field_name'];
+  $property = &$info[$entity_type]['bundles'][$instance['bundle']]['properties'][$name];
+  $property['type'] = ($field['cardinality'] != 1) ? 'list<futurehistory>' : 'futurehistory';
+  $property['getter callback'] = 'entity_metadata_field_verbatim_get';
+  $property['setter callback'] = 'entity_metadata_field_verbatim_set';
+  $property['property info'] = futurehistory_data_property_info();
+
+  unset($property['query callback']);
+}
+
+function futurehistory_data_property_info() {
+  // Build an array of basic property information for the futurehistory field.
+  $properties = array(
+    'lat' => array(
+      'label' => 'Latitude',
+      'type' => 'decimal',
+      'required' => TRUE,
+      'description' => '',
+      'getter callback' => 'entity_property_verbatim_get',
+    ),
+    'lng'=> array(
+      'label' => 'Longitude',
+      'type' => 'decimal',
+      'description' => '',
+      'required' => TRUE,
+      'getter callback' => 'entity_property_verbatim_get',
+    ),
+    'dist' => array(
+      'label' => 'the Distance from base to view',
+      'description' => '',
+      'type' => 'decimal',
+      'getter callback' => 'entity_property_verbatim_get',
+    ),
+    'view_direction' => array(
+      'label' => 'the view direction in degree',
+      'description' => '',
+      'type' => 'decimal',
+      'getter callback' => 'entity_property_verbatim_get',
+    ),
+    'angle' => array(
+      'label' => 'the angle - focal width',
+      'description' => '',
+      'type' => 'decimal',
+      'getter callback' => 'entity_property_verbatim_get',
+    ),
+    'noarview' => array(
+      'label' => 'arview enabled or disabled',
+      'description' => '',
+      'type' => 'int',
+      'getter callback' => 'entity_property_verbatim_get',
+    ),
+    'coordinate_known' => array(
+      'label' => 'coordinate Known or Adress',
+      'description' => '',
+      'type' => 'int',
+      'getter callback' => 'entity_property_verbatim_get',
+    ),
+    'latlng' => array(
+      'label' => 'the latlng of point',
+      'description' => '',
+      'type'  => 'string',
+      'getter callback' => 'futurehistory_return_latlon',
+    ),
+  );
+
+  return $properties;
+}
+
+/**
+ * Gets the a latlong property.
+ */
+function futurehistory_return_latlon($data, array $options, $name) {
+  if ((is_array($data) || (is_object($data) && $data instanceof ArrayAccess))) {
+    return $data['lat'] . ',' . $data['lng'];
+  }
+  return NULL;
+}
+
+/**
+ * Implements hook_field_validate().
+ */
+function futurehistory_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
+  foreach ($items as $delta => $item) {
+    if (!futurehistory_field_is_empty($item, $field)) {
+      switch (TRUE) {
+        case !is_numeric($item['lat']):
+          $errors[$field['field_name']][$langcode][$delta][] = array(
+            'error' => 'futurehistory_invalid_lat',
+            'message' => t('Invalid Latitude. Value must be numeric.'),
+          );
+          break;
+        case $item['lat'] > 90:
+        case $item['lat'] < -90:
+          $errors[$field['field_name']][$langcode][$delta][] = array(
+            'error' => 'futurehistory_invalid_lat',
+            'message' => t('Invalid Latitude. Value must be between 90 and -90.'),
+          );
+          break;
+      }
+
+      switch (TRUE) {
+        case !is_numeric($item['lng']):
+          $errors[$field['field_name']][$langcode][$delta][] = array(
+            'error' => 'futurehistory_invalid_lng',
+            'message' => t('Invalid Longitude. Value must be numeric.'),
+          );
+        case $item['lng'] > 180:
+        case $item['lng'] < -180:
+          $errors[$field['field_name']][$langcode][$delta][] = array(
+            'error' => 'futurehistory_invalid_lng',
+            'message' => t('Invalid Longitude. Value must be between 180 and -180'),
+          );
+          break;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_is_empty().
+ */
+function futurehistory_field_is_empty($item, $field) {
+//  if (empty($item['lat']) && (string) $item['lat'] !== '0' && empty($item['lng']) && (string) $item['lng'] !== '0') {
+  if (empty($item['lat']) && (string) $item['lat'] !== '0' && empty($item['lng']) && (string) $item['lng'] !== '0' && empty($item['dist']) && empty($item['view_direction']) && empty($item['angle'])) {
+    return TRUE;
+  }
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function futurehistory_field_formatter_info() {
+  return array(
+    'futurehistory_map' => array(
+      'label' => t('map with arrow and view angle'),
+      'field types' => array('futurehistory_field'),
+    ),
+    'futurehistory_text' => array(
+      'label' => t('Simple text-based formatter'),
+      'field types' => array('futurehistory_field'),
+    ),
+    'futurehistory_lat' => array(
+      'label' => t('formatter for futurehistory lat'),
+      'field types' => array('futurehistory_field'),
+    ),
+    'futurehistory_lon' => array(
+      'label' => t('formatter for futurehistory lon'),
+      'field types' => array('futurehistory_field'),
+    ),
+   'futurehistory_angle' => array(
+      'label' => t('formatter for futurehistory angle'),
+      'field types' => array('futurehistory_field'),
+    ),
+	'futurehistory_direction' => array(
+      'label' => t('formatter for futurehistory direction'),
+      'field types' => array('futurehistory_field'),
+    ),
+	'futurehistory_distance' => array(
+      'label' => t('formatter for futurehistory distance'),
+      'field types' => array('futurehistory_field'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function futurehistory_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+  switch ($display['type']) {
+    case 'futurehistory_text':
+      foreach ($items as $delta => $item) {
+        $element[$delta]['#markup'] = '<p>' . t('The Values are @lat, @lng, Distance: @dist, View Direction: @view_direction, Angle: @angle', array('@lat' => $item['lat'], '@lng' => $item['lng'], '@dist' => $item['dist'], '@view_direction' => $item['view_direction'], '@angle' => $item['angle'])) . '</p>';
+      }
+      break;
+   case 'futurehistory_lat':
+      foreach ($items as $delta => $item) {
+        $element[$delta]['#markup'] = $item['lat'];
+      }
+      break;
+    case 'futurehistory_lon':
+      foreach ($items as $delta => $item) {
+        $element[$delta]['#markup'] = $item['lng'];
+      }
+      break;
+    case 'futurehistory_angle':
+      foreach ($items as $delta => $item) {
+        $element[$delta]['#markup'] = $item['angle'];
+      }
+    case 'futurehistory_direction':
+      foreach ($items as $delta => $item) {
+        $element[$delta]['#markup'] = $item['view_direction'];
+      }
+    case 'futurehistory_distance':
+      foreach ($items as $delta => $item) {
+        $element[$delta]['#markup'] = $item['dist'];
+      }
+
+  }
+  return $element;
+}
+
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function futurehistory_field_widget_info() {
+  return array(
+    'futurehistory_text' => array(
+      'label' => t('futurehistory Latitude/Longitude text widged'),
+      'field types' => array('futurehistory_field'),
+    ),
+ 'futurehistory_map' => array(
+      'label' => t('futurehistory map widged'),
+      'field types' => array('futurehistory_field'),
+    ),
+  );
+}
+
+/**
+ * Add the settings for the widged map
+ */
+function futurehistory_field_widget_settings_form($field, $instance) {
+  switch ($instance['widget']['type']) {
+    case 'futurehistory_map':
+      $widget = $instance['widget'];
+      $settings = $widget['settings'];
+      $form['scrollwheel'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Scroll Zoom'),
+        '#description' => t('By default zooming is done with double click and/or using the map controls to avoid interrupting the normal window scroll. It can optionally be enabled here.'),
+        '#default_value' => isset($settings['scrollwheel']) ? $settings['scrollwheel'] : FALSE,
+      );
+      $form['marker_draggable'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Draggable Marker'),
+        '#description' => t('Enabling this will allow the user to drag/drop the marker to select a location.'),
+        '#default_value' => isset($settings['marker_draggable']) ? $settings['marker_draggable'] : FALSE,
+      );
+    break;
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+
+  // In order to make Futurehistory field work with the popular Field collection module
+  // we check if our map widget is part of a Field collection and add the
+  // #field_parents delta.
+  if ($instance['entity_type'] == 'field_collection_item') {
+    $depth = count($element['#field_parents']) - 1;
+    $parent_delta = $element['#field_parents'][$depth];
+    $id = $instance['id'] . '-' . $parent_delta . '-' . $delta;
+  }
+  else {
+    $id = $instance['id'] . '-' . $delta;
+  }
+
+  //set all the default values from the database if avail
+  $lat_value = isset($items[$delta]['lat']) ? $items[$delta]['lat'] : NULL;
+  $lng_value = isset($items[$delta]['lng']) ? $items[$delta]['lng'] : NULL;
+  $dist_value = isset($items[$delta]['dist']) ? $items[$delta]['dist'] : '0';
+  $direction_value = isset($items[$delta]['view_direction']) ? $items[$delta]['view_direction'] : '0';
+  $angle_value = isset($items[$delta]['angle']) ? $items[$delta]['angle'] : '0';
+  $noarview = isset($items[$delta]['noarview']) ? $items[$delta]['noarview'] : '0';
+  $coordinate_known = isset($items[$delta]['coordinate_known']) ? $items[$delta]['coordinate_known'] : '0';
+
+  $element += array(
+    '#delta' => $delta,
+  );
+   
+  // Wrap in a fieldset for single fields
+  if ($field['cardinality'] == 1) {
+    $element['#type'] = 'fieldset';
+  }
+ 
+  $element['lat'] = array();
+  $element['lng'] = array();
+  $element['dist'] = array();
+  $element['view_direction'] = array();
+  $element['angle'] = array();
+
+  switch ($instance['widget']['type']) {
+    case 'futurehistory_text':
+      $element['lat'] += array(
+        '#title' => t('Latitude'),
+        '#type' => 'textfield',
+        '#default_value' => $lat_value,
+        '#size' => 30,
+        '#maxlength' => 30,
+        '#required' => $instance['required'],
+      );
+      $element['lng'] += array(
+        '#title' => t('Longitude'),
+        '#type' => 'textfield',
+        '#default_value' => $lng_value,
+        '#size' => 30,
+        '#maxlength' => 30,
+        '#required' => $instance['required'],
+      );
+      $element['dist'] += array(
+        '#title' => t('Distance'),
+        '#type' => 'textfield',
+        '#default_value' =>$dist_value ,
+        '#size' => 30,
+        '#maxlength' => 30,
+        '#required' => $instance['required'],
+      );
+      $element['view_direction'] += array(
+        '#title' => t('View Direction'),
+        '#type' => 'textfield',
+        '#default_value' => $direction_value,
+        '#size' => 30,
+        '#maxlength' => 30,
+        '#required' => $instance['required'],
+      );
+      $element['angle'] += array(
+        '#title' => t('Angle'),
+        '#type' => 'textfield',
+        '#default_value' => $angle_value,
+        '#size' => 30,
+        '#maxlength' => 30,
+        '#required' => $instance['required'],
+      );
+      break;
+
+    case 'futurehistory_map':
+     $element['coordinate_known'] = array(
+        '#title' => t('I know the Coordinates'),
+        '#type' => 'checkbox',
+        '#default_value' => $coordinate_known,
+        '#prefix' => '<div id="futurehistory-coordinate_known-checkbox_' . $id . '" class="futurehistory">',
+        '#suffix' => '</div>',
+        '#weight' => 1,
+      );
+      $element['address'] = array(
+        '#type' => 'item',
+        '#title' => t('Adress'),
+        '#prefix' => '<div id="futurehistory-address-' . $id . '" class="futurehistory-address">',
+        '#suffix' => '</div>',
+        '#weight' => 2,
+        '#required' => $instance['required'],
+      );
+      $element['address']['help'] = array(
+        '#prefix' => '<div id="futurehistory-help-' . $id . '" class="futurehistory-help">',
+        '#suffix' => '</div>',
+        '#markup' => t('Enter an address / location or you can also click on the map to set a marker'),
+        '#weight' => 1,
+      );
+      $element['address']['field'] = array(
+        '#type' => 'textfield',
+        '#maxlength' => 120,
+        '#weight' => 2,
+      );
+         $element['address']['geocode'] = array(
+        '#prefix' => '<span id="futurehistory-address-geocode-' . $id . '" class="futurehistory-address-geocode">',
+        '#suffix' => '</span>',
+        '#markup' => t('Get location'),
+        '#weight' => 3,
+      );
+      $element['coordinate_known_wrapper'] = array(
+        '#type' => 'item',
+        '#title' => t('GPS Coordinates'),
+        '#prefix' => '<div id="futurehistory-coordinate-wrapper-' . $id . '" class="futurehistory-coordinate">',
+        '#suffix' => '</div>',
+        '#weight' => 3,
+        '#required' => $instance['required'],
+      );
+      $element['coordinate_known_wrapper']['help'] = array(
+        '#prefix' => '<div id="futurehistory-coordinate-help-' . $id . '" class="futurehistory-help">',
+        '#suffix' => '</div>',
+        '#markup' => t('Enter valid GPS Coordinates or you can also click on the map to set a marker'),
+        '#weight' => 1,
+      );
+      $element['coordinate_known_wrapper']['coordinate_lat'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Latitude'),      
+        '#prefix' => '<div id="futurehistory-coordinate-lat-' . $id . '" class="futurehistory-coordinate">',
+        '#suffix' => '</div>',
+        '#maxlength' => 120,
+        '#weight' => 2,
+      );
+      $element['coordinate_known_wrapper']['coordinate_lng'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Longitude'),      
+        '#prefix' => '<div id="futurehistory-coordinate-lng-' . $id . '" class="futurehistory-coordinate">',
+        '#suffix' => '</div>',
+        '#maxlength' => 120,
+        '#weight' => 3,
+      );
+      $element['coordinate_known_wrapper']['geocode_coordinate'] = array(
+        '#prefix' => '<span id="futurehistory-coordinate-geocode-' . $id . '" class="futurehistory-coordinate-geocode">',
+        '#suffix' => '</span>',
+        '#markup' => t('Set Marker'),
+        '#weight' => 4,
+      );
+      $element['googlemap'] = array(
+        '#prefix' => '<div id="futurehistory-map-' . $id . '" class="futurehistory" style="width:100%;height:700px;display:block;">',
+        '#suffix' => '</div>',
+        '#weight' => 5,
+      );
+      $element['distitem'] = array(
+        '#title' => t('Distance in meter'),
+        '#type' => 'item',
+        '#weight' => 7,
+        '#prefix' => '<div id="futurehistory-dist-slider-item-' . $id . '" class="futurehistory">',
+        '#markup' => '<span class="futurehistory-dist-slider-item-value">' . $dist_value . '</span>',
+        '#suffix' => '</div>',
+        '#required' => $instance['required'],
+      );
+      $element['dist'] += array(
+        '#type' => 'hidden',
+        '#default_value' =>$dist_value ,
+        '#size' => 30,
+        '#maxlength' => 30,
+        '#weight' => 8,
+        '#prefix' => '<div id="futurehistory-dist-slider-' . $id . '" class="futurehistory-slider" style="width:400px;margin-bottom:20px;">',
+        '#suffix' => '</div>',
+      );
+      $element['view_direction_item'] = array(
+        '#title' => t('View Direction'),
+        '#type' => 'item',
+        '#weight' => 9,
+        '#prefix' => '<div id="direction_wrapper"> <div id="futurehistory-view_direction-slider-item-' . $id . '" class="futurehistory">',
+        '#markup' => '<span class="futurehistory-view_direction-slider-item-value">' . $direction_value . '</span>',
+        '#suffix' => '</div>',
+        '#required' => $instance['required'],
+      );
+      $element['view_direction'] += array(
+        '#type' => 'hidden',
+        '#default_value' => $direction_value,
+        '#required' => $instance['required'],
+        '#weight' => 10,
+        '#prefix' => '<div id="futurehistory-view_direction-slider-' . $id . '-value" class="futurehistory-slider" style="width:400px;margin-bottom:20px;">',
+        '#suffix' => '</div>',
+      );
+      $element['view_direction_slider'] = array(
+        '#type' => 'hidden',
+        '#default_value' => $direction_value,
+        '#required' => $instance['required'],
+        '#weight' => 11,
+        '#prefix' => '<div id="futurehistory-view_direction-slider-' . $id . '" class="futurehistory-slider" style="width:400px;margin-bottom:20px;">',
+        '#suffix' => '</div></div>',
+      );
+           $element['angle-item'] = array(
+        '#title' => t('Angle'),
+        '#type' => 'item',
+        '#weight' => 12,
+        '#prefix' => '<div id="angle_wrapper"> <div id="futurehistory-angle-slider-item-' . $id . '" class="futurehistory">',
+        '#markup' => '<span class="futurehistory-angle-slider-item-value">' . $angle_value . '</span>',
+        '#suffix' => '</div>',
+        '#required' => $instance['required'],
+      );
+      $element['angle'] += array(
+        '#type' => 'hidden',
+        '#default_value' => $angle_value,
+        '#weight' => 13,
+        '#prefix' => '<div id="futurehistory-angle-slider-' . $id . '" class="futurehistory-slider" style="width:240px;margin-bottom:20px;">',
+        '#suffix' => '</div>',
+        '#required' => $instance['required'],
+      );
+      $element['noarview'] = array(
+        '#title' => t('Blickrichtung von oben oder unbekannt'),
+        '#type' => 'checkbox',
+        '#default_value' => $noarview,
+        '#prefix' => '<div id="futurehistory-arview-' . $id . '" class="futurehistory">',
+        '#suffix' => '</div></div>',
+        '#weight' => 14,
+      );
+
+      $element['lat'] += array(
+        '#title' => t('Latitude'),
+        '#type' => 'hidden',
+        '#default_value' => $lat_value,
+        '#size' => 30,
+        '#maxlength' => 30,
+        '#prefix' => '<div id="futurehistory-lat-' . $id . '" class="futurehistory" >',
+        '#suffix' => '</div>',
+        '#required' => $instance['required'],
+      );
+      $element['lng'] += array(
+        '#title' => t('Longitude'),
+        '#type' => 'hidden',
+        '#default_value' => $lng_value,
+        '#size' => 30,
+        '#maxlength' => 30,
+        '#prefix' => '<div id="futurehistory-lng-' . $id . '" class="futurehistory" >',
+        '#suffix' => '</div>',
+        '#required' => $instance['required'],
+      );
+
+      futurehistory_attach_google_js($element);
+      // Attach CSS and JS files via FAPI '#attached'.
+      $element['googlemap']['#attached']['css'][] = drupal_get_path('module', 'futurehistory') . '/css/futurehistory.css';
+      $element['googlemap']['#attached']['css'][] = drupal_get_path('module', 'futurehistory') . '/css/roundslider.css';
+      $element['googlemap']['#attached']['js'][] = array(
+        'data' => drupal_get_path('module', 'futurehistory') . '/js/futurehistory_widget.js',
+        'type' => 'file',
+        'scope' => 'footer',
+      );
+      $element['googlemap']['#attached']['js'][] = array(
+        'data' => drupal_get_path('module', 'futurehistory') . '/js/roundslider.js',
+        'type' => 'file',
+        'scope' => 'footer',
+      );
+      // Make defaults available as javascript settings. In JS files use:
+      // Drupal.settings.mapDefaults."value"
+      $map_defaults_lat = ($lat_value) ? $lat_value : '';
+      $map_defaults_lng = ($lng_value) ? $lng_value : '';
+      $map_defaults_dist = ($dist_value) ? $dist_value : '';
+      $map_defaults_direction = ($direction_value) ? $direction_value : '';
+      $map_defaults_angle = ($angle_value) ? $angle_value : '';
+      $map_defaults_noarview = ($noarview) ? $noarview : '';
+      $map_defaults_coordinate_known = ($coordinate_known) ? $coordinate_known : '';
+
+      $map_defaults = array(
+        $id => array(
+          'lat' => $map_defaults_lat,
+          'lng' => $map_defaults_lng,
+          'dist' => $map_defaults_dist,
+          'direction' => $map_defaults_direction,
+          'angle' => $map_defaults_angle,
+          'noarview' => $map_defaults_noarview,
+          'coordinate_known' => $map_defaults_coordinate_known,
+        ),
+      );
+      $data = array(
+        'defaults' => $map_defaults,
+        'settings' => $instance['widget']['settings'],
+      );
+      $element['googlemap']['#attached']['js'][] = array(
+        'data' => array('futurehistory' => $data),
+        'type' => 'setting',
+      );
+      $element['field_type'] = array('#type' => 'value', '#value' => $field['type']);
+      break;
+
+  }
+  return $element;
+}
+
+/**
+ * Helper function that attaches JS to the given element.
+ */
+function futurehistory_attach_google_js(&$element) {
+  $js_added_already = &drupal_static(__FUNCTION__, FALSE);
+  if (!$js_added_already) {
+
+    $element['#attached']['library'] = array(
+       array('system', 'ui'),
+       array('system', 'ui.spinner'),
+       array('system', 'ui.slider'),
+    );
+    $element['#attached']['js'][] = array(
+      'data' => '//www.google.com/jsapi',
+      'type' => 'external',
+    );
+  //  $element['#attached']['js'][] = array(
+  //    'data' => '//maps.google.com/maps/api/js?libraries=geometry,drawing&sensor=false',
+  //    'type' => 'external',
+  //  );
+      $js_added_already = TRUE;
+  }
+}
+
+/**
+ * Implements hook_field_widget_error().
+ */
+function futurehistory_field_widget_error($element, $error, $form, &$form_state) {
+  switch ($error['error']) {
+    case 'futurehistory_invalid_lat':
+      form_error($element['lat'], $error['message']);
+      break;
+    case 'futurehistory_invalid_lng':
+      form_error($element['lng'], $error['message']);
+      break;
+  }
+}

@@ -1,0 +1,111 @@
+<?php
+
+/**
+ * Install/Update/Uninstall functions for futurehistory_field module
+ */
+
+/**
+ * Implements hook_field_schema().
+ */
+function futurehistory_field_schema($field) {
+  $columns = array(
+    'lat' => array(
+      'description' => 'Stores the latitude value',
+      'type' => 'float',
+      'size' => 'big',
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'lng' => array(
+      'description' => 'Stores the longitude value',
+      'type' => 'float',
+      'size' => 'big',
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'dist' => array(
+      'description' => 'Stores the Distance',
+      'type' => 'float',
+      'size' => 'big',
+      'not null' => FALSE,
+      'default' => 0,
+    ),
+    'view_direction' => array(
+      'description' => 'Stores the view Direction',
+      'type' => 'float',
+      'size' => 'big',
+      'not null' => FALSE,
+      'default' => 0,
+    ),
+    'angle' => array(
+      'description' => 'Stores the angle',
+      'type' => 'float',
+      'size' => 'big',
+      'not null' => FALSE,
+      'default' => 0,
+    ),
+    'noarview' => array(
+      'description' => 'arview enabled or disabled',
+      'type' => 'int',
+      'not null' => FALSE,
+      'default' => 0,
+    ),
+    'coordinate_known' => array(
+      'description' => 'coordinates known or enabled adress',
+      'type' => 'int',
+      'not null' => FALSE,
+      'default' => 0,
+    ),
+  );
+  $indexes = array(
+    'lat' => array('lat'),
+    'lng' => array('lng'),
+  );
+  return array(
+    'columns' => $columns,
+    'indexes' => $indexes,
+  );
+}
+
+/**
+ * Add the coordinate_known field to the existing FutureHistory field shema
+ */
+function futurehistory_update_7001() {
+  $fields = futurehistory_get_futurehistory_fields();
+
+  foreach ($fields as $field) {
+
+    $tables = array(_field_sql_storage_tablename($field), _field_sql_storage_revision_tablename($field));
+    foreach ($tables as $table) {
+
+      $field_name = $field['field_name']; 
+
+      $columns = array($field_name . '_coordinate_known');
+ 
+      $spec = array(      
+        'description' => 'coordinates known or enabled adress',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      );
+
+
+      foreach ($columns as $column) {
+        db_add_field($table, $column, $spec);
+      }
+
+    }
+  }
+  return t('add coordinate_known field to the futurehistory shema');
+}
+
+function futurehistory_get_futurehistory_fields() {
+  $types = array_keys(futurehistory_field_info()); // returns one value in our case
+  $fields = array();
+  foreach (field_info_fields() as $field) {
+    if (in_array($field['type'], $types)) {
+      $fields[] = $field;
+    }
+  }
+  return $fields;
+}

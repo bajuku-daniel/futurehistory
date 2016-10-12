@@ -1,0 +1,5 @@
+name = Future History google Maps
+description = Provides custom Google Maps widget and formaters as a Field to add Nodes. (view direction - angle - distance)
+package = Futurehistory
+core = 7.x
+
