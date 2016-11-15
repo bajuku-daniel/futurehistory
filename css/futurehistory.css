@@ -138,6 +138,12 @@ li.validation_error a {
   float: left;
 }
 
+/* Hide the text format dropdown box */
+
+#edit-field-text-und-0-format {
+  display:none;
+}
+
 
 /**
  * 

@@ -35,6 +35,38 @@
   //google map style elements
   var map_styles = [ { "featureType": "poi.park", "stylers": [ { "visibility": "on" } ] },{ "featureType": "poi.attraction", "stylers": [ { "visibility": "on" } ] },{ "featureType": "poi.business", "stylers": [ { "visibility": "off" } ] },{ "featureType": "poi.government", "stylers": [ { "visibility": "on" } ] },{ "featureType": "poi.medical", "stylers": [ { "visibility": "off" } ] },{ "featureType": "poi.school", "stylers": [ { "visibility": "off" } ] },{ "featureType": "poi.place_of_worship", "stylers": [ { "visibility": "on" } ] },{ "featureType": "poi.school", "stylers": [ { "visibility": "off" } ] }];
 
+
+/**
+   * Google Autocomplete select first on Enter function 
+   */
+ Drupal.futurehistory.selectFirstOnEnter = function(input){      
+    var _addEventListener = (input.addEventListener) ? input.addEventListener : input.attachEvent;
+    function addEventListenerWrapper(type, listener) { 
+      if (type == "keydown") { 
+        var orig_listener = listener;
+        listener = function (event) {
+          var suggestion_selected = $(".pac-item-selected").length > 0;
+          if ((event.which == 13 ) && !suggestion_selected) { 
+            var simulated_downarrow = $.Event("keydown", {
+              keyCode:40, 
+              which:40
+            }); 
+            orig_listener.apply(input, [simulated_downarrow]); 
+          }
+          orig_listener.apply(input, [event]);
+        };
+      }
+      _addEventListener.apply(input, [type, listener]);
+    }
+    if (input.addEventListener) { 
+      input.addEventListener = addEventListenerWrapper; 
+    } else if (input.attachEvent) { 
+      input.attachEvent = addEventListenerWrapper; 
+    }
+}
+
+
+
   /**
    * Set the latitude and longitude values to the input fields
    * And optionaly update the address field
@@ -251,6 +283,20 @@
           coordinate_known = mapDefaults.coordinate_known;
 
           latLng = new google.maps.LatLng(lat, lng);
+
+
+          // Add stupid google places Autocomplete to the Adress field   
+          var fh_inputfield = $('#futurehistory-address-' + i + ' input').attr('id');
+          //select first on enter workaround
+          var fh_input = Drupal.futurehistory.selectFirstOnEnter(document.getElementById(fh_inputfield));
+
+          var fh_autocomplete = new google.maps.places.Autocomplete(document.getElementById(fh_inputfield));
+
+          google.maps.event.addListener(fh_autocomplete, 'place_changed', function() {
+            var address = $('#futurehistory-address-' + i + ' input').val();
+            Drupal.futurehistory.codeAddress(i, noarview, address, 'geocoder');
+          });
+
 
           // Attach listeners for the geocode function 
           $('#futurehistory-address-' + i + ' input').keypress(function(ev){
