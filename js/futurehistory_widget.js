@@ -9,10 +9,10 @@
   Drupal.futurehistory.line_b = Drupal.futurehistory.line_b || {};
   Drupal.futurehistory.pie = Drupal.futurehistory.pie || {};
 
-  geocoder = new google.maps.Geocoder();   
-  
+  geocoder = new google.maps.Geocoder();
+
   var dist = 250 ;
-  var angle_slide_center = 80; 
+  var angle_slide_center = 80;
   var lat;
   var lng;
   var direction;
@@ -31,41 +31,39 @@
     new google.maps.Point(0, 0), //origin
     new google.maps.Point(7, 32) //anchor point
   );
-  
+
   //google map style elements
   var map_styles = [ { "featureType": "poi.park", "stylers": [ { "visibility": "on" } ] },{ "featureType": "poi.attraction", "stylers": [ { "visibility": "on" } ] },{ "featureType": "poi.business", "stylers": [ { "visibility": "off" } ] },{ "featureType": "poi.government", "stylers": [ { "visibility": "on" } ] },{ "featureType": "poi.medical", "stylers": [ { "visibility": "off" } ] },{ "featureType": "poi.school", "stylers": [ { "visibility": "off" } ] },{ "featureType": "poi.place_of_worship", "stylers": [ { "visibility": "on" } ] },{ "featureType": "poi.school", "stylers": [ { "visibility": "off" } ] }];
 
 
 /**
-   * Google Autocomplete select first on Enter function 
+   * Google Autocomplete select first on Enter function
    */
- Drupal.futurehistory.selectFirstOnEnter = function(input){      
+ Drupal.futurehistory.selectFirstOnEnter = function(input){
     var _addEventListener = (input.addEventListener) ? input.addEventListener : input.attachEvent;
-    function addEventListenerWrapper(type, listener) { 
-      if (type == "keydown") { 
+    function addEventListenerWrapper(type, listener) {
+      if (type == "keydown") {
         var orig_listener = listener;
         listener = function (event) {
           var suggestion_selected = $(".pac-item-selected").length > 0;
-          if ((event.which == 13 ) && !suggestion_selected) { 
+          if ((event.which == 13 ) && !suggestion_selected) {
             var simulated_downarrow = $.Event("keydown", {
-              keyCode:40, 
+              keyCode:40,
               which:40
-            }); 
-            orig_listener.apply(input, [simulated_downarrow]); 
+            });
+            orig_listener.apply(input, [simulated_downarrow]);
           }
           orig_listener.apply(input, [event]);
         };
       }
       _addEventListener.apply(input, [type, listener]);
     }
-    if (input.addEventListener) { 
-      input.addEventListener = addEventListenerWrapper; 
-    } else if (input.attachEvent) { 
-      input.attachEvent = addEventListenerWrapper; 
+    if (input.addEventListener) {
+      input.addEventListener = addEventListenerWrapper;
+    } else if (input.attachEvent) {
+      input.attachEvent = addEventListenerWrapper;
     }
 }
-
-
 
   /**
    * Set the latitude and longitude values to the input fields
@@ -115,12 +113,12 @@
    // var address = $('#futurehistory-address-' + i + ' input').val();
     geocoder.geocode( { 'address': address }, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-        Drupal.futurehistory.maps[i].setCenter(results[0].geometry.location);        
+        Drupal.futurehistory.maps[i].setCenter(results[0].geometry.location);
         if (op != 'initial'){
-          Drupal.futurehistory.codeLatLng(results[0].geometry.location, i, 'textinput');               
+          Drupal.futurehistory.codeLatLng(results[0].geometry.location, i, 'textinput');
           Drupal.futurehistory.setMapMarker(results[0].geometry.location, i);
         } else {
-          Drupal.futurehistory.codeLatLng(results[0].geometry.location, i, 'textinput');                         
+          Drupal.futurehistory.codeLatLng(results[0].geometry.location, i, 'textinput');
         }
         Drupal.futurehistory.setZoom(i, results[0].geometry.location_type);
         if (!noarview && op != 'initial') {
@@ -147,7 +145,7 @@
     }
     latLng = coordinates;
   }
- 
+
   /**
   *
   * Set zoom level depending on accuracy (location_type)
@@ -183,7 +181,7 @@
     if (!noarview) {
       Drupal.futurehistory.setMapArrow(latLng, i, dist, direction, angle);
     }
-    
+       
     // we have to attach the fdragend function to every marker - not just the initial one
     google.maps.event.addListener(Drupal.futurehistory.markers[i], 'dragend', function(me) {
       Drupal.futurehistory.codeLatLng(me.latLng, i, 'marker');
@@ -191,7 +189,7 @@
       latLng = me.latLng
     });
   }
- 
+
   /**
   * Set/Update the view direction on a map
   **/
@@ -216,7 +214,7 @@
        }],
        map: Drupal.futurehistory.maps[i]
     });
-        
+
     Drupal.futurehistory.line_b[i] = new google.maps.Polyline({
       path: [latLng, point_b],
       icons: [{
@@ -225,7 +223,7 @@
       }],
       map: Drupal.futurehistory.maps[i]
     });
-  
+
     Drupal.futurehistory.pie[i] = new google.maps.Polygon({
       paths: [latLng, point_a, point_b],
       strokeColor: '#9E1F81',
@@ -235,7 +233,7 @@
       fillOpacity: 0.45,
       map: Drupal.futurehistory.maps[i]
     });
-  } 
+  }
 
   Drupal.behaviors.futurehistory = {
     attach: function(context, settings) {
@@ -285,7 +283,7 @@
           latLng = new google.maps.LatLng(lat, lng);
 
 
-          // Add stupid google places Autocomplete to the Adress field   
+          // Add stupid google places Autocomplete to the Adress field
           var fh_inputfield = $('#futurehistory-address-' + i + ' input').attr('id');
           //select first on enter workaround
           var fh_input = Drupal.futurehistory.selectFirstOnEnter(document.getElementById(fh_inputfield));
@@ -298,11 +296,11 @@
           });
 
 
-          // Attach listeners for the geocode function 
+          // Attach listeners for the geocode function
           $('#futurehistory-address-' + i + ' input').keypress(function(ev){
             if(ev.which == 13){
               ev.preventDefault();
-              var address = $('#futurehistory-address-' + i + ' input').val(); 
+              var address = $('#futurehistory-address-' + i + ' input').val();
               Drupal.futurehistory.codeAddress(i, noarview, address, 'geocoder');
             }
           });
@@ -324,10 +322,10 @@
           }
           else {
             $("#futurehistory-coordinate-wrapper-" + i).show();
-            $("#futurehistory-address-" + i).hide();            
+            $("#futurehistory-address-" + i).hide();
           }
-          // and than the click function 
-          $("#futurehistory-coordinate_known-checkbox_" + i + " input").click(function(){ 
+          // and than the click function
+          $("#futurehistory-coordinate_known-checkbox_" + i + " input").click(function(){
             if ($(this).is(':checked')){
               coordinate_known = 1;
               $("#futurehistory-address-" + i).hide();
@@ -342,7 +340,7 @@
 
           // Check AR view enabled and activate the sliders
           // this only happens if we click the ar-view checkbox (clickFunction)
-          $("#futurehistory-arview-" + i + " input").click(function(){ 
+          $("#futurehistory-arview-" + i + " input").click(function(){
             if ($(this).is(':checked')){
               dist = 0;
               direction = 0;
@@ -445,7 +443,7 @@
               var mid = 80;
               range_min = ui.values[0];
               range_max = ui.values[1];
-  
+
               if (range_min > mid || range_min == mid) {
                 range_min = mid - 1
               }
@@ -455,7 +453,7 @@
               if (range_min > last_range_min || range_min < last_range_min){
                 last_range_min = range_min;
                 Drupal.futurehistory.angle_sliders[i].slider( "option", "values", [ range_min, max - range_min ] );
-              } 
+              }
               if (range_max > last_range_max || range_max < last_range_max){
                 last_range_max = range_max;
                 Drupal.futurehistory.angle_sliders[i].slider( "option", "values", [ max - range_max, range_max ] );
@@ -467,10 +465,10 @@
               lng = $('#futurehistory-lng-' + i + ' input').attr('value') == false ? mapDefaults.lng : $('#futurehistory-lng-' + i + ' input').attr('value');
               latLng = new google.maps.LatLng(lat, lng);
               Drupal.futurehistory.setMapArrow(latLng, i, dist, direction, angle);
-              
+
             }
           });
-  
+
           // Set map options
           mapOptions = {
             disableDefaultUI: true,
@@ -481,7 +479,7 @@
             zoomControl: true,
             tilt:0
           }
-  
+
           /**
            *
            * Print Map with i index and add the listner
@@ -492,9 +490,9 @@
           if (initial == 1) {
             Drupal.futurehistory.codeAddress(i, noarview, initial_city, 'initial');
             //$('#futurehistory-address-' + i + ' input').val(initial_city);
-            
+
           } else if (lat && lng) {
-            // Set saved marker    
+            // Set saved marker
             Drupal.futurehistory.codeLatLng(latLng, i, 'initial');
             Drupal.futurehistory.setMapMarker(latLng, i);
             //initial run: check noarview value. if arview on and no values avail set fallback position (bookmark etc..)
@@ -527,7 +525,7 @@
               Drupal.futurehistory.angle_sliders[i].slider("option", "disabled", true);
             }
           }
-         
+
           // add tha maps click listener and set the marker on this position
           Drupal.futurehistory.maps[i].addListener('click', function(e) {
             // Set a timeOut so that it doesn't execute if dbclick is detected

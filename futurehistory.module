@@ -16,14 +16,14 @@ function futurehistory_theme($existing, $type, $theme, $path) {
 }
 
 function futurehistory_form_alter(&$form, &$form_state, $form_id) {
-  
+
     if ($form_id == "ansicht_node_form") {
       $node_status = $form['#node']->status;
       if ($node_status == 0) {
         $form['actions']['submit']['#value'] = t('Speichern als Entwurf');
       } else {
-        $form['actions']['submit']['#value'] = t('Speichern'); 
-        $form['actions']['submit']['#attributes']['class'][] = 'ansicht-submit-green';  
+        $form['actions']['submit']['#value'] = t('Speichern');
+        $form['actions']['submit']['#attributes']['class'][] = 'ansicht-submit-green';
       }
       $form['actions']['publish']['#value'] = t('Speichern und Publizieren');
     }
@@ -31,17 +31,17 @@ function futurehistory_form_alter(&$form, &$form_state, $form_id) {
 
 //preprocess some variables for the ansicht-node-form.tpl
 function futurehistory_preprocess_ansicht_node_form(&$variables) {
-    
+
     global $user;
     $user_full = user_load($user->uid);
     $user_place =  $user_full->field_wohnort['und']['0']['value'];
-    
+
     if (!isset($variables['form']['#validated']) && !$variables['form']['#node']->title) {
       $initial_run = 1;
     } else {
       $initial_run = 0;
     }
-    
+
     if (!empty($variables['form']['#node']->title)) {
       $submit_button_static = 1;
     } else {
@@ -52,7 +52,7 @@ function futurehistory_preprocess_ansicht_node_form(&$variables) {
       'place' => $user_place,
       'submit_button_static' => $submit_button_static,
      );
-    
+
     $variables['buttons'] = $variables['form']['actions'];
     hide($variables['form']['actions']);
 
@@ -382,12 +382,12 @@ function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance
   $element += array(
     '#delta' => $delta,
   );
-   
+
   // Wrap in a fieldset for single fields
   if ($field['cardinality'] == 1) {
     $element['#type'] = 'fieldset';
   }
- 
+
   $element['lat'] = array();
   $element['lng'] = array();
   $element['dist'] = array();
@@ -488,7 +488,7 @@ function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance
       );
       $element['coordinate_known_wrapper']['coordinate_lat'] = array(
         '#type' => 'textfield',
-        '#title' => t('Latitude'),      
+        '#title' => t('Latitude'),
         '#prefix' => '<div id="futurehistory-coordinate-lat-' . $id . '" class="futurehistory-coordinate">',
         '#suffix' => '</div>',
         '#maxlength' => 120,
@@ -496,7 +496,7 @@ function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance
       );
       $element['coordinate_known_wrapper']['coordinate_lng'] = array(
         '#type' => 'textfield',
-        '#title' => t('Longitude'),      
+        '#title' => t('Longitude'),
         '#prefix' => '<div id="futurehistory-coordinate-lng-' . $id . '" class="futurehistory-coordinate">',
         '#suffix' => '</div>',
         '#maxlength' => 120,
