@@ -42,7 +42,7 @@
   $first_error = 1;  
   foreach( $form['ansicht_tabs'] as $tab => $tab_content ) {
 
-    if ($ansicht_button_static == 0 &&  $validation_error == 1 && $tab_content['validation_error'] == 1 ) {
+    if ($ansicht_button_static == 0 &&  $validation_error == 1 && $tab_content['validation_error'] == 1 || $ansicht_button_static == 1 &&  $validation_error == 1 && $tab_content['validation_error'] == 1 ) {
       if ($first_error == 1) {
         $tab_pane = '<div class="tab-pane active validation_error" id="'.$tab.'">';
         $first_error = 0;
@@ -72,16 +72,27 @@
             render($buttons) . '     
           </div>
         ';
-      }             
-    } else if ($ansicht_button_static == 1 && $tab == 'group_add_picture') {
+      }  
+           
+    } else if ($ansicht_button_static == 1 && $tab == 'group_add_picture' &&  $validation_error == 0) {
       $tab_pane = '<div class="tab-pane active" id="' . $tab . '">';   
       $form_buttons = '
         <div class="addAnsichtButtons">    
           <a class="btn btn-primary btnNext reloadMap">weiter</a>' .
           render($buttons) . '     
-
         </div>
       ';
+ 
+   } else if ($ansicht_button_static == 1 && $tab == 'group_add_picture' &&  $validation_error == 1 && $tab_content['validation_error'] == 0) {
+      $tab_pane = '<div class="tab-pane" id="' . $tab . '">';   
+      $form_buttons = '
+        <div class="addAnsichtButtons">    
+          <a class="btn btn-primary btnNext reloadMap">weiter</a>' .
+          render($buttons) . '     
+        </div>
+      ';
+
+    
     } else if ($ansicht_button_static == 1) {
       $tab_pane = '<div class="tab-pane" id="' . $tab . '">';
       if ($tab == 'group_media') {
