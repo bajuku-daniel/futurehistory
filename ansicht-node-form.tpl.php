@@ -1,5 +1,7 @@
-
 <?php
+// Template file for the "Add Ansicht" form
+// drupal _alter _theme _preprocess functions in futurehistory.module file 
+
  hide($form['group_add_picture']);
  hide($form['group_picture_info']);
  hide($form['group_position_der_ansicht']);
@@ -12,6 +14,8 @@
 <h4 class="addAnsicht">Eigene Bilder einstellen</h4>
 <ul class="nav nav-tabs">
 <?php
+
+  //first print the TABS and check if validation error or not
   $validation_error = 0 ;
   foreach( $form['ansicht_tabs'] as $tab => $tab_content ) {
     if ($tab_content['validation_error'] == 1 ) {
@@ -39,9 +43,12 @@
 <input type="hidden" id="ansicht_initial_city" value="<?php print($ansicht_initial['place']); ?>" >
 <div class="tab-content">
 <?php
+
+  // next print the tab content and the buttons - check validation and "button_static"
+  // button static shows buttons in "entwurf" or "bearbeiten" modus (see the futurehistory.modul button function)
+  // foreach: run through all tabs and tab contents to set the specific "buttons"
   $first_error = 1;  
   foreach( $form['ansicht_tabs'] as $tab => $tab_content ) {
-
     if ($ansicht_button_static == 0 &&  $validation_error == 1 && $tab_content['validation_error'] == 1 || $ansicht_button_static == 1 &&  $validation_error == 1 && $tab_content['validation_error'] == 1 ) {
       if ($first_error == 1) {
         $tab_pane = '<div class="tab-pane active validation_error" id="'.$tab.'">';
@@ -49,7 +56,6 @@
       } else if ($first_error == 0){
         $tab_pane = '<div class="tab-pane validation_error" id="'.$tab.'">';        
       }
-
       if ($tab == 'group_add_picture') {
         $form_buttons = '
           <div class="addAnsichtButtons">    
@@ -72,8 +78,9 @@
             render($buttons) . '     
           </div>
         ';
-      }  
-           
+      } 
+
+    // TODO: Clean the messy condition if & else query.. fast forward coding without structure :-O
     } else if ($ansicht_button_static == 1 && $tab == 'group_add_picture' &&  $validation_error == 0) {
       $tab_pane = '<div class="tab-pane active" id="' . $tab . '">';   
       $form_buttons = '
@@ -82,7 +89,6 @@
           render($buttons) . '     
         </div>
       ';
- 
    } else if ($ansicht_button_static == 1 && $tab == 'group_add_picture' &&  $validation_error == 1 && $tab_content['validation_error'] == 0) {
       $tab_pane = '<div class="tab-pane" id="' . $tab . '">';   
       $form_buttons = '
@@ -91,8 +97,6 @@
           render($buttons) . '     
         </div>
       ';
-
-    
     } else if ($ansicht_button_static == 1) {
       $tab_pane = '<div class="tab-pane" id="' . $tab . '">';
       if ($tab == 'group_media') {
