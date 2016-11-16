@@ -78,11 +78,11 @@ function futurehistory_update_7001() {
     $tables = array(_field_sql_storage_tablename($field), _field_sql_storage_revision_tablename($field));
     foreach ($tables as $table) {
 
-      $field_name = $field['field_name']; 
+      $field_name = $field['field_name'];
 
       $columns = array($field_name . '_coordinate_known');
- 
-      $spec = array(      
+
+      $spec = array(
         'description' => 'coordinates known or enabled adress',
         'type' => 'int',
         'not null' => FALSE,

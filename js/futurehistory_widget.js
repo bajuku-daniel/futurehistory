@@ -21,7 +21,7 @@
   var noarview;
   var coordinate_known;
   var mapOptions;
-  var mapZoom = 15;
+  var mapZoom = 10;
   var initial;
   var initial_city;
 
@@ -113,6 +113,7 @@
    // var address = $('#futurehistory-address-' + i + ' input').val();
     geocoder.geocode( { 'address': address }, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
+        console.log(results[0].geometry.viewport);
         Drupal.futurehistory.maps[i].setCenter(results[0].geometry.location);
         if (op != 'initial'){
           Drupal.futurehistory.codeLatLng(results[0].geometry.location, i, 'textinput');
@@ -120,7 +121,14 @@
         } else {
           Drupal.futurehistory.codeLatLng(results[0].geometry.location, i, 'textinput');
         }
-        Drupal.futurehistory.setZoom(i, results[0].geometry.location_type);
+        // use the viewport if we have one
+        if (results[0].geometry.viewport && op != 'initial') {
+          Drupal.futurehistory.setViewport(i,results[0].geometry.viewport)
+        }
+        else {
+          Drupal.futurehistory.setZoom(i, results[0].geometry.location_type);
+        }
+
         if (!noarview && op != 'initial') {
           Drupal.futurehistory.setMapArrow(results[0].geometry.location, i, dist, direction, angle);
         }
@@ -144,6 +152,15 @@
       Drupal.futurehistory.setMapArrow(coordinates, i, dist, direction, angle);
     }
     latLng = coordinates;
+  }
+
+  /**
+  *
+  * Set Viewbox function
+  *
+  */
+  Drupal.futurehistory.setViewport = function(i, viewport) {
+    Drupal.futurehistory.maps[i].fitBounds(viewport);
   }
 
   /**
@@ -181,7 +198,7 @@
     if (!noarview) {
       Drupal.futurehistory.setMapArrow(latLng, i, dist, direction, angle);
     }
-       
+
     // we have to attach the fdragend function to every marker - not just the initial one
     google.maps.event.addListener(Drupal.futurehistory.markers[i], 'dragend', function(me) {
       Drupal.futurehistory.codeLatLng(me.latLng, i, 'marker');
