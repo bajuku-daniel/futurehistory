@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the FH bean feature.
- */
-
-include_once 'fh_bean.features.inc';

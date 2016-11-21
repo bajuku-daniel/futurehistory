@@ -26,6 +26,7 @@ function futurehistory_form_alter(&$form, &$form_state, $form_id) {
         $form['actions']['submit']['#attributes']['class'][] = 'ansicht-submit-green';
       }
       $form['actions']['publish']['#value'] = t('Speichern und Publizieren');
+ //      $form_state['simple']['test1']='sdfsdfs';
     }
 }
 
@@ -689,4 +690,93 @@ function futurehistory_field_widget_error($element, $error, $form, &$form_state)
       form_error($element['lng'], $error['message']);
       break;
   }
+}
+
+/**
+ * HOOK - node_preprocess
+ * */
+function futurehistory_preprocess_node(&$variables, $hook) {
+  $type = $variables['node']->type;
+  if ($type === "ansicht_hilfetexte") {
+    futurehistory_preprocess_node_ansicht($variables, $hook);
+  }
+}
+
+function futurehistory_preprocess_node_ansicht(&$variables, $hook) {
+  $R=0;
+}
+
+/**
+ * HOOK - node_access
+ * */
+function futurehistory_node_access($node, $op, $account) {
+//  Whether or not the administration mode is enabled e.g.: role = administrator | 3
+  if (futurehistory_admin_mode_enabled()) {
+    $node_type = is_string($node) ? $node : $node->type;
+    # disable viewing of node types with no own view
+    $node_has_own_view = !in_array($node_type, array_keys(array('ansicht_hilfetexte')));
+    # the additional test for '#^node/\d+$#' is required because we still want to allow translations of the node (see _translation_tab_access($node))
+    $is_node_view_path = preg_match('#^node/\d+$#', current_path());
+    $view_of_node_type_without_own_view = $op === 'view' && !$node_has_own_view && $is_node_view_path;
+    if ($view_of_node_type_without_own_view) {
+      return NODE_ACCESS_DENY;
+    }
+  }
+}
+
+/**
+ * HOOK - form_node_form_alter
+ */
+function futurehistory_form_node_form_alter(&$form, &$form_state, $form_id) {
+  if (futurehistory_admin_mode_enabled()) {
+//    return;
+  }
+
+  $node_type = $form['type']['#value'];
+
+  if($node_type === 'ansicht_hilfetexte'){
+    $form['menu']['link']['options']['attributes'] = array();
+    $form['menu']['link']['options']['item_attributes'] = array();
+    $form['menu']['link']['description']['#access'] = FALSE;
+    $form['menu']['link']['weight']['#access'] = FALSE;
+    $form['revision_information']['#access'] = FALSE;
+    $form['options']['#access'] = FALSE;
+    $form['author']['#access'] = FALSE;
+    $form['comment_settings']['#access'] = FALSE;
+    $form['#pre_render'][] = 'futurehistory_remove_url_path_field_handler';
+    $form['actions']['submit']['#submit'][] = 'futurehistory_node_edit_form_handler_after_submit';
+    unset($form['options']['promote']);
+    unset($form['options']['sticky']);
+  }
+}
+/**
+ * Submit handler that sets config fu_hilfetexte variable.
+ *
+ * This content should be created only once per language.
+ * This must be controled by permissions or any other mechanism.
+ *
+ */
+function futurehistory_node_edit_form_handler_after_submit($form, &$form_state) {
+  $node_nid = $form['#node']->nid;
+  $node_lang = $form['#node']->language;
+  variable_set('fu_hilfetexte_'.$node_lang,$node_nid);
+  $form_state['redirect'] = 'admin/content';
+}
+
+/**
+ * Disable URL Path option
+ *
+ */
+function futurehistory_remove_url_path_field_handler($form) {
+  $form['path']['#access'] = FALSE;
+  return $form;
+}
+
+/**
+ * Whether or not the administration mode is enabled.
+ *
+ * @return bool <code>TRUE</code> if the administration mode is enabled.
+ */
+function futurehistory_admin_mode_enabled() {
+  return drupal_is_cli() || user_has_role(3);
 }

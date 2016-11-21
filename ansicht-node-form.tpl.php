@@ -8,6 +8,11 @@
   hide($form['group_overlay']);
   hide($form['group_media']);
   $ansicht_button_static = $ansicht_initial['submit_button_static'];
+  $hilfetexte_nid = variable_get('fu_hilfetexte_' . $form['language']['#value'], '');
+  if (!empty($hilfetexte_nid)) {
+  $info_node = node_load($hilfetexte_nid);
+    $R=0;
+  }
 ?>
 <div class="container">
 <h4 class="addAnsicht">Eigene Bilder einstellen</h4>
