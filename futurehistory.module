@@ -81,6 +81,15 @@ function futurehistory_preprocess_ansicht_node_form(&$variables) {
         $variables['form']['ansicht_tabs'][$error_group_name]['validation_error'] = '1';
       }
     }
+
+  $hilfetexte_nid = variable_get('fu_hilfetexte_' . $variables['form']['language']['#value'], '');
+  if (!empty($hilfetexte_nid)) {
+//    $info_node = node_load($hilfetexte_nid);
+//    $variables['form']['ansicht_hilfetexte']=$info_node;
+    $variables['form']['group_add_picture']['field_bild']['#attributes']['#description']='ABCDEFGHI';
+
+    $R = 0;
+  }
 }
 
 
