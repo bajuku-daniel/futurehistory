@@ -791,8 +791,11 @@ function futurehistory_page_alter(&$page) {
 		            </div>
 		          </div>
 HTML;
+  global $theme;
+  if($theme === "future_history"){
+    $page['page_bottom']['modal']['#markup'] = $markup;
+  }
 
-  $page['page_bottom']['modal']['#markup'] = $markup;
 //  drupal_add_js('jQuery(document).ready(function () {
 //
 //  $(".not-logged-in .menu .overlay-check").addListener("click", function(e) {
