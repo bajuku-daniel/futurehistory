@@ -1,9 +1,13 @@
 <?php
+//
+require_once("fh_util.inc");
+require_once("fh_node_access.inc");
+require_once("fh_node_edit_form.inc");
 
 /**
  * Implements hook_theme() to style the form_edit "ansicht erstellen".
  *
-*/
+ */
 
 function futurehistory_theme($existing, $type, $theme, $path) {
   return array(
@@ -12,87 +16,101 @@ function futurehistory_theme($existing, $type, $theme, $path) {
       'template' => 'ansicht-node-form',
       'path' => drupal_get_path('module', 'futurehistory'),
     ),
+//    'form_element_label' => array(
+//      'function' => 'futurehistory_form_element_label',
+//      'path' => drupal_get_path('module', 'futurehistory'),
+//    ),
   );
 }
 
 function futurehistory_form_alter(&$form, &$form_state, $form_id) {
-
-    if ($form_id == "ansicht_node_form") {
-      $node_status = $form['#node']->status;
-      if ($node_status == 0) {
-        $form['actions']['submit']['#value'] = t('Speichern als Entwurf');
-      } else {
-        $form['actions']['submit']['#value'] = t('Speichern');
-        $form['actions']['submit']['#attributes']['class'][] = 'ansicht-submit-green';
-      }
-      $form['actions']['publish']['#value'] = t('Speichern und Publizieren');
- //      $form_state['simple']['test1']='sdfsdfs';
+  if ($form_id == "ansicht_node_form") {
+    $node_status = $form['#node']->status;
+    if ($node_status == 0) {
+      $form['actions']['submit']['#value'] = t('Speichern als Entwurf');
     }
+    else {
+      $form['actions']['submit']['#value'] = t('Speichern');
+      $form['actions']['submit']['#attributes']['class'][] = 'ansicht-submit-green';
+    }
+    $form['actions']['publish']['#value'] = t('Speichern und Publizieren');
+  }
 }
 
 //preprocess some variables for the ansicht-node-form.tpl
 function futurehistory_preprocess_ansicht_node_form(&$variables) {
 
-    global $user;
-    $user_full = user_load($user->uid);
-    $user_place =  $user_full->field_wohnort['und']['0']['value'];
+  global $user;
+  $user_full = user_load($user->uid);
+  $user_place = $user_full->field_wohnort['und']['0']['value'];
 
-    if (!isset($variables['form']['#validated']) && !$variables['form']['#node']->title) {
-      $initial_run = 1;
-    } else {
-      $initial_run = 0;
-    }
+  if (!isset($variables['form']['#validated']) && !$variables['form']['#node']->title) {
+    $initial_run = 1;
+  }
+  else {
+    $initial_run = 0;
+  }
 
-    if (!empty($variables['form']['#node']->title)) {
-      $submit_button_static = 1;
-    } else {
-      $submit_button_static = 0;
-    }
-    $variables['ansicht_initial'] = array(
-      'initial' => $initial_run,
-      'place' => $user_place,
-      'submit_button_static' => $submit_button_static,
-     );
+  if (!empty($variables['form']['#node']->title)) {
+    $submit_button_static = 1;
+  }
+  else {
+    $submit_button_static = 0;
+  }
+  $variables['ansicht_initial'] = array(
+    'initial' => $initial_run,
+    'place' => $user_place,
+    'submit_button_static' => $submit_button_static,
+  );
 
-    $variables['buttons'] = $variables['form']['actions'];
-    hide($variables['form']['actions']);
+  $variables['buttons'] = $variables['form']['actions'];
+  hide($variables['form']['actions']);
 
-    $tabs_id = array(
-      'group_add_picture',
-      'group_picture_info',
-      'group_position_der_ansicht',
-      'group_media'
+  $tabs_id = array(
+    'group_add_picture',
+    'group_picture_info',
+    'group_position_der_ansicht',
+    'group_media'
+  );
+  foreach ($tabs_id as $tab_id) {
+    $tab_name = $variables['form'][$tab_id]['#title'];
+    $variables['form']['ansicht_tabs'][$tab_id] = array(
+      'tab_name' => $tab_name,
+      'validation_error' => '0',
     );
-    foreach ($tabs_id as $tab_id) {
-      $tab_name = $variables['form'][$tab_id]['#title'];
-      $variables['form']['ansicht_tabs'][$tab_id] = array(
-        'tab_name' => $tab_name,
-        'validation_error' => '0',
-      );
-    }
+  }
 
-    $errors = form_get_errors();
-    if (!empty($errors)) {
-      foreach ($errors as $error_field => $error_message ){
-        $error_field_name = explode("]", $error_field);
-        $error_field_name = $error_field_name[0];
+  $errors = form_get_errors();
+  if (!empty($errors)) {
+    foreach ($errors as $error_field => $error_message) {
+      $error_field_name = explode("]", $error_field);
+      $error_field_name = $error_field_name[0];
 
-        $error_group_name = $variables['form']['#group_children'][$error_field_name];
-        $variables['form']['ansicht_tabs'][$error_group_name]['validation_error'] = '1';
-      }
+      $error_group_name = $variables['form']['#group_children'][$error_field_name];
+      $variables['form']['ansicht_tabs'][$error_group_name]['validation_error'] = '1';
     }
+  }
+
+
+  // TESTING
+
+  $demo_html = "<p>While this approach works, and can be useful please note that it mixes content and design. The Form API array describes the structure of the form, and the visual look of the form <em>should</em> be handled by theme functions. See the section on theming for details of how to add markup to your forms properly.</p>";
+//  $item_elector = &$variables['form']['group_add_picture']['field_bild']['und'][0]['#title'];
+//  $item_elector = $item_elector . $demo_html;
+
+//  $item_elector['#prefix'] = $demo_html;
+//  $item_elector['#markup'] =  theme_form_element($variables);
+//  $item_elector['#suffix'] = $demo_html;
 
   $hilfetexte_nid = variable_get('fu_hilfetexte_' . $variables['form']['language']['#value'], '');
   if (!empty($hilfetexte_nid)) {
 //    $info_node = node_load($hilfetexte_nid);
 //    $variables['form']['ansicht_hilfetexte']=$info_node;
-    $variables['form']['group_add_picture']['field_bild']['#attributes']['#description']='ABCDEFGHI';
+//    $variables['form']['group_add_picture']['field_bild']['#attributes']['#description'] = 'ABCDEFGHI';
 
     $R = 0;
   }
 }
-
-
 
 
 /**
@@ -139,7 +157,7 @@ function futurehistory_data_property_info() {
       'description' => '',
       'getter callback' => 'entity_property_verbatim_get',
     ),
-    'lng'=> array(
+    'lng' => array(
       'label' => 'Longitude',
       'type' => 'decimal',
       'description' => '',
@@ -179,7 +197,7 @@ function futurehistory_data_property_info() {
     'latlng' => array(
       'label' => 'the latlng of point',
       'description' => '',
-      'type'  => 'string',
+      'type' => 'string',
       'getter callback' => 'futurehistory_return_latlon',
     ),
   );
@@ -268,15 +286,15 @@ function futurehistory_field_formatter_info() {
       'label' => t('formatter for futurehistory lon'),
       'field types' => array('futurehistory_field'),
     ),
-   'futurehistory_angle' => array(
+    'futurehistory_angle' => array(
       'label' => t('formatter for futurehistory angle'),
       'field types' => array('futurehistory_field'),
     ),
-	'futurehistory_direction' => array(
+    'futurehistory_direction' => array(
       'label' => t('formatter for futurehistory direction'),
       'field types' => array('futurehistory_field'),
     ),
-	'futurehistory_distance' => array(
+    'futurehistory_distance' => array(
       'label' => t('formatter for futurehistory distance'),
       'field types' => array('futurehistory_field'),
     ),
@@ -291,10 +309,16 @@ function futurehistory_field_formatter_view($entity_type, $entity, $field, $inst
   switch ($display['type']) {
     case 'futurehistory_text':
       foreach ($items as $delta => $item) {
-        $element[$delta]['#markup'] = '<p>' . t('The Values are @lat, @lng, Distance: @dist, View Direction: @view_direction, Angle: @angle', array('@lat' => $item['lat'], '@lng' => $item['lng'], '@dist' => $item['dist'], '@view_direction' => $item['view_direction'], '@angle' => $item['angle'])) . '</p>';
+        $element[$delta]['#markup'] = '<p>' . t('The Values are @lat, @lng, Distance: @dist, View Direction: @view_direction, Angle: @angle', array(
+            '@lat' => $item['lat'],
+            '@lng' => $item['lng'],
+            '@dist' => $item['dist'],
+            '@view_direction' => $item['view_direction'],
+            '@angle' => $item['angle']
+          )) . '</p>';
       }
       break;
-   case 'futurehistory_lat':
+    case 'futurehistory_lat':
       foreach ($items as $delta => $item) {
         $element[$delta]['#markup'] = $item['lat'];
       }
@@ -331,7 +355,7 @@ function futurehistory_field_widget_info() {
       'label' => t('futurehistory Latitude/Longitude text widged'),
       'field types' => array('futurehistory_field'),
     ),
- 'futurehistory_map' => array(
+    'futurehistory_map' => array(
       'label' => t('futurehistory map widged'),
       'field types' => array('futurehistory_field'),
     ),
@@ -358,7 +382,7 @@ function futurehistory_field_widget_settings_form($field, $instance) {
         '#description' => t('Enabling this will allow the user to drag/drop the marker to select a location.'),
         '#default_value' => isset($settings['marker_draggable']) ? $settings['marker_draggable'] : FALSE,
       );
-    break;
+      break;
   }
   return $form;
 }
@@ -425,7 +449,7 @@ function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance
       $element['dist'] += array(
         '#title' => t('Distance'),
         '#type' => 'textfield',
-        '#default_value' =>$dist_value ,
+        '#default_value' => $dist_value,
         '#size' => 30,
         '#maxlength' => 30,
         '#required' => $instance['required'],
@@ -449,7 +473,7 @@ function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance
       break;
 
     case 'futurehistory_map':
-     $element['coordinate_known'] = array(
+      $element['coordinate_known'] = array(
         '#title' => t('I know the Coordinates'),
         '#type' => 'checkbox',
         '#default_value' => $coordinate_known,
@@ -476,7 +500,7 @@ function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance
         '#maxlength' => 120,
         '#weight' => 2,
       );
-         $element['address']['geocode'] = array(
+      $element['address']['geocode'] = array(
         '#prefix' => '<span id="futurehistory-address-geocode-' . $id . '" class="futurehistory-address-geocode">',
         '#suffix' => '</span>',
         '#markup' => t('Get location'),
@@ -534,7 +558,7 @@ function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance
       );
       $element['dist'] += array(
         '#type' => 'hidden',
-        '#default_value' =>$dist_value ,
+        '#default_value' => $dist_value,
         '#size' => 30,
         '#maxlength' => 30,
         '#weight' => 8,
@@ -566,7 +590,7 @@ function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance
         '#prefix' => '<div id="futurehistory-view_direction-slider-' . $id . '" class="futurehistory-slider" style="width:400px;margin-bottom:20px;">',
         '#suffix' => '</div></div>',
       );
-           $element['angle-item'] = array(
+      $element['angle-item'] = array(
         '#title' => t('Angle'),
         '#type' => 'item',
         '#weight' => 12,
@@ -656,7 +680,10 @@ function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance
         'data' => array('futurehistory' => $data),
         'type' => 'setting',
       );
-      $element['field_type'] = array('#type' => 'value', '#value' => $field['type']);
+      $element['field_type'] = array(
+        '#type' => 'value',
+        '#value' => $field['type']
+      );
       break;
 
   }
@@ -671,19 +698,19 @@ function futurehistory_attach_google_js(&$element) {
   if (!$js_added_already) {
 
     $element['#attached']['library'] = array(
-       array('system', 'ui'),
-       array('system', 'ui.spinner'),
-       array('system', 'ui.slider'),
+      array('system', 'ui'),
+      array('system', 'ui.spinner'),
+      array('system', 'ui.slider'),
     );
     $element['#attached']['js'][] = array(
       'data' => '//www.google.com/jsapi',
       'type' => 'external',
     );
-  //  $element['#attached']['js'][] = array(
-  //    'data' => '//maps.google.com/maps/api/js?libraries=geometry,drawing&sensor=false',
-  //    'type' => 'external',
-  //  );
-      $js_added_already = TRUE;
+    //  $element['#attached']['js'][] = array(
+    //    'data' => '//maps.google.com/maps/api/js?libraries=geometry,drawing&sensor=false',
+    //    'type' => 'external',
+    //  );
+    $js_added_already = TRUE;
   }
 }
 
@@ -701,91 +728,85 @@ function futurehistory_field_widget_error($element, $error, $form, &$form_state)
   }
 }
 
-/**
- * HOOK - node_preprocess
- * */
-function futurehistory_preprocess_node(&$variables, $hook) {
-  $type = $variables['node']->type;
-  if ($type === "ansicht_hilfetexte") {
-    futurehistory_preprocess_node_ansicht($variables, $hook);
-  }
-}
-
-function futurehistory_preprocess_node_ansicht(&$variables, $hook) {
-  $R=0;
-}
 
 /**
  * HOOK - node_access
  * */
 function futurehistory_node_access($node, $op, $account) {
-//  Whether or not the administration mode is enabled e.g.: role = administrator | 3
-  if (futurehistory_admin_mode_enabled()) {
-    $node_type = is_string($node) ? $node : $node->type;
-    # disable viewing of node types with no own view
-    $node_has_own_view = !in_array($node_type, array_keys(array('ansicht_hilfetexte')));
-    # the additional test for '#^node/\d+$#' is required because we still want to allow translations of the node (see _translation_tab_access($node))
-    $is_node_view_path = preg_match('#^node/\d+$#', current_path());
-    $view_of_node_type_without_own_view = $op === 'view' && !$node_has_own_view && $is_node_view_path;
-    if ($view_of_node_type_without_own_view) {
-      return NODE_ACCESS_DENY;
-    }
-  }
+  fh_node_access($node, $op, $account);
+}
+
+
+/**
+ * HOOK - menu
+ *
+ *  node/add/ansicht menu item without permission check
+ *  @hint drush cc all for changes
+ * */
+function futurehistory_menu() {
+  $items['ansicht/neu'] = array(
+    'title' => t('Eigene Bilder einstellen'),
+    'description' => 'Module futurehistory - Neue Ansicht anlegen',
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('node/add/ansicht'),
+    'access callback' => TRUE,
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM,
+    'options' => array(
+      'attributes' => array(
+        'class' => array('overlay-check user-login-add-ansicht-message'),
+        'data-toggle'=> 'modal',
+        'data-target'=> '#user-login-add-ansicht-modal',
+      )
+    ),
+  );
+
+  return $items;
 }
 
 /**
- * HOOK - form_node_form_alter
- */
-function futurehistory_form_node_form_alter(&$form, &$form_state, $form_id) {
-  if (futurehistory_admin_mode_enabled()) {
-//    return;
-  }
-
-  $node_type = $form['type']['#value'];
-
-  if($node_type === 'ansicht_hilfetexte'){
-    $form['menu']['link']['options']['attributes'] = array();
-    $form['menu']['link']['options']['item_attributes'] = array();
-    $form['menu']['link']['description']['#access'] = FALSE;
-    $form['menu']['link']['weight']['#access'] = FALSE;
-    $form['revision_information']['#access'] = FALSE;
-    $form['options']['#access'] = FALSE;
-    $form['author']['#access'] = FALSE;
-    $form['comment_settings']['#access'] = FALSE;
-    $form['#pre_render'][] = 'futurehistory_remove_url_path_field_handler';
-    $form['actions']['submit']['#submit'][] = 'futurehistory_node_edit_form_handler_after_submit';
-    unset($form['options']['promote']);
-    unset($form['options']['sticky']);
-  }
-}
-/**
- * Submit handler that sets config fu_hilfetexte variable.
+ * Implements hook_page_alter() to insert markup to the appropriate scope/region of the page.
  *
- * This content should be created only once per language.
- * This must be controled by permissions or any other mechanism.
- *
+ * other modals are added directly on tpl files e.g. node--ansicht.tpl.php
+ * this could be unified
  */
-function futurehistory_node_edit_form_handler_after_submit($form, &$form_state) {
-  $node_nid = $form['#node']->nid;
-  $node_lang = $form['#node']->language;
-  variable_set('fu_hilfetexte_'.$node_lang,$node_nid);
-  $form_state['redirect'] = 'admin/content';
-}
+function futurehistory_page_alter(&$page) {
+  $markup = <<<HTML
+<!-- Modal -->
+		            <div class="modal fade" id="user-login-add-ansicht-modal" role="dialog">
+		              <div class="modal-dialog">
+		              <!-- Modal content-->
+		              <div class="modal-content">
+		                <div class="modal-header">
+		                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                  <h4 class="modal-title">Lieber Besucher</h4>
+		                </div>
+		                <div class="modal-body">
+		                  <p>Zum Einstellen eigener Bilder bitte <a href="/user/login">ANMELDEN</a> oder <a href="/user/register">REGISTRIEREN</a></p>
+		                </div>
+		                <div class="modal-footer">
+		                  <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+		                </div>
+		              </div>
+		            </div>
+		          </div>
+HTML;
 
-/**
- * Disable URL Path option
- *
- */
-function futurehistory_remove_url_path_field_handler($form) {
-  $form['path']['#access'] = FALSE;
-  return $form;
-}
+  $page['page_bottom']['modal']['#markup'] = $markup;
+//  drupal_add_js('jQuery(document).ready(function () {
+//
+//  $(".not-logged-in .menu .overlay-check").addListener("click", function(e) {
+//    alert("init");
+//    e.preventDefault();
+//    jQuery( "#dialog-message" ).removeClass("hidden").dialog({
+//      modal: true,
+//      buttons: {
+//        Ok: function() {
+//          $( this ).dialog( "close" );
+//        }
+//      }
+//    });
+//  });
+//    });', 'inline');
 
-/**
- * Whether or not the administration mode is enabled.
- *
- * @return bool <code>TRUE</code> if the administration mode is enabled.
- */
-function futurehistory_admin_mode_enabled() {
-  return drupal_is_cli() || user_has_role(3);
 }

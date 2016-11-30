@@ -1,10 +1,5 @@
 <?php
 /**
- *
- */
-
-
-/**
  * HOOK - form_node_form_alter
  */
 function futurehistory_form_node_form_alter(&$form, &$form_state, $form_id) {
@@ -14,9 +9,19 @@ function futurehistory_form_node_form_alter(&$form, &$form_state, $form_id) {
 
   $node_type = $form['type']['#value'];
 
+  if ($node_type === 'ansicht') {
+    // remove delete LÖSCHEN
+    $form['actions']['delete']['#access'] = FALSE;
+    $form['actions']['preview_changes']['#access'] = FALSE;
+    // add ABBRECHEN
+    $form['actions']['cancels'] = array(
+      '#markup' =>
+        l(t('Abbrechen'), 'user/meine_ansichten', array('attributes' => array('class' => array('btn btn-warning form-submit')), 'html' => TRUE)),
+      '#weight' => 0,
+    );
+  }
   if ($node_type === 'ansicht_hilfetexte') {
     $form['additional_settings']['#access'] = FALSE;
-    $form['#submit'][] = "futurehistory_node_edit_form_handler_after_submit";
   }
 }
 
@@ -34,22 +39,8 @@ function futurehistory_node_edit_form_handler_after_submit($form, &$form_state) 
   $form_state['redirect'] = 'admin/content';
 }
 
-/**
- * Disable URL Path option
- *
- */
-function futurehistory_remove_url_path_field_handler($form) {
-  $form['path']['#access'] = FALSE;
-  return $form;
-}
 
-/**
- * Implements hook_theme_registry_alter().
- */
-function futurehistory_theme_registry_alter(&$theme_registry) {
-  $theme_registry['form_element_label']['function'] = 'future_history_form_element_label';
-  $theme_registry['form_element_label']['theme path'] = drupal_get_path('module', 'futurehistory');
-}
+
 
 
 /**
@@ -120,6 +111,13 @@ function fh_node_edit_form_field_mapping($key){
 }
 
 
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function futurehistory_theme_registry_alter(&$theme_registry) {
+//  $theme_registry['form_element_label']['function'] = 'future_history_form_element_label';
+//  $theme_registry['form_element_label']['theme path'] = drupal_get_path('module', 'futurehistory');
+}
 
 
 /**
@@ -129,40 +127,7 @@ function fh_node_edit_form_field_mapping($key){
  * @return string
  *
  */
-function future_history_form_element_label($variables) {
-  $element = $variables['element'];
-  // This is also used in the installer, pre-database setup.
-  $t = get_t();
-
-  // If title and required marker are both empty, output no label.
-  if ((!isset($element['#title']) || $element['#title'] === '') && empty($element['#required'])) {
-    return '';
-  }
-
-  // If the element is required, a required marker is appended to the label.
-  $required = !empty($element['#required']) ? theme('form_required_marker', array('element' => $element)) : '';
-
-  $title = filter_xss_admin($element['#title']);
-
-  $attributes = array();
-  // Style the label as class option to display inline with the element.
-  if ($element['#title_display'] == 'after') {
-    $attributes['class'] = 'option';
-  }
-  // Show label only to screen readers to avoid disruption in visual flows.
-  elseif ($element['#title_display'] == 'invisible') {
-    $attributes['class'] = 'element-invisible';
-  }
-
-  if (!empty($element['#id'])) {
-    $attributes['for'] = $element['#id'];
-  }
-
+function future_history_form_element_label(&$variables) {
   $custom_informations = futurehistory_custom_lable_informations($variables);
-
-  // The leading whitespace helps visually separate fields from inline labels.
-  return ' <label' . drupal_attributes($attributes) . '>' . $t('!title !required', array(
-    '!title' => $title,
-    '!required' => $required
-  )) . "</label>.$custom_informations\n";
+  return bootstrap_form_element_label($variables) . $custom_informations;
 }
