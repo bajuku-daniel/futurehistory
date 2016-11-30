@@ -567,9 +567,9 @@
 
   // http://stackoverflow.com/questions/38879742/is-it-possible-to-display-a-custom-message-in-the-beforeunload-popup
   // http://stackoverflow.com/questions/34172649/calling-a-javascript-function-when-google-chrome-is-closed
-  // $(window).bind('beforeunload', function(){
-  //   return 'XXX';
-  // });
+  $(window).bind('beforeunload', function(){
+    return 'Do you realy want to leave this process?';
+  });
 
 
 })(jQuery);

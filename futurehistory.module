@@ -792,24 +792,15 @@ function futurehistory_page_alter(&$page) {
 		          </div>
 HTML;
   global $theme;
-  if($theme === "future_history"){
+  if($theme === "future_history" && user_is_anonymous()){
     $page['page_bottom']['modal']['#markup'] = $markup;
+  }else if ($theme === "future_history" && user_is_logged_in()){
+    drupal_add_js('jQuery(document).ready(function () {
+jQuery("#user-login-add-ansicht-modal").removeClass("modal").attr("id","user-login-add-ansicht-modal-disabled");
+jQuery(".overlay-check.user-login-add-ansicht-message").removeClass("user-login-add-ansicht-message").attr("data-toggle","modal-disabled");
+    });', 'inline');
   }
 
-//  drupal_add_js('jQuery(document).ready(function () {
-//
-//  $(".not-logged-in .menu .overlay-check").addListener("click", function(e) {
-//    alert("init");
-//    e.preventDefault();
-//    jQuery( "#dialog-message" ).removeClass("hidden").dialog({
-//      modal: true,
-//      buttons: {
-//        Ok: function() {
-//          $( this ).dialog( "close" );
-//        }
-//      }
-//    });
-//  });
-//    });', 'inline');
+
 
 }
