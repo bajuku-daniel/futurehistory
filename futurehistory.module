@@ -782,7 +782,7 @@ function futurehistory_page_alter(&$page) {
 		                  <h4 class="modal-title">Lieber Besucher</h4>
 		                </div>
 		                <div class="modal-body">
-		                  <p>Zum Einstellen eigener Bilder bitte <a href="/user/login">ANMELDEN</a> oder <a href="/user/register">REGISTRIEREN</a></p>
+		                  <p>Zum Einstellen eigener Bilder bitte <a href="/user/login?destination=node/add/ansicht">ANMELDEN</a> oder <a href="/user/register?destination=node/add/ansicht">REGISTRIEREN</a></p>
 		                </div>
 		                <div class="modal-footer">
 		                  <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
