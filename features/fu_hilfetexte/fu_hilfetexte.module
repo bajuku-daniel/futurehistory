@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Code for the FU Hilfetexte feature.
+ * Code for the FU Hilfetexte eigene Bilder feature.
  */
 
 include_once 'fu_hilfetexte.features.inc';
