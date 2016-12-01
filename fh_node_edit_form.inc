@@ -22,6 +22,7 @@ function futurehistory_form_node_form_alter(&$form, &$form_state, $form_id) {
   }
   if ($node_type === 'ansicht_hilfetexte') {
     $form['additional_settings']['#access'] = FALSE;
+    $form['actions']['submit']['#submit'][] = 'futurehistory_node_edit_form_handler_after_submit';
   }
 }
 
