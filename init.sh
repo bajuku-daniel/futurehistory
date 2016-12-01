@@ -6,6 +6,8 @@ git pull origin dev
 drush ev "menu_link_delete(626);"
 drush ev "module_load_include('inc', 'locale', 'menu');menu_link_delete(626);"
 
+drush dl -y strongarm
+drush en -y strongarm
 drush dl -y features
 drush en -y features
 drush dl -y diff
@@ -17,3 +19,5 @@ drush cc all
 
 drush fr -y fu_hilfetexte
 drush fr -y fu_ansicht
+
+drush user-password rafael --password="rafael_fuhi_2016"

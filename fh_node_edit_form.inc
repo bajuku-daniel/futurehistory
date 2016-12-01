@@ -44,7 +44,8 @@ function futurehistory_node_edit_form_handler_after_submit($form, &$form_state) 
 
 
 /**
- * Implements hook_theme_registry_alter().
+ * Helper - add DOM to lables
+ * WIP - markup not ready yet.
  */
 function futurehistory_custom_lable_informations(&$variables) {
   $result = '';
