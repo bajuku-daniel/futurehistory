@@ -3,6 +3,8 @@
 require_once("fh_util.inc");
 require_once("fh_node_access.inc");
 require_once("fh_node_edit_form.inc");
+/* PHP PARSING LIB */
+require_once('simple_html_dom.inc');
 
 /**
  * Implements hook_theme() to style the form_edit "ansicht erstellen".
@@ -14,8 +16,15 @@ function futurehistory_theme($existing, $type, $theme, $path) {
     'ansicht_node_form' => array(
       'render element' => 'form',
       'template' => 'ansicht-node-form',
-      'path' => drupal_get_path('module', 'futurehistory'),
+      'path' => drupal_get_path('module', 'futurehistory') . '/templates',
     ),
+
+//    'bootstrap_panel' => array(
+//      'render element' => 'elements',
+//      'template' => 'bootstrap-panel',
+//      'path' => drupal_get_path('module', 'futurehistory') . '/templates',
+//    ),
+
 //    'form_element_label' => array(
 //      'function' => 'futurehistory_form_element_label',
 //      'path' => drupal_get_path('module', 'futurehistory'),
@@ -641,6 +650,8 @@ function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance
       // Attach CSS and JS files via FAPI '#attached'.
       $element['googlemap']['#attached']['css'][] = drupal_get_path('module', 'futurehistory') . '/css/futurehistory.css';
       $element['googlemap']['#attached']['css'][] = drupal_get_path('module', 'futurehistory') . '/css/roundslider.css';
+      $element['googlemap']['#attached']['css'][] = drupal_get_path('module', 'futurehistory') . '/css/tooltipster.bundle.min.css';
+      $element['googlemap']['#attached']['css'][] = drupal_get_path('module', 'futurehistory') . '/css/additional.css';
       $element['googlemap']['#attached']['js'][] = array(
         'data' => drupal_get_path('module', 'futurehistory') . '/js/futurehistory_widget.js',
         'type' => 'file',
@@ -648,6 +659,11 @@ function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance
       );
       $element['googlemap']['#attached']['js'][] = array(
         'data' => drupal_get_path('module', 'futurehistory') . '/js/roundslider.js',
+        'type' => 'file',
+        'scope' => 'footer',
+      );
+      $element['googlemap']['#attached']['js'][] = array(
+        'data' => drupal_get_path('module', 'futurehistory') . '/js/tooltipster.bundle.min.js',
         'type' => 'file',
         'scope' => 'footer',
       );
@@ -796,6 +812,7 @@ HTML;
     $page['page_bottom']['modal']['#markup'] = $markup;
   }else if ($theme === "future_history" && user_is_logged_in()){
     drupal_add_js('jQuery(document).ready(function () {
+    jQuery(".custom-tooltip").tooltipster();
 jQuery("#user-login-add-ansicht-modal").removeClass("modal").attr("id","user-login-add-ansicht-modal-disabled");
 jQuery(".overlay-check.user-login-add-ansicht-message").removeClass("user-login-add-ansicht-message").attr("data-toggle","modal-disabled");
     });', 'inline');

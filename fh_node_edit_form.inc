@@ -50,32 +50,55 @@ function futurehistory_node_edit_form_handler_after_submit($form, &$form_state) 
  */
 function futurehistory_custom_lable_informations(&$variables) {
   $result = '';
+    if(isset($variables['element']['#attributes']['data-toggle'])){
+      unset($variables['element']['#attributes']['data-toggle']);
+      $variables['element']['#children']=str_replace('data-toggle','data-toggle_',$variables['element']['#children']);
+
+
+    }
 
   $check = isset($variables['element']['#bundle']) && ($variables['element']['#bundle'] === 'ansicht');
   $field_name = isset($variables['element']['#field_name'])?$variables['element']['#field_name']:false;
   if ($check && $field_name) {
-    $hilfetexte_nid = &drupal_static(__FUNCTION__);
-    $info_node = &drupal_static(__FUNCTION__);
-    if (!isset($hilfetexte_nid) || !isset($info_node)) {
-      global $language;
-      $hilfetexte_nid = variable_get('fu_hilfetexte_' . $language->language, '');
-      if (!empty($hilfetexte_nid)) {
-        $info_node = node_load($hilfetexte_nid);
-        $variables['form']['ansicht_hilfetexte'] = $info_node;
-      }
-    }
+
+    $info_node = fh_get_hilfetexte_node();
+    $variables['form']['ansicht_hilfetexte'] = $info_node;
 
     $field_name = fh_node_edit_form_field_mapping($field_name);
-$R=0;
     if(isset($info_node->{$field_name}['und'][0]['safe_value'])){
       $field_value = $info_node->{$field_name}['und'][0]['safe_value'];
-      $demo_html ="<div class='info $field_name'>".$field_value."</div>";
-      $result = $demo_html;
+
+//      $demo_html ="<div class='info $field_name'>JHGKIIUHO</div>";
+//      $field_value = $demo_html;
+
+      $img_src = drupal_get_path('module', 'futurehistory') . '/images/tooltip.png';
+      $markup = <<<HTMLTEMPALTE
+<span class="custom-tooltip" data-tooltip-content="#tooltip_content-$field_name">
+	<img src="/$img_src"></span>
+<div class="tooltip_templates">
+    <span id="tooltip_content-$field_name">
+	  $field_value
+</div>
+HTMLTEMPALTE;
+      $result = $markup;
     }
 
-    $R = 0;
   }
   return $result;
+}
+
+function fh_get_hilfetexte_node(){
+  $hilfetexte_nid = &drupal_static(__FUNCTION__);
+  $info_node = &drupal_static(__FUNCTION__);
+  if (!isset($hilfetexte_nid) || !isset($info_node)) {
+    global $language;
+    $hilfetexte_nid = variable_get('fu_hilfetexte_' . $language->language, '');
+    if (!empty($hilfetexte_nid)) {
+      $info_node = node_load($hilfetexte_nid);
+    }
+  }
+
+ return $info_node;
 }
 
 function fh_node_edit_form_field_mapping($key){
@@ -131,5 +154,57 @@ function futurehistory_theme_registry_alter(&$theme_registry) {
  */
 function future_history_form_element_label(&$variables) {
   $custom_informations = futurehistory_custom_lable_informations($variables);
-  return bootstrap_form_element_label($variables) . $custom_informations;
+  $bootstrap_label = bootstrap_form_element_label($variables);
+  $bootstrap_label_custom = str_replace( "</label>" , $custom_informations."</label>" , $bootstrap_label);
+  return $bootstrap_label_custom;
+}
+
+
+function future_history_replace_tab_legend($tab_content, $tab_id, $tab_title) {
+  $elements = $tab_id;
+  $c = new simple_html_dom();
+  $c->load($tab_content);
+// filter for legend elements and replace content structure
+  $c->find('legend', 0)->innertext = fh_get_legend($tab_id, $tab_title);
+// return the modified HTML
+  $tab_content = $c;
+
+  return $tab_content;
+}
+
+function fh_get_legend($tab_id,$tab_title){
+  $info_node = fh_get_hilfetexte_node();
+  $field_name = fh_node_edit_form_field_mapping($tab_id);
+  $legend_info="";
+  if(isset($info_node->{$field_name}['und'][0]['safe_value'])){
+    $legend_info = $info_node->{$field_name}['und'][0]['safe_value'];
+  }
+
+  $img_src = drupal_get_path('module', 'futurehistory') . '/images/arrow-blank.png';
+  $field_name = $tab_id;
+  $legend = <<<HTMLTEMPALTE
+<div class="accordion-toggle accordion1_">
+    <div class="panel-group" id="accordion-$field_name">
+        <div class="accordion-panel panel-default">
+            <div class="accordion-panel-heading"> 
+                <span class="accordion-panel-title" style="">
+                    <a title="" data-toggle="collapse" data-parent="#accordion-$field_name"
+                       href="#collapse$field_name" class="collapsed">
+                    $tab_title <span class="image-wrapper"><img src="/$img_src"></span>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div id="collapse$field_name" class="accordion-panel-collapse collapse">
+            <div class="accordion-panel-body accordion1_">
+                <p>$legend_info</p>
+            </div>
+        </div>
+    </div>
+</div>
+HTMLTEMPALTE;
+
+
+return $legend;
+
 }
