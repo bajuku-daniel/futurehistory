@@ -13,12 +13,14 @@ function futurehistory_form_node_form_alter(&$form, &$form_state, $form_id) {
     // remove delete LÖSCHEN
     $form['actions']['delete']['#access'] = FALSE;
     $form['actions']['preview_changes']['#access'] = FALSE;
+
     // add ABBRECHEN
     $form['actions']['cancels'] = array(
       '#markup' =>
         l(t('Abbrechen'), 'user/meine_ansichten', array('attributes' => array('class' => array('btn btn-warning form-submit')), 'html' => TRUE)),
       '#weight' => 0,
     );
+
   }
   if ($node_type === 'ansicht_hilfetexte') {
     $form['additional_settings']['#access'] = FALSE;
