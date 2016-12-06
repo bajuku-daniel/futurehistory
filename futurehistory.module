@@ -813,8 +813,13 @@ HTML;
   }else if ($theme === "future_history" && user_is_logged_in()){
     drupal_add_js('jQuery(document).ready(function () {
     jQuery(".custom-tooltip").tooltipster();
-jQuery("#user-login-add-ansicht-modal").removeClass("modal").attr("id","user-login-add-ansicht-modal-disabled");
-jQuery(".overlay-check.user-login-add-ansicht-message").removeClass("user-login-add-ansicht-message").attr("data-toggle","modal-disabled");
+    jQuery(window).bind("beforeunload", function(){
+      return "Do you realy want to leave this process?";
+    });
+    
+    jQuery("#user-login-add-ansicht-modal").removeClass("modal").attr("id","user-login-add-ansicht-modal-disabled");
+    jQuery(".overlay-check.user-login-add-ansicht-message").removeClass("user-login-add-ansicht-message").attr("data-toggle","modal-disabled");
+    jQuery(".logged-in .overlay-check.user-login-add-ansicht-message").removeAttr( "data-toggle" );
     });', 'inline');
   }
 

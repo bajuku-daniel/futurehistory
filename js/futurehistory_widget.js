@@ -569,9 +569,9 @@
   // http://stackoverflow.com/questions/34172649/calling-a-javascript-function-when-google-chrome-is-closed
   // todo save form state
   // on unload check if data changed
-  $(window).bind('beforeunload', function(){
-    return 'Do you realy want to leave this process?';
-  });
+  // $(window).bind('beforeunload', function(){
+  //   return 'Do you realy want to leave this process?';
+  // });
 
 
 })(jQuery);
