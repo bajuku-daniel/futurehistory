@@ -59,7 +59,8 @@ function futurehistory_custom_lable_informations(&$variables) {
 
   $check = isset($variables['element']['#bundle']) && ($variables['element']['#bundle'] === 'ansicht');
   $field_name = isset($variables['element']['#field_name'])?$variables['element']['#field_name']:false;
-  if ($check && $field_name) {
+  if ($check && $field_name || (in_array($variables['element']['#id'],array("edit-field-position-der-aufnahme-und-0-coordinate-known","edit-field-position-der-aufnahme-und-0-address-field")))) {
+// TODO: add informations for "Ich kenne die Koordinaten" if nedded
 
     $info_node = fh_get_hilfetexte_node();
     $variables['form']['ansicht_hilfetexte'] = $info_node;

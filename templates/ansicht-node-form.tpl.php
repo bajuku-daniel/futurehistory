@@ -176,14 +176,10 @@ $ansicht_button_static = $ansicht_initial['submit_button_static'];
       if ($tab == 'group_position_der_ansicht') {
         print future_history_replace_tab_legend(render($form[$tab]['field_position_der_aufnahme']),$tab,$tab_content['tab_name']);
         print future_history_replace_tab_legend(render($form[$tab]['field_stadt']),$tab,$tab_content['tab_name']);
-        print future_history_replace_tab_legend(render($form['group_overlay']),$tab,$tab_content['tab_name']);
-//        print render($form[$tab]['field_position_der_aufnahme']);
-//        print render($form[$tab]['field_stadt']);
-//        print render($form['group_overlay']);
+        print future_history_replace_tab_legend(render($form['group_overlay']),"group_overlay",$form['group_overlay']['#title']);
       }
       else {
         print future_history_replace_tab_legend(render($form[$tab]),$tab,$tab_content['tab_name']);
-//        print render($form[$tab]);
       }
       print($form_buttons);
       print('</div>');
