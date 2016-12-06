@@ -787,6 +787,7 @@ function futurehistory_menu() {
  * this could be unified
  */
 function futurehistory_page_alter(&$page) {
+  $R=0;
   $markup = <<<HTML
 <!-- Modal -->
 		            <div class="modal fade" id="user-login-add-ansicht-modal" role="dialog">
@@ -811,21 +812,24 @@ HTML;
   if($theme === "future_history" && user_is_anonymous()){
     $page['page_bottom']['modal']['#markup'] = $markup;
     drupal_add_js('jQuery(document).ready(function () {
-    jQuery(".custom-tooltip").tooltipster();
-    jQuery("div").removeAttr("data-original-title");
-    jQuery(window).bind("beforeunload", function(){
-      return "Do you realy want to leave this process?";
-    });
     
+    alert("mssive");
     jQuery(".overlay-check.user-login-add-ansicht-message").attr( "data-toggle","modal" );
+
 
     });', 'inline');
   }else if ($theme === "future_history" && user_is_logged_in()){
     drupal_add_js('jQuery(document).ready(function () {
+
+    var $form = jQuery("#ansicht-node-form"),
+    origForm = $form.serialize();
+
     jQuery(".custom-tooltip").tooltipster();
     jQuery("div").removeAttr("data-original-title");
     jQuery(window).bind("beforeunload", function(){
+    if($form.serialize() !== origForm){
       return "Do you realy want to leave this process?";
+      }
     });
     
     jQuery("#user-login-add-ansicht-modal").removeClass("modal").attr("id","user-login-add-ansicht-modal-disabled");

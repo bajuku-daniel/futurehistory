@@ -207,3 +207,26 @@ width:15px;
 	border-radius: 3px!important;
 	box-shadow: 5px 5px 2px 0 rgba(0,0,0,0.4);
 }
+
+.field-name-field-lizenz {
+    float: left;
+    height: 250px;
+    width: 400px;
+}
+
+.field-name-field-bildquelle {
+    display: block;
+    float: left;
+    width: 400px;
+}
+
+.field-name-field-bildquelle-url {
+    display: inline-block;
+}
+
+.field-name-field-urheber {
+    display: block;
+    float: left;
+    width: 400px;
+}
+
