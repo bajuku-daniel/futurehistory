@@ -51,7 +51,7 @@ function futurehistory_preprocess_ansicht_node_form(&$variables) {
 
   global $user;
   $user_full = user_load($user->uid);
-  $user_place = $user_full->field_wohnort['und']['0']['value'];
+  $user_place = isset($user_full->field_wohnort['und']['0']['value'])?$user_full->field_wohnort['und']['0']['value']:'';
 
   if (!isset($variables['form']['#validated']) && !$variables['form']['#node']->title) {
     $initial_run = 1;
@@ -781,8 +781,9 @@ function futurehistory_menu() {
 }
 
 /**
- * Implements hook_page_alter() to insert markup to the appropriate scope/region of the page.
+ * Implements hook_page_alter() to insert markup/JS to the appropriate scope/region of the page.
  *
+ * adds inline JS
  * other modals are added directly on tpl files e.g. node--ansicht.tpl.php
  * this could be unified
  */
@@ -829,6 +830,11 @@ HTML;
     
     jQuery("button:submit").click(function(e){
       beforeunload_enabled = false;
+    });
+     
+    jQuery(".btn.btn-primary.btnPrevious,.btn.btn-primary.btnNext").click(function(e){
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+        return false;
     });
    
     jQuery(window).bind("beforeunload", function(){

@@ -14,13 +14,17 @@ function futurehistory_form_node_form_alter(&$form, &$form_state, $form_id) {
     $form['actions']['delete']['#access'] = FALSE;
     $form['actions']['preview_changes']['#access'] = FALSE;
 
-    // add ABBRECHEN
-    $form['actions']['cancels'] = array(
-      '#markup' =>
-        l(t('Abbrechen'), 'user/meine_ansichten', array('attributes' => array('class' => array('btn btn-warning form-submit')), 'html' => TRUE)),
-      '#weight' => 0,
-    );
-
+    if(isset($form['nid']['#value']) && $form['nid']['#value'] !== null) {
+      // add ABBRECHEN
+      $form['actions']['cancels'] = array(
+        '#markup' =>
+          l(t('Abbrechen'), 'user/meine_ansichten', array(
+            'attributes' => array('class' => array('btn btn-warning form-submit')),
+            'html' => TRUE
+          )),
+        '#weight' => 0,
+      );
+    }
   }
   if ($node_type === 'ansicht_hilfetexte') {
     $form['additional_settings']['#access'] = FALSE;
@@ -90,6 +94,11 @@ HTMLTEMPALTE;
   return $result;
 }
 
+/**
+ * get Hilfetexte Node cached
+ *
+ * @return array|bool|mixed
+ */
 function fh_get_hilfetexte_node(){
   $hilfetexte_nid = &drupal_static(__FUNCTION__);
   $info_node = &drupal_static(__FUNCTION__);
@@ -104,6 +113,12 @@ function fh_get_hilfetexte_node(){
  return $info_node;
 }
 
+/**
+ * Mapping for ansicht => ansicht_hilfetexte fields
+ *
+ * @param $key
+ * @return bool|mixed
+ */
 function fh_node_edit_form_field_mapping($key){
   $mapping=array(
     'group_add_picture'=>'field_group_add_picture_hi',
@@ -162,7 +177,11 @@ function future_history_form_element_label(&$variables) {
   return $bootstrap_label_custom;
 }
 
-
+/**
+ * Helper
+ * parse rendered markup replace legende DOM node with accoriion markup
+ *
+ */
 function future_history_replace_tab_legend($tab_content, $tab_id, $tab_title) {
   $elements = $tab_id;
   $c = new simple_html_dom();
@@ -175,6 +194,15 @@ function future_history_replace_tab_legend($tab_content, $tab_id, $tab_title) {
   return $tab_content;
 }
 
+/**
+ * Helper
+ * build accordion markup
+ * map field ID to hilfetexte content fields
+ *
+ * @param $tab_id
+ * @param $tab_title
+ * @return string
+ */
 function fh_get_legend($tab_id,$tab_title){
   $info_node = fh_get_hilfetexte_node();
   $field_name = fh_node_edit_form_field_mapping($tab_id);
