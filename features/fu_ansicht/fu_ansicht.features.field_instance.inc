@@ -170,7 +170,7 @@ function fu_ansicht_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 15,
+      'weight' => 16,
     ),
   );
 
@@ -342,11 +342,10 @@ function fu_ansicht_field_default_field_instances() {
     'default_value' => array(
       0 => array(
         'value' => 'Gebe hier die Bildquelle an',
-        'format' => 'plain_text',
       ),
     ),
     'deleted' => 0,
-    'description' => 'Gebe hier die Bildquelle an',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -359,6 +358,7 @@ function fu_ansicht_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_bildquelle',
     'label' => 'Bildquelle',
+    'placeholder' => 'Gebe hier die Bildquelle an',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
@@ -390,6 +390,7 @@ function fu_ansicht_field_default_field_instances() {
       'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
+    'use_title_as_placeholder' => 0,
     'widget' => array(
       'active' => 1,
       'module' => 'text',
@@ -399,7 +400,7 @@ function fu_ansicht_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 8,
+      'weight' => 11,
     ),
   );
 
@@ -421,6 +422,7 @@ function fu_ansicht_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_bildquelle_url',
     'label' => 'Bildquelle URL',
+    'placeholder' => 'Bildquelle URL',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
@@ -452,6 +454,7 @@ function fu_ansicht_field_default_field_instances() {
       'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
+    'use_title_as_placeholder' => 0,
     'widget' => array(
       'active' => 1,
       'module' => 'text',
@@ -461,7 +464,7 @@ function fu_ansicht_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 9,
+      'weight' => 12,
     ),
   );
 
@@ -474,7 +477,7 @@ function fu_ansicht_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => 'Genauigkeit XXXXXX',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -505,7 +508,7 @@ function fu_ansicht_field_default_field_instances() {
     'bundle' => 'ansicht',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Jahr XXXXXX',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -523,6 +526,7 @@ function fu_ansicht_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_jahr',
     'label' => 'Jahr',
+    'placeholder' => 'Jahr des Bildes',
     'required' => 1,
     'settings' => array(
       'max' => 2030,
@@ -531,6 +535,7 @@ function fu_ansicht_field_default_field_instances() {
       'suffix' => '',
       'user_register_form' => FALSE,
     ),
+    'use_title_as_placeholder' => 0,
     'widget' => array(
       'active' => 0,
       'module' => 'number',
@@ -598,7 +603,7 @@ function fu_ansicht_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 7,
+      'weight' => 10,
     ),
   );
 
@@ -633,7 +638,7 @@ function fu_ansicht_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 13,
+      'weight' => 14,
     ),
   );
 
@@ -673,7 +678,7 @@ function fu_ansicht_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 14,
+      'weight' => 15,
     ),
   );
 
@@ -732,7 +737,7 @@ function fu_ansicht_field_default_field_instances() {
         'scrollwheel' => 0,
       ),
       'type' => 'futurehistory_map',
-      'weight' => 5,
+      'weight' => 17,
     ),
   );
 
@@ -763,10 +768,11 @@ function fu_ansicht_field_default_field_instances() {
       'module' => 'taxonomy',
       'settings' => array(
         'autocomplete_path' => 'taxonomy/autocomplete',
+        'match_operator' => 'CONTAINS',
         'size' => 60,
       ),
       'type' => 'taxonomy_autocomplete',
-      'weight' => 6,
+      'weight' => 18,
     ),
   );
 
@@ -794,13 +800,13 @@ function fu_ansicht_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 0,
-      'module' => 'taxonomy',
+      'module' => 'autocomplete_deluxe',
       'settings' => array(
         'autocomplete_deluxe_path' => 'autocomplete_deluxe/taxonomy',
         'autocomplete_path' => 'taxonomy/autocomplete',
         'size' => 60,
       ),
-      'type' => 'taxonomy_autocomplete',
+      'type' => 'autocomplete_deluxe_taxonomy',
       'weight' => 6,
     ),
   );
@@ -823,6 +829,7 @@ function fu_ansicht_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_teaser_kurzetext',
     'label' => 'Kurztext / Teaser',
+    'placeholder' => 'Gebe hier einen Kurztext/Teaser ein. ',
     'required' => 1,
     'settings' => array(
       'better_formats' => array(
@@ -854,6 +861,7 @@ function fu_ansicht_field_default_field_instances() {
       'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
+    'use_title_as_placeholder' => 0,
     'widget' => array(
       'active' => 1,
       'module' => 'text',
@@ -904,11 +912,7 @@ function fu_ansicht_field_default_field_instances() {
   // Exported field_instance: 'node-ansicht-field_urheber'.
   $field_instances['node-ansicht-field_urheber'] = array(
     'bundle' => 'ansicht',
-    'default_value' => array(
-      0 => array(
-        'value' => 'Unbekannt',
-      ),
-    ),
+    'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -923,19 +927,49 @@ function fu_ansicht_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_urheber',
     'label' => 'Urheber',
+    'placeholder' => 'Urheber',
     'required' => 0,
     'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'filtered_html' => 'filtered_html',
+          'full_html' => 'full_html',
+          'php_code' => 'php_code',
+          'plain_text' => 'plain_text',
+        ),
+        'allowed_formats_toggle' => 0,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
+            'full_html' => array(
+              'weight' => 1,
+            ),
+            'php_code' => array(
+              'weight' => 11,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+          ),
+        ),
+      ),
       'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
+    'use_title_as_placeholder' => 0,
     'widget' => array(
       'active' => 1,
       'module' => 'text',
       'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 10,
+      'weight' => 13,
     ),
   );
 
@@ -951,13 +985,10 @@ function fu_ansicht_field_default_field_instances() {
   t('Bildquelle');
   t('Bildquelle URL');
   t('Dieses Feld wird Automatisch ausgefüllt sobald die Position des Bildes Festgelegt ist.');
-  t('Gebe hier die Bildquelle an');
   t('Gebe hier einen Kurztext/Teaser ein. (Maximal 60 Zeichen)');
   t('Genauigkeit');
-  t('Genauigkeit XXXXXX');
   t('Hier hast du die Möglichkeit einige Suchbegriffe / Tags zu deinem Bild einzugeben. Die einzelnen Schlagworte werden mit  Komma "," getrennt.');
   t('Jahr');
-  t('Jahr XXXXXX');
   t('Kategorie');
   t('Kurztext / Teaser');
   t('Lade hier das Bild für deine Ansicht hoch. Das Bild wird für unsere Ansicht automatisch auf eine Größe von maximal 800 Pixeln Breite oder maximal 600 Pixeln Höhe skaliert, so das für dich keine Arbeit mehr anfällt.

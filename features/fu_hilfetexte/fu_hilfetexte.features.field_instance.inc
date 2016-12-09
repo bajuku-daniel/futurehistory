@@ -10,6 +10,79 @@
 function fu_hilfetexte_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance:
+  // 'node-ansicht_hilfetexte-field_accordion_lizenz_hi'.
+  $field_instances['node-ansicht_hilfetexte-field_accordion_lizenz_hi'] = array(
+    'bundle' => 'ansicht_hilfetexte',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 24,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_accordion_lizenz_hi',
+    'label' => 'Accordion Lizenz',
+    'placeholder' => '',
+    'required' => 0,
+    'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'filtered_html' => 'filtered_html',
+          'full_html' => 'full_html',
+          'php_code' => 'php_code',
+          'plain_text' => 'plain_text',
+        ),
+        'allowed_formats_toggle' => 0,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
+            'full_html' => array(
+              'weight' => 1,
+            ),
+            'php_code' => array(
+              'weight' => 11,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+          ),
+        ),
+      ),
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'use_title_as_placeholder' => 0,
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => '',
+        'maxlength_js_enforce' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'maxlength_js_truncate_html' => 0,
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 15,
+    ),
+  );
+
   // Exported field_instance: 'node-ansicht_hilfetexte-field_audio_datei_hi'.
   $field_instances['node-ansicht_hilfetexte-field_audio_datei_hi'] = array(
     'bundle' => 'ansicht_hilfetexte',
@@ -286,7 +359,7 @@ function fu_hilfetexte_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 12,
+      'weight' => 17,
     ),
   );
 
@@ -356,7 +429,7 @@ function fu_hilfetexte_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 13,
+      'weight' => 18,
     ),
   );
 
@@ -779,7 +852,153 @@ function fu_hilfetexte_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 14,
+      'weight' => 28,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-ansicht_hilfetexte-field_info_blickwinkel_hi'.
+  $field_instances['node-ansicht_hilfetexte-field_info_blickwinkel_hi'] = array(
+    'bundle' => 'ansicht_hilfetexte',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 26,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_info_blickwinkel_hi',
+    'label' => 'Info Blickwinkel',
+    'placeholder' => '',
+    'required' => 0,
+    'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'filtered_html' => 'filtered_html',
+          'full_html' => 'full_html',
+          'php_code' => 'php_code',
+          'plain_text' => 'plain_text',
+        ),
+        'allowed_formats_toggle' => 0,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
+            'full_html' => array(
+              'weight' => 1,
+            ),
+            'php_code' => array(
+              'weight' => 11,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+          ),
+        ),
+      ),
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'use_title_as_placeholder' => 0,
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => '',
+        'maxlength_js_enforce' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'maxlength_js_truncate_html' => 0,
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 31,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-ansicht_hilfetexte-field_info_blickwinkelbereich_hi'.
+  $field_instances['node-ansicht_hilfetexte-field_info_blickwinkelbereich_hi'] = array(
+    'bundle' => 'ansicht_hilfetexte',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 25,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_info_blickwinkelbereich_hi',
+    'label' => 'Info Blickwinkelbereich',
+    'placeholder' => '',
+    'required' => 0,
+    'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'filtered_html' => 'filtered_html',
+          'full_html' => 'full_html',
+          'php_code' => 'php_code',
+          'plain_text' => 'plain_text',
+        ),
+        'allowed_formats_toggle' => 0,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
+            'full_html' => array(
+              'weight' => 1,
+            ),
+            'php_code' => array(
+              'weight' => 11,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+          ),
+        ),
+      ),
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'use_title_as_placeholder' => 0,
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => '',
+        'maxlength_js_enforce' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'maxlength_js_truncate_html' => 0,
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 32,
     ),
   );
 
@@ -989,7 +1208,7 @@ function fu_hilfetexte_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 11,
+      'weight' => 16,
     ),
   );
 
@@ -1227,7 +1446,8 @@ function fu_hilfetexte_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_position_der_aufnahme_hi',
-    'label' => 'Info Bildposition',
+    'label' => 'Info Koordinaten',
+    'placeholder' => '',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
@@ -1259,6 +1479,7 @@ function fu_hilfetexte_field_default_field_instances() {
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
+    'use_title_as_placeholder' => 0,
     'widget' => array(
       'active' => 1,
       'module' => 'text',
@@ -1270,7 +1491,7 @@ function fu_hilfetexte_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 16,
+      'weight' => 29,
     ),
   );
 
@@ -1297,7 +1518,8 @@ function fu_hilfetexte_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_stadt_hi',
-    'label' => 'Info Bildposition',
+    'label' => 'Info Adresse ',
+    'placeholder' => '',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
@@ -1329,6 +1551,7 @@ function fu_hilfetexte_field_default_field_instances() {
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
+    'use_title_as_placeholder' => 0,
     'widget' => array(
       'active' => 1,
       'module' => 'text',
@@ -1340,7 +1563,7 @@ function fu_hilfetexte_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 17,
+      'weight' => 30,
     ),
   );
 
@@ -1691,7 +1914,7 @@ function fu_hilfetexte_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 14,
+      'weight' => 19,
     ),
   );
 
@@ -1700,19 +1923,23 @@ function fu_hilfetexte_field_default_field_instances() {
   t('Accordion Bild hochladen');
   t('Accordion Bildinformationen');
   t('Accordion Bildposition');
+  t('Accordion Lizenz');
   t('Accordion Medien hinzufügen');
   t('Accordion Vergleichsbild');
+  t('Info Adresse ');
   t('Info Audio Datei');
   t('Info Autor');
   t('Info Beschreibung der Ansicht');
   t('Info Bild');
-  t('Info Bildposition');
   t('Info Bildquelle');
   t('Info Bildquelle URL');
+  t('Info Blickwinkel');
+  t('Info Blickwinkelbereich');
   t('Info Erstellungsjahr des Vergleichsbildes');
   t('Info Genauigkeit');
   t('Info Jahr');
   t('Info Kategorie');
+  t('Info Koordinaten');
   t('Info Kurztext / Teaser');
   t('Info Lizenz');
   t('Info Name');

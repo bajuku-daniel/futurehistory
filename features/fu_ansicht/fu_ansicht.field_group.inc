@@ -42,6 +42,37 @@ function fu_ansicht_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_lizenz_blid|node|ansicht|form';
+  $field_group->group_name = 'group_lizenz_blid';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'ansicht';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_picture_info';
+  $field_group->data = array(
+    'label' => 'Lizenz',
+    'weight' => '9',
+    'children' => array(
+      0 => 'field_lizenz',
+      1 => 'field_bildquelle',
+      2 => 'field_urheber',
+      3 => 'field_bildquelle_url',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-lizenz-blid field-group-fieldset',
+        'required_fields' => 1,
+        'id' => '',
+      ),
+    ),
+  );
+  $field_groups['group_lizenz_blid|node|ansicht|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_media|node|ansicht|form';
   $field_group->group_name = 'group_media';
   $field_group->entity_type = 'node';
@@ -83,8 +114,8 @@ function fu_ansicht_field_group_info() {
     'children' => array(
       0 => 'field_bild_overlay',
       1 => 'field_overlay_jahr',
-      2 => 'field_lizenz_overlay',
-      3 => 'field_autor_overlay',
+      2 => 'field_autor_overlay',
+      3 => 'field_lizenz_overlay',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -117,13 +148,12 @@ function fu_ansicht_field_group_info() {
       0 => 'field_teaser_kurzetext',
       1 => 'field_kategorie',
       2 => 'field_tags',
-      3 => 'field_lizenz',
-      4 => 'field_bildquelle',
-      5 => 'field_jahr',
-      6 => 'field_urheber',
-      7 => 'field_genauigkeit',
-      8 => 'field_bildquelle_url',
-      9 => 'title',
+      3 => 'field_jahr',
+      4 => 'field_genauigkeit',
+      5 => 'field_suchbegrisdfsdfsm',
+      6 => 'field_suchbegriffe_tags_demo_cho',
+      7 => 'title',
+      8 => 'group_lizenz_blid',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -173,6 +203,7 @@ function fu_ansicht_field_group_info() {
   t('Bild hochladen');
   t('Bildinformationen');
   t('Bildposition');
+  t('Lizenz');
   t('Medien hinzufügen');
   t('Vergleichsbild / Bild-Slider');
 

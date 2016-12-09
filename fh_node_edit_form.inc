@@ -47,9 +47,6 @@ function futurehistory_node_edit_form_handler_after_submit($form, &$form_state) 
 }
 
 
-
-
-
 /**
  * Helper - add DOM to lables
  * WIP - markup not ready yet.
@@ -59,27 +56,28 @@ function futurehistory_custom_lable_informations(&$variables) {
     if(isset($variables['element']['#attributes']['data-toggle'])){
       unset($variables['element']['#attributes']['data-toggle']);
       $variables['element']['#children']=str_replace('data-toggle','data-toggle_',$variables['element']['#children']);
-
-
     }
 
   $check = isset($variables['element']['#bundle']) && ($variables['element']['#bundle'] === 'ansicht');
   $field_name = isset($variables['element']['#field_name'])?$variables['element']['#field_name']:false;
   if ($check && $field_name || (in_array($variables['element']['#id'],array("edit-field-position-der-aufnahme-und-0-coordinate-known","edit-field-position-der-aufnahme-und-0-address-field")))) {
+    $result = fh_node_edit_lable_helper($field_name);
+  }
+  return $result;
+}
+
+function fh_node_edit_lable_helper($field_name,$result=""){
 // TODO: add informations for "Ich kenne die Koordinaten" if nedded
 
-    $info_node = fh_get_hilfetexte_node();
-    $variables['form']['ansicht_hilfetexte'] = $info_node;
+  $info_node = fh_get_hilfetexte_node();
+//    $variables['form']['ansicht_hilfetexte'] = $info_node;
 
-    $field_name = fh_node_edit_form_field_mapping($field_name);
-    if(isset($info_node->{$field_name}['und'][0]['safe_value'])){
-      $field_value = $info_node->{$field_name}['und'][0]['safe_value'];
+  $field_name = fh_node_edit_form_field_mapping($field_name);
+  if (isset($info_node->{$field_name}['und'][0]['safe_value'])) {
+    $field_value = $info_node->{$field_name}['und'][0]['safe_value'];
 
-//      $demo_html ="<div class='info $field_name'>JHGKIIUHO</div>";
-//      $field_value = $demo_html;
-
-      $img_src = drupal_get_path('module', 'futurehistory') . '/images/tooltip.png';
-      $markup = <<<HTMLTEMPALTE
+    $img_src = drupal_get_path('module', 'futurehistory') . '/images/tooltip.png';
+    $markup = <<<HTMLTEMPALTE
 <span class="custom-tooltip" data-tooltip-content="#tooltip_content-$field_name">
 	<img src="/$img_src"></span>
 <div class="tooltip_templates">
@@ -87,12 +85,11 @@ function futurehistory_custom_lable_informations(&$variables) {
 	  $field_value
 </div>
 HTMLTEMPALTE;
-      $result = $markup;
-    }
-
+    $result = $markup;
   }
   return $result;
 }
+
 
 /**
  * get Hilfetexte Node cached
@@ -130,13 +127,16 @@ function fh_node_edit_form_field_mapping($key){
     'field_teaser_kurzetext'=>'field_teaser_kurzetext_hi',
     'field_kategorie'=>'field_kategorie_hi',
     'field_tags'=>'field_tags_hi',
+    'group_lizenz_blid'=>'field_accordion_lizenz_hi',
     'field_lizenz'=>'field_lizenz_hi',
     'field_bildquelle'=>'field_bildquelle_hi',
     'field_bildquelle_url'=>'field_bildquelle_url_hi',
     'field_urheber'=>'field_urheber_hi',
     'group_position_der_ansicht'=>'field_group_position_der_ansicht',
     'field_position_der_aufnahme'=>'field_position_der_aufnahme_hi',
-    'field_stadt'=>'field_stadt_hi',
+    'js_attach_field_stadt_hi'=>'field_stadt_hi',
+    'js_attach_blickwinkel_hi'=>'field_info_blickwinkel_hi',
+    'js_attach_blickwinkelbereich_hi'=>'field_info_blickwinkelbereich_hi',
     'group_overlay'=>'field_group_overlay_hi',
     'field_bild_overlay'=>'field_bild_overlay_hi',
     'field_lizenz_overlay'=>'field_overlay_lizenz_hi',
@@ -207,30 +207,45 @@ function fh_get_legend($tab_id,$tab_title){
   $info_node = fh_get_hilfetexte_node();
   $field_name = fh_node_edit_form_field_mapping($tab_id);
   $legend_info="";
+  $legent_markup="";
+  $legent_icon="";
+  $legent_icon_style="icon-hidden";
   if(isset($info_node->{$field_name}['und'][0]['safe_value'])){
     $legend_info = $info_node->{$field_name}['und'][0]['safe_value'];
   }
 
   $img_src = drupal_get_path('module', 'futurehistory') . '/images/arrow-blank.png';
   $field_name = $tab_id;
-  $legend = <<<HTMLTEMPALTE
-<div class="accordion-toggle accordion1_">
-    <div class="panel-group" id="accordion-$field_name">
-        <div class="accordion-panel panel-default">
-            <div class="accordion-panel-heading"> 
-                <span class="accordion-panel-title" style="">
-                    <a title="" data-toggle="collapse" data-parent="#accordion-$field_name"
-                       href="#collapse$field_name" class="collapsed">
-                    $tab_title <span class="image-wrapper"><img src="/$img_src"></span>
-                    </a>
-                </span>
-            </div>
-        </div>
+  if(!empty($legend_info)){
+    $legent_markup = <<<LEGENDMARKUP
         <div id="collapse$field_name" class="accordion-panel-collapse collapse">
             <div class="accordion-panel-body accordion1_">
                 <p>$legend_info</p>
             </div>
         </div>
+LEGENDMARKUP;
+
+    $legent_icon = <<<LEGENDICON
+        <span class="image-wrapper"><img src="/$img_src"></span>
+LEGENDICON;
+    $legent_icon_style='';
+
+
+  }
+  $legend = <<<HTMLTEMPALTE
+<div class="accordion-toggle accordion1_">
+    <div class="panel-group" id="accordion-$field_name">
+        <div class="accordion-panel panel-default">
+            <div class="accordion-panel-heading"> 
+                <span class="accordion-panel-title $legent_icon_style" >
+                    <a title="" data-toggle="collapse" data-parent="#accordion-$field_name"
+                       href="#collapse$field_name" class="collapsed">
+                    $tab_title $legent_icon
+                    </a>
+                </span>
+            </div>
+        </div>
+        $legent_markup
     </div>
 </div>
 HTMLTEMPALTE;

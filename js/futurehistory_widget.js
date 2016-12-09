@@ -255,7 +255,26 @@
   Drupal.behaviors.futurehistory = {
     attach: function(context, settings) {
       $.each(Drupal.settings.futurehistory.defaults, function(i, mapDefaults) {
-
+        // Check if dialog confirmation should appear
+        // trying to serialize form, not working if reediting node ?
+        var beforeunload_enabled = true;
+        var $form = jQuery("#ansicht-node-form");
+        if($form.size() > 0) {
+          var origForm = $form.find("input[type!='hidden']").serialize();
+          if (jQuery(".custom-tooltip").size() > 0) {
+            jQuery(".custom-tooltip").tooltipster();
+          }
+          jQuery("button:submit").click(function (e) {
+            beforeunload_enabled = false;
+          });
+          jQuery(window).bind("beforeunload", function () {
+            var form_changed = ( $form.find("input[type!='hidden']").serialize() !== origForm && beforeunload_enabled);
+            if (form_changed) {
+              return "Do you realy want to leave this process?";
+            }
+          });
+          jQuery(".form-type-dragndrop-upload label").removeAttr("for");
+        }
         // Only make this once - Drupal Performance.. ;)
         $("#futurehistory-map-" + i).once('futurehistory-googlemaps', function(){
 
@@ -264,9 +283,11 @@
           **/
           // PREV NEXT Button function for the edit and add picture form
           $('.btnNext').click(function(){
+            $("html, body").animate({ scrollTop: 0 }, "fast");
             $('.nav-tabs > .active').next('li').find('a').trigger('click');
           });
           $('.btnPrevious').click(function(){
+            $("html, body").animate({ scrollTop: 0 }, "fast");
             $('.nav-tabs > .active').prev('li').find('a').trigger('click');
           });
 
@@ -416,7 +437,7 @@
             radius: 68,
             width: 9,
             drag: function (ui) {
-			  $('#futurehistory-view_direction-slider-item-' + i + ' span').html(ui.value);
+			  $('#futurehistory-view_direction-slider-item-' + i + ' span.futurehistory-view_direction-slider-item-value').html(ui.value);
               $('#futurehistory-view_direction-slider-' + i + '-value input' ).attr('value', ui.value);
               lat = $('#futurehistory-lat-' + i + ' input').attr('value') == false ? mapDefaults.lat : $('#futurehistory-lat-' + i + ' input').attr('value');
               lng = $('#futurehistory-lng-' + i + ' input').attr('value') == false ? mapDefaults.lng : $('#futurehistory-lng-' + i + ' input').attr('value');
@@ -425,7 +446,7 @@
               direction = ui.value;
             },
             change: function (ui) {
-			  $('#futurehistory-view_direction-slider-item-' + i + ' span').html(ui.value);
+			  $('#futurehistory-view_direction-slider-item-' + i + ' span.futurehistory-view_direction-slider-item-value').html(ui.value);
               $('#futurehistory-view_direction-slider-' + i + '-value input' ).attr('value', ui.value);
               lat = $('#futurehistory-lat-' + i + ' input').attr('value') == false ? mapDefaults.lat : $('#futurehistory-lat-' + i + ' input').attr('value');
               lng = $('#futurehistory-lng-' + i + ' input').attr('value') == false ? mapDefaults.lng : $('#futurehistory-lng-' + i + ' input').attr('value');
@@ -476,7 +497,7 @@
                 Drupal.futurehistory.angle_sliders[i].slider( "option", "values", [ max - range_max, range_max ] );
               }
               angle = range_max - range_min;
-              $('#futurehistory-angle-slider-item-' + i + ' span').html(angle);
+              $('#futurehistory-angle-slider-item-' + i + ' span.futurehistory-angle-slider-item-value').html(angle);
               $('#futurehistory-angle-slider-' + i + ' input' ).attr('value', angle);
               lat = $('#futurehistory-lat-' + i + ' input').attr('value') == false ? mapDefaults.lat : $('#futurehistory-lat-' + i + ' input').attr('value');
               lng = $('#futurehistory-lng-' + i + ' input').attr('value') == false ? mapDefaults.lng : $('#futurehistory-lng-' + i + ' input').attr('value');

@@ -230,3 +230,6 @@ width:15px;
     width: 400px;
 }
 
+.accordion-panel-title.icon-hidden a{
+    background: none !important;
+}

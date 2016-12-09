@@ -21,7 +21,7 @@ function fu_hilfetexte_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Bild hochladen',
-    'weight' => '1',
+    'weight' => '2',
     'children' => array(
       0 => 'field_bild_hi',
       1 => 'field_group_add_picture_hi',
@@ -39,6 +39,38 @@ function fu_hilfetexte_field_group_info() {
     ),
   );
   $field_groups['group_add_picture_hi|node|ansicht_hilfetexte|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_lizenz_blid_hi|node|ansicht_hilfetexte|form';
+  $field_group->group_name = 'group_lizenz_blid_hi';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'ansicht_hilfetexte';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Lizenz ',
+    'weight' => '4',
+    'children' => array(
+      0 => 'field_bildquelle_hi',
+      1 => 'field_bildquelle_url_hi',
+      2 => 'field_lizenz_hi',
+      3 => 'field_urheber_hi',
+      4 => 'field_accordion_lizenz_hi',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-lizenz-blid-hi field-group-fieldset',
+        'required_fields' => 1,
+        'id' => '',
+      ),
+    ),
+  );
+  $field_groups['group_lizenz_blid_hi|node|ansicht_hilfetexte|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -115,19 +147,15 @@ function fu_hilfetexte_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Bildinformationen',
-    'weight' => '4',
+    'weight' => '3',
     'children' => array(
-      0 => 'field_bildquelle_hi',
-      1 => 'field_genauigkeit_hi',
-      2 => 'field_group_picture_info_hi',
-      3 => 'field_jahr_hi',
-      4 => 'field_kategorie_hi',
-      5 => 'field_lizenz_hi',
-      6 => 'field_tags_hi',
-      7 => 'field_teaser_kurzetext_hi',
-      8 => 'field_title_hi',
-      9 => 'field_urheber_hi',
-      10 => 'field_bildquelle_url_hi',
+      0 => 'field_genauigkeit_hi',
+      1 => 'field_group_picture_info_hi',
+      2 => 'field_jahr_hi',
+      3 => 'field_kategorie_hi',
+      4 => 'field_tags_hi',
+      5 => 'field_teaser_kurzetext_hi',
+      6 => 'field_title_hi',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -159,6 +187,8 @@ function fu_hilfetexte_field_group_info() {
       0 => 'field_group_position_der_ansicht',
       1 => 'field_position_der_aufnahme_hi',
       2 => 'field_stadt_hi',
+      3 => 'field_info_blickwinkelbereich_hi',
+      4 => 'field_info_blickwinkel_hi',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -179,6 +209,7 @@ function fu_hilfetexte_field_group_info() {
   t('Bild hochladen');
   t('Bildinformationen');
   t('Bildposition');
+  t('Lizenz ');
   t('Medien hinzufügen');
   t('Vergleichsbild / Bild-Slider');
 

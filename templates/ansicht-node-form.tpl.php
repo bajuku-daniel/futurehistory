@@ -4,6 +4,8 @@
 hide($form['group_add_picture']);
 hide($form['group_picture_info']);
 hide($form['group_position_der_ansicht']);
+hide($form['group_picture_info']);
+hide($form['group_lizenz_blid']);
 hide($form['field_position_der_aufnahme']);
 hide($form['group_overlay']);
 hide($form['group_media']);
@@ -177,6 +179,9 @@ $ansicht_button_static = $ansicht_initial['submit_button_static'];
         print future_history_replace_tab_legend(render($form[$tab]['field_position_der_aufnahme']),$tab,$tab_content['tab_name']);
         print future_history_replace_tab_legend(render($form[$tab]['field_stadt']),$tab,$tab_content['tab_name']);
         print future_history_replace_tab_legend(render($form['group_overlay']),"group_overlay",$form['group_overlay']['#title']);
+      }elseif ($tab == 'group_picture_info'){
+        print future_history_replace_tab_legend(render($form['group_picture_info']),"group_picture_info",$form['group_picture_info']['#title']);
+        print future_history_replace_tab_legend(render($form['group_lizenz_blid']),"group_lizenz_blid",$form['group_lizenz_blid']['#title']);
       }
       else {
         print future_history_replace_tab_legend(render($form[$tab]),$tab,$tab_content['tab_name']);

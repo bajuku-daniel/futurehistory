@@ -10,6 +10,25 @@
 function fu_hilfetexte_field_default_field_bases() {
   $field_bases = array();
 
+  // Exported field_base: 'field_accordion_lizenz_hi'.
+  $field_bases['field_accordion_lizenz_hi'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_accordion_lizenz_hi',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
+
   // Exported field_base: 'field_audio_datei_hi'.
   $field_bases['field_audio_datei_hi'] = array(
     'active' => 1,
@@ -207,6 +226,44 @@ function fu_hilfetexte_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_group_position_der_ansicht',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
+
+  // Exported field_base: 'field_info_blickwinkel_hi'.
+  $field_bases['field_info_blickwinkel_hi'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_info_blickwinkel_hi',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
+
+  // Exported field_base: 'field_info_blickwinkelbereich_hi'.
+  $field_bases['field_info_blickwinkelbereich_hi'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_info_blickwinkelbereich_hi',
     'indexes' => array(
       'format' => array(
         0 => 'format',

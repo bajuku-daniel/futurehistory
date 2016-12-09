@@ -43,6 +43,7 @@ function futurehistory_form_alter(&$form, &$form_state, $form_id) {
       $form['actions']['submit']['#attributes']['class'][] = 'ansicht-submit-green';
     }
     $form['actions']['publish']['#value'] = t('Speichern und Publizieren');
+
   }
 }
 
@@ -809,7 +810,9 @@ function futurehistory_page_alter(&$page) {
 		            </div>
 		          </div>
 HTML;
+
   global $theme;
+
   if($theme === "future_history" && user_is_anonymous()){
     $page['page_bottom']['modal']['#markup'] = $markup;
     drupal_add_js('jQuery(document).ready(function () {
@@ -819,41 +822,38 @@ HTML;
     });', 'inline');
   }else if ($theme === "future_history" && user_is_logged_in()){
     drupal_add_js('jQuery(document).ready(function () {
-
-    var beforeunload_enabled = true;
-    
-    var $form = jQuery("#ansicht-node-form");
-    var origForm = $form.serialize();
-
-    jQuery(".custom-tooltip").tooltipster();
+    // recheck
     jQuery("div").removeAttr("data-original-title");
-    
-    jQuery("button:submit").click(function(e){
-      beforeunload_enabled = false;
-    });
-     
-    jQuery(".btn.btn-primary.btnPrevious,.btn.btn-primary.btnNext").click(function(e){
-        $("html, body").animate({ scrollTop: 0 }, "slow");
-        return false;
-    });
-   
-    jQuery(window).bind("beforeunload", function(){
-      console.log(beforeunload_enabled + "  "+($form.serialize() !== origForm) );
-      console.log(($form.serialize() !== origForm && beforeunload_enabled));
-      
-      if( ($form.serialize() !== origForm) && beforeunload_enabled ){
-        return "Do you realy want to leave this process?";
-      }
-      
-    });
-    
     jQuery("#user-login-add-ansicht-modal").removeClass("modal").attr("id","user-login-add-ansicht-modal-disabled");
     jQuery(".overlay-check.user-login-add-ansicht-message").removeClass("user-login-add-ansicht-message").attr("data-toggle","modal-disabled");
-    jQuery(".form-type-dragndrop-upload label").removeAttr( "for" );
-    
     });', 'inline');
   }
 
-
+  // add custom lable informations for widget fields via js // also for title field
+  //
+  if (isset($page['content']['system_main']['type']['#value']) && $page['content']['system_main']['type']['#value'] === "ansicht") {
+    $js_attach_blickwinkel_hi = fh_node_edit_lable_helper('js_attach_blickwinkel_hi');
+    $js_attach_blickwinkelbereich_hi = fh_node_edit_lable_helper('js_attach_blickwinkelbereich_hi');
+    $js_attach_field_stadt_hi = fh_node_edit_lable_helper('js_attach_field_stadt_hi');
+    $js_attach_field_title_hi = fh_node_edit_lable_helper('field_title_hi');
+    if (!empty($js_attach_blickwinkel_hi)) {
+      $page['page_bottom']['js_form_lables']['#markup'] = "<div class='js_attach js_attach_blickwinkel_hi'>" . $js_attach_blickwinkel_hi . "</div>";
+    }
+    if (!empty($js_attach_blickwinkelbereich_hi)) {
+      $page['page_bottom']['js_form_lables']['#markup'] .= "<div class='js_attach js_attach_blickwinkelbereich_hi'>" . $js_attach_blickwinkelbereich_hi . "</div>";
+    }
+    if (!empty($js_attach_field_stadt_hi)) {
+      $page['page_bottom']['js_form_lables']['#markup'] .= "<div class='js_attach js_attach_field_stadt_hi'>" . $js_attach_field_stadt_hi . "</div>";
+    }
+    if (!empty($js_attach_field_title_hi)) {
+      $page['page_bottom']['js_form_lables']['#markup'] .= "<div class='js_attach js_attach_field_title_hi'>" . $js_attach_field_title_hi . "</div>";
+    }
+    drupal_add_js('jQuery(document).ready(function () {
+      jQuery(".js_attach_blickwinkel_hi").appendTo("#edit-field-position-der-aufnahme-und-0-view-direction-item label");
+      jQuery(".js_attach_blickwinkelbereich_hi").appendTo("#edit-field-position-der-aufnahme-und-0-angle-item label");
+      jQuery(".js_attach_field_stadt_hi").prependTo("#futurehistory-coordinate_known-checkbox_53-0");
+      jQuery(".js_attach_field_stadt_hi").appendTo("[for=\'edit-title\']");
+    });', 'inline');
+  }
 
 }
