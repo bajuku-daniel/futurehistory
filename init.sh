@@ -32,6 +32,10 @@
 #cd .. && cd autocomplete_deluxe && patch < autocomplete_deluxe-fix_suggestion_order-2360761-1.patch
 
 
-cp patches/autocomplete_deleuxe-term-count.patch ../autocomplete_deluxe/autocomplete_deleuxe-term-count.patch
-cd .. && cd autocomplete_deluxe && patch < autocomplete_deleuxe-term-count.patch
+#cp patches/autocomplete_deleuxe-term-count.patch ../autocomplete_deluxe/autocomplete_deleuxe-term-count.patch
+#cd .. && cd autocomplete_deluxe && patch < autocomplete_deleuxe-term-count.patch
+
+cp patches/autocomplete_deluxe-term-sort-2.patch ../autocomplete_deluxe/autocomplete_deluxe-term-sort-2.patch
+cd .. && cd autocomplete_deluxe && patch < autocomplete_deluxe-term-sort-2.patch
+
 drush cc all
