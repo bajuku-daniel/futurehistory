@@ -109,3 +109,57 @@ function futurehistory_get_futurehistory_fields() {
   }
   return $fields;
 }
+
+
+
+/**
+ * Implementation of hook_install().
+ */
+function futurehistory_install() {
+// Use schema API to create database table.
+  drupal_install_schema('futurehistory_tag_usage_count');
+}
+
+
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function futurehistory_uninstall() {
+// Remove tables.
+  drupal_uninstall_schema('futurehistory_tag_usage_count');
+}
+
+
+
+/**
+ * Implementation of hook_schema().
+ */
+function futurehistory_tag_usage_count() {
+  $schema['futurehistory_type'] = array(
+    'description' => t('Stores the tag count usage of futurehistory module.'),
+    'fields' => array(
+      'tid' => array(
+        'description' => 'TermID',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE),
+      'name' => array(
+        'description' => 'The human-readable name of this type.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => ''),
+      'count'    => array(
+        'description' => 'A brief description of this type.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => ''),
+    ),
+    'primary key' => array('tid'),
+  );
+
+
+return $schema;
+}

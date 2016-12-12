@@ -264,7 +264,7 @@
           if (jQuery(".custom-tooltip").size() > 0) {
             jQuery(".custom-tooltip").tooltipster();
           }
-          jQuery("button:submit").click(function (e) {
+          jQuery("button:submit, .btn.btn-warning.form-submit").click(function (e) {
             beforeunload_enabled = false;
           });
           jQuery(window).bind("beforeunload", function () {

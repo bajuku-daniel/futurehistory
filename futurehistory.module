@@ -788,8 +788,11 @@ function futurehistory_menu() {
  * other modals are added directly on tpl files e.g. node--ansicht.tpl.php
  * this could be unified
  */
+
+
 function futurehistory_page_alter(&$page) {
   $R=0;
+
   $markup = <<<HTML
 <!-- Modal -->
 		            <div class="modal fade" id="user-login-add-ansicht-modal" role="dialog">
@@ -856,4 +859,46 @@ HTML;
     });', 'inline');
   }
 
+}
+
+
+/**
+ * Count for term suggestions
+ *
+ * @return array
+ */
+function futurehistory_count_nodes_with_tid() {
+
+  if($cached = cache_get('count_nodes_with_tid', 'cache'))  {
+    return $cached->data;
+  }
+
+  $type = 'ansicht';
+  $vocab = taxonomy_vocabulary_machine_name_load('ansicht_schlagworte');
+  $vocabId = $vocab->vid;
+
+  $terms = entity_load('taxonomy_term', FALSE, array('vid' => $vocabId));
+  $result = array();
+  foreach ($terms as $term) {
+    $tid = $term->tid;
+    $query = db_select('taxonomy_index', 't');
+    $query->condition('tid', $tid, '=');
+    $query->addExpression('COUNT(*)', 'count_nodes');
+    if (!empty($type)) { // optional - if looking for specific node type
+      $query->join('node', 'n', 't.nid = n.nid');
+      $query->condition('type', $type, '=');
+    }
+    $query_result = $query->execute();
+    $result[$term->tid] = $query_result->fetchField();
+  }
+
+  cache_set('count_nodes_with_tid', $result, 'cache', CACHE_PERMANENT);
+
+  return $result;
+}
+
+function futurehistory_node_update($node){
+  if($node->type == 'ansicht'){
+    cache_clear_all('count_nodes_with_tid', 'cache');
+  }
 }
