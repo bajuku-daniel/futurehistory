@@ -255,6 +255,7 @@
   Drupal.behaviors.futurehistory = {
     attach: function(context, settings) {
       $.each(Drupal.settings.futurehistory.defaults, function(i, mapDefaults) {
+
         // Check if dialog confirmation should appear
         // trying to serialize form, not working if reediting node ?
         var beforeunload_enabled = true;
@@ -275,6 +276,28 @@
           });
           jQuery(".form-type-dragndrop-upload label").removeAttr("for");
         }
+        // END
+
+        // disable form elements if no overlay image is set
+        if (jQuery("input[name='field_bild_overlay[und][0][fid]']").attr('value') === "0") {
+          $(".form-item-field-lizenz-overlay-und input:radio").attr('disabled', true);
+          $("#edit-field-overlay-jahr-und-0-value").attr("disabled", "disabled");
+          $("#edit-field-autor-overlay-und-0-value").attr("disabled", "disabled");
+        }
+
+        $(".field-name-field-bild-overlay input[type=hidden]").bind("change", function() {
+          if (jQuery("input[name='field_bild_overlay[und][0][fid]']").attr('value') !== "0") {
+            $(".form-item-field-lizenz-overlay-und input:radio").removeAttr('disabled');
+            $("#edit-field-overlay-jahr-und-0-value").removeAttr("disabled");
+            $("#edit-field-autor-overlay-und-0-value").removeAttr("disabled");
+          }else{
+            $(".form-item-field-lizenz-overlay-und input:radio").attr('disabled', true);
+            $("#edit-field-overlay-jahr-und-0-value").attr("disabled", "disabled");
+            $("#edit-field-autor-overlay-und-0-value").attr("disabled", "disabled");
+          }
+        });
+        // END
+
         // Only make this once - Drupal Performance.. ;)
         $("#futurehistory-map-" + i).once('futurehistory-googlemaps', function(){
 

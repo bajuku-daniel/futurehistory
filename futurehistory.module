@@ -2,6 +2,7 @@
 //
 require_once("fh_util.inc");
 require_once("fh_node_access.inc");
+require_once("fh_manualcrop.inc");
 require_once("fh_node_edit_form.inc");
 /* PHP PARSING LIB */
 require_once('simple_html_dom.inc');
@@ -900,5 +901,17 @@ function futurehistory_count_nodes_with_tid() {
 function futurehistory_node_update($node){
   if($node->type == 'ansicht'){
     cache_clear_all('count_nodes_with_tid', 'cache');
+  }
+}
+
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function futurehistory_theme_registry_alter(&$theme_registry) {
+  if (isset($theme_registry['manualcrop_croptool_inline']['theme path'])) {
+    //  manualcrop_croptool_inline theme function
+    $theme_registry['manualcrop_croptool_inline']['theme path'] = drupal_get_path('module', 'futurehistory');
+    $theme_registry['manualcrop_croptool_inline']['function'] = 'fh_theme_manualcrop_croptool_inline';
   }
 }

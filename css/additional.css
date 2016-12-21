@@ -233,3 +233,7 @@ width:15px;
 .accordion-panel-title.icon-hidden a{
     background: none !important;
 }
+
+.manualcrop-instantpreview img{
+    opacity: 0.3!important;
+}

@@ -154,14 +154,6 @@ function fh_node_edit_form_field_mapping($key){
 }
 
 
-/**
- * Implements hook_theme_registry_alter().
- */
-function futurehistory_theme_registry_alter(&$theme_registry) {
-//  $theme_registry['form_element_label']['function'] = 'future_history_form_element_label';
-//  $theme_registry['form_element_label']['theme path'] = drupal_get_path('module', 'futurehistory');
-}
-
 
 /**
  * Could be in template.php as HOOK_form_element_label
@@ -186,10 +178,15 @@ function future_history_replace_tab_legend($tab_content, $tab_id, $tab_title) {
   $elements = $tab_id;
   $c = new simple_html_dom();
   $c->load($tab_content);
+  $tab_content = "";
 // filter for legend elements and replace content structure
-  $c->find('legend', 0)->innertext = fh_get_legend($tab_id, $tab_title);
+  if($c->find('legend', 0)){
+    $getLegent = fh_get_legend($tab_id, $tab_title);
+    $c->find('legend', 0)->innertext = $getLegent;
 // return the modified HTML
-  $tab_content = $c;
+    $tab_content = $c;
+  }
+
 
   return $tab_content;
 }

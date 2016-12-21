@@ -12,7 +12,7 @@
 #drush en -y features
 #drush dl -y diff
 #drush en -y diff
-#drush dl autocomplete_deluxe
+drush dl -y autocomplete_deluxe
 #drush en -y autocomplete_deluxe
 #drush dl field_placeholder 7.x-1.0
 #drush en -y field_placeholder
@@ -28,14 +28,10 @@
 #drush user-password rafael --password="rafael_fuhi_2016"
 #drush user-create test --mail="test@test.com" --password="test"
 #
-#cp patches/autocomplete_deluxe-fix_suggestion_order-2360761-1.patch ../autocomplete_deluxe/autocomplete_deluxe-fix_suggestion_order-2360761-1.patch
-#cd .. && cd autocomplete_deluxe && patch < autocomplete_deluxe-fix_suggestion_order-2360761-1.patch
 
 
-#cp patches/autocomplete_deleuxe-term-count.patch ../autocomplete_deluxe/autocomplete_deleuxe-term-count.patch
-#cd .. && cd autocomplete_deluxe && patch < autocomplete_deleuxe-term-count.patch
+cp patches/autocomplete_deluxe-count-sort.patch ../autocomplete_deluxe/autocomplete_deluxe-count-sort.patch
+cd .. && cd autocomplete_deluxe && patch < autocomplete_deluxe-count-sort.patch
 
-cp patches/autocomplete_deluxe-term-sort-2.patch ../autocomplete_deluxe/autocomplete_deluxe-term-sort-2.patch
-cd .. && cd autocomplete_deluxe && patch < autocomplete_deluxe-term-sort-2.patch
 
 drush cc all
