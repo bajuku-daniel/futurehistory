@@ -83,6 +83,7 @@ function futurehistory_preprocess_ansicht_node_form(&$variables) {
     'group_position_der_ansicht',
     'group_media'
   );
+
   foreach ($tabs_id as $tab_id) {
     $tab_name = $variables['form'][$tab_id]['#title'];
     $variables['form']['ansicht_tabs'][$tab_id] = array(
@@ -102,25 +103,6 @@ function futurehistory_preprocess_ansicht_node_form(&$variables) {
     }
   }
 
-
-  // TESTING
-
-  $demo_html = "<p>While this approach works, and can be useful please note that it mixes content and design. The Form API array describes the structure of the form, and the visual look of the form <em>should</em> be handled by theme functions. See the section on theming for details of how to add markup to your forms properly.</p>";
-//  $item_elector = &$variables['form']['group_add_picture']['field_bild']['und'][0]['#title'];
-//  $item_elector = $item_elector . $demo_html;
-
-//  $item_elector['#prefix'] = $demo_html;
-//  $item_elector['#markup'] =  theme_form_element($variables);
-//  $item_elector['#suffix'] = $demo_html;
-
-  $hilfetexte_nid = variable_get('fu_hilfetexte_' . $variables['form']['language']['#value'], '');
-  if (!empty($hilfetexte_nid)) {
-//    $info_node = node_load($hilfetexte_nid);
-//    $variables['form']['ansicht_hilfetexte']=$info_node;
-//    $variables['form']['group_add_picture']['field_bild']['#attributes']['#description'] = 'ABCDEFGHI';
-
-    $R = 0;
-  }
 }
 
 

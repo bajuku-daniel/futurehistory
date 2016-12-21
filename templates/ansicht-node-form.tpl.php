@@ -9,6 +9,7 @@ hide($form['group_lizenz_blid']);
 hide($form['field_position_der_aufnahme']);
 hide($form['group_overlay']);
 hide($form['group_media']);
+hide($form['ansicht_tabs']);
 $ansicht_button_static = $ansicht_initial['submit_button_static'];
 
 ?>
