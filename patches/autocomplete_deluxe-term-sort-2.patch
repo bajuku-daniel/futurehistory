@@ -1,0 +1,68 @@
+Index: src/drupal/sites/all/modules/autocomplete_deluxe/autocomplete_deluxe.module
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/drupal/sites/all/modules/autocomplete_deluxe/autocomplete_deluxe.module	(revision )
++++ src/drupal/sites/all/modules/autocomplete_deluxe/autocomplete_deluxe.module	(revision )
+@@ -135,24 +135,42 @@
+       ->fetchAllKeyed();
+   }
+ 
++  $do_count = function_exists(futurehistory_count_nodes_with_tid);
++
++  $worker = function ($tags_return) use (&$tags_typed, $do_count) {
+-  $prefix = count($tags_typed) ? drupal_implode_tags($tags_typed) . ', ' : '';
++    $prefix = count($tags_typed) ? drupal_implode_tags($tags_typed) . ', ' : '';
+-  if (function_exists(futurehistory_count_nodes_with_tid)) {
++    if ($do_count) {
+-    $count_data = futurehistory_count_nodes_with_tid();
+-  }
+-  $term_matches = array();
+-  foreach ($tags_return as $tid => $name) {
+-    $n = $name;
+-    // Term names containing commas or quotes must be wrapped in quotes.
+-    if (strpos($name, ',') !== FALSE || strpos($name, '"') !== FALSE) {
+-      $n = '"' . str_replace('"', '""', $name) . '"';
+-    }
++      $count_data = futurehistory_count_nodes_with_tid();
++    }
++    $term_matches = array();
++    foreach ($tags_return as $tid => $name) {
++      $n = $name;
++      // Term names containing commas or quotes must be wrapped in quotes.
++      if (strpos($name, ',') !== FALSE || strpos($name, '"') !== FALSE) {
++        $n = '"' . str_replace('"', '""', $name) . '"';
++      }
+-    if (!function_exists(futurehistory_count_nodes_with_tid)) {
++      if (!$do_count) {
+-      $term_matches[$prefix . $n] = check_plain($name);
+-    }
+-    else {
+-      $term_matches[$prefix . $n] = check_plain($name) . ' (' . $count_data[$tid] . ')';
+-    }
+-  }
++        $term_matches[$prefix . $n] = check_plain($name);
++      }
++      else {
++        $term_matches[$prefix . $n] = check_plain($name) . ' (' . $count_data[$tid] . ')';
++      }
++    }
++    if ($do_count) {
++      usort($term_matches, function ($a, $b) {
++        $b_count = (substr($b, (strpos($b, '(') + 1), (strpos($b, ')') - strpos($b, '(')) - 1));
++        $a_count = (substr($a, (strpos($a, '(') + 1), (strpos($a, ')') - strpos($a, '(')) - 1));
++        if ($b_count == $a_count) {
++          return strcmp($a, $b);
++        }
++        return $b_count - $a_count;
++      });
++    }
++    return $term_matches;
++  };
++
++  $term_matches = $worker($beginning_tags);
++  $term_matches += $worker($middle_tags);
+ 
+   drupal_json_output($term_matches);
+ }
