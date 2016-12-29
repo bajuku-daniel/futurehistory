@@ -1,0 +1,29 @@
+diff --git a/autocomplete_deluxe.module b/autocomplete_deluxe.module
+index d6aa529..ecd2f01 100755
+--- a/autocomplete_deluxe.module
++++ b/autocomplete_deluxe.module
+@@ -136,7 +136,9 @@
+   }
+ 
+   $prefix = count($tags_typed) ? drupal_implode_tags($tags_typed) . ', ' : '';
+-
++  if (function_exists(futurehistory_count_nodes_with_tid)) {
++    $count_data = futurehistory_count_nodes_with_tid();
++  }
+   $term_matches = array();
+   foreach ($tags_return as $tid => $name) {
+     $n = $name;
+@@ -144,7 +146,12 @@
+     if (strpos($name, ',') !== FALSE || strpos($name, '"') !== FALSE) {
+       $n = '"' . str_replace('"', '""', $name) . '"';
+     }
++    if (!function_exists(futurehistory_count_nodes_with_tid)) {
+-    $term_matches[$prefix . $n] = check_plain($name);
++      $term_matches[$prefix . $n] = check_plain($name);
++    }
++    else {
++      $term_matches[$prefix . $n] = check_plain($name) . ' (' . $count_data[$tid] . ')';
++    }
+   }
+ 
+   drupal_json_output($term_matches);

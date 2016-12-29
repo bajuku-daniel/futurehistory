@@ -1,0 +1,286 @@
+
+ul.nav.nav-tabs li.active a {
+    background-color: #428bca !important;
+    color: #fff !important;
+}
+
+/*
+.form-wrapper.collapse-processed legend.panel-heading
+ {
+
+ display: none!important;
+ }
+
+
+.panel-collapse.fade.in, .panel-body {
+    background-color: #f5f5f5!important;
+    border-color: #f5f5f5!important;
+
+}
+ */
+
+.droppable-message {
+    line-height: 25px !important;
+    margin-top: 150px;
+}
+
+a.droppable-browse-button.button {
+    display: block !important;
+    margin: 0 auto;
+    max-width: 150px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    padding: 6px 12px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    background-color: #428bca;
+    border-color: #357ebd;
+    color: #ffffff;
+}
+
+div#accordion {
+    z-index: 999;
+    min-width: 25px;
+}
+
+div#accordion.panel-group div.accordion-panel.panel-default div.accordion-panel-heading {
+    background-color: transparent !important;
+    border: 0 none !important;
+}
+
+.accordion-panel-title img {
+    width: 28px !important;
+    height: 28px !important;
+}
+
+.accordion-panel-default {
+    border: 0 none !important;
+}
+
+.accordion-panel-body {
+    background-color: #f5f5f5 !important;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857;
+}
+
+.accordion-panel-title a {
+    background: url("../images/arrow-up.png") no-repeat scroll right top !important;
+    background-size: 25px 25px !important;
+    height: 25px !important;
+    padding: 0px !important;
+    width: 25px !important;
+    text-decoration: none !important;
+}
+
+.accordion-panel-title a.collapsed {
+    background: url("../images/arrow-down.png") no-repeat scroll right top !important;
+    background-size: 25px 25px !important;
+    height: 25px !important;
+    padding: 0px !important;
+    width: 25px !important;
+    text-decoration: none !important;
+}
+
+.accordion-toggle.accordion1 {
+    margin-left: 110px;
+    margin-top: -35px;
+}
+
+.accordion-panel-body.accordion1 {
+    margin-left: -110px;
+}
+
+.accordion-toggle.accordion2 {
+    margin-left: 135px;
+    margin-top: -35px;
+}
+
+.accordion-panel-body.accordion2 {
+    margin-left: -135px;
+}
+
+.accordion-toggle.accordion3 {
+    margin-left: 100px;
+    margin-top: -25px;
+}
+
+.accordion-panel-body.accordion3 {
+    margin-left: -100px;
+}
+
+.accordion-toggle.accordion4 {
+    margin-left: 135px;
+    margin-top: -35px;
+}
+
+.accordion-panel-body.accordion4 {
+    margin-left: -135px;
+}
+
+.custom-tooltip {
+    height: 15px;
+    width: 15px;
+    margin-left: 5px;
+}
+
+.custom-tooltip img {
+    height: 15px;
+    width: 15px;
+}
+
+.tooltip_templates { display: none; }
+
+.tooltip_templates {
+    background: #fff !important;
+    border: 1px solid #428bca !important;
+    border-radius: 3px !important;
+    box-shadow: 5px 5px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.tooltipster-sidetip.tooltipster-noir.tooltipster-noir-customized .tooltipster-content {
+    color: #444 !important;
+    padding: 8px !important;
+}
+
+.custom-tooltip-content-edit-title {
+    background: #fff !important;
+    border: 1px solid #428bca !important;
+    border-radius: 3px !important;
+    box-shadow: 5px 5px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.field-name-field-lizenz {
+    float: left;
+    height: 250px;
+    width: 400px;
+}
+
+.field-name-field-bildquelle {
+    display: block;
+    float: left;
+    width: 400px;
+}
+
+.field-name-field-bildquelle-url {
+    display: inline-block;
+}
+
+.field-name-field-urheber {
+    display: block;
+    float: left;
+    width: 400px;
+}
+
+.accordion-panel-title.icon-hidden a {
+    background: none !important;
+}
+
+.manualcrop-instantpreview img {
+    opacity: 0.3 !important;
+}
+
+/* ERGÄNZUNGEN 21.12.2016 *****************************/
+
+.field-name-field-lizenz-overlay.field-widget-options-buttons.form-wrapper.form-group {
+    float: left;
+    width: 50%;
+}
+
+.form-item-field-tags-und.form-type-autocomplete-deluxe.form-group label.control-label {
+    display: block !important;
+}
+
+a.droppable-browse-button.button {
+    padding-left: 35px;
+    background: rgba(66, 139, 202, 1) url("file_upload_white.png") no-repeat left top !important;
+}
+
+.help-block {
+    display: none !important;
+}
+
+.field-name-field-bildquelle-url {
+    width: 400px;
+}
+
+.js_attach.js_attach_blickwinkel_hi, .js_attach.js_attach_blickwinkelbereich_hi {
+    display: inline-block !important;
+}
+
+.futurehistory-angle-slider-item-value {
+    display: block !important;
+    margin-left: 45%;
+    margin-top: 15px;
+}
+
+.futurehistory-view_direction-slider-item-value {
+    display: block !important;
+    margin-left: 17%;
+    margin-top: 15px;
+}
+
+.js_attach.js_attach_field_stadt_hi {
+    display: inline-block !important;
+}
+
+.droppable-image.dnd-upload-processed.dnd-upload-element-processed.dnd-upload-image-processed {
+    width: 100% !important;
+    padding: 10px !important;
+    background-color: #fff;
+    min-height: 250px;
+    background-image: url("upload-img.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: top center !important;
+}
+
+.droppable.dnd-upload-processed.dnd-upload-element-processed.dnd-upload-file-processed {
+    width: 100% !important;
+    padding: 10px !important;
+    background-color: #fff;
+    min-height: 250px;
+    background-image: url("upload-audio.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: top center !important;
+}
+
+.node-form.node-ansicht-form div div.container {
+    margin-left: -15px;
+}
+
+body {
+    background-image: url("body-bg.jpg");
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+
+h4.addAnsicht {
+    color: #1256a1 !important;
+    margin-bottom: 50px !important;
+    font-size: 1.8em !important;
+    text-transform: none !important;
+    margin-top: -3px !important;
+}
+.autocomplete-deluxe-container.autocomplete-deluxe-multiple {
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555555;
+    display: block;
+    font-size: 14px;
+    min-height: 60px;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    vertical-align: middle;
+}
+

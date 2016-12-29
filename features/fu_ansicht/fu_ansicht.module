@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the FU Eigene Bilder feature.
+ */
+
+include_once 'fu_ansicht.features.inc';
