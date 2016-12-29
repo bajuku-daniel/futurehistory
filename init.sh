@@ -6,9 +6,10 @@ mkdir -p ../db_backup
 drush sql-dump > ../db_backup/$(date +"%Y-%m-%d__%H-%M-%S".sql)
 
 ## delete old unsused module references - module has been deleted somewhen
-drush sql-query "DELETE from system where name = 'mass_contact' AND type = 'module';"
-drush sql-query "DELETE from system where name = 'user_restrictions_ui' AND type = 'module';"
-drush sql-query "DELETE from system where name = 'user_restrictions' AND type = 'module';"
+#drush sql-query "DELETE from system where name = 'mass_contact' AND type = 'module';"
+#drush sql-query "DELETE from system where name = 'user_restrictions_ui' AND type = 'module';"
+#drush sql-query "DELETE from system where name = 'user_restrictions' AND type = 'module';"
+
 
 
 ## delete menu link 626 :)
