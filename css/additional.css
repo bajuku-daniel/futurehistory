@@ -269,7 +269,6 @@ h4.addAnsicht {
     text-transform: none !important;
     margin-top: -3px !important;
 }
-
 .autocomplete-deluxe-container.autocomplete-deluxe-multiple {
     background-color: #ffffff;
     background-image: none;
@@ -284,3 +283,4 @@ h4.addAnsicht {
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
     vertical-align: middle;
 }
+
