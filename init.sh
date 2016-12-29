@@ -47,4 +47,10 @@ drush fr -y fu_ansicht
 drush user-create rafael --mail="rafael.hiss@gmail.com" --password="rafael_fuhi_2016"
 drush user-create test --mail="test@test.com" --password="test"
 
+
+cp patches/autocomplete_deluxe-count-sort.patch ../autocomplete_deluxe/autocomplete_deluxe-count-sort.patch
+cd .. && cd autocomplete_deluxe && patch < autocomplete_deluxe-count-sort.patch
+echo "##################  PATCH"
+
+
 drush cc all
