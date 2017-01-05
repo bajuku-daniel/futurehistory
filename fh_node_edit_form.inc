@@ -178,7 +178,7 @@ function future_history_replace_tab_legend($tab_content, $tab_id, $tab_title) {
   $elements = $tab_id;
   $c = new simple_html_dom();
   $c->load($tab_content);
-  $tab_content = "";
+//  $tab_content = $tab_content;
 // filter for legend elements and replace content structure
   if($c->find('legend', 0)){
     $getLegent = fh_get_legend($tab_id, $tab_title);
