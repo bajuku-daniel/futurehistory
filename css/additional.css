@@ -304,3 +304,7 @@ h4.addAnsicht {
 .image-widget-data .input-group{
     display: block;
 }
+
+.js_attach_field_title_hi{
+    display: inline-block;
+}
