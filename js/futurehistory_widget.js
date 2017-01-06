@@ -263,7 +263,9 @@
         if($form.size() > 0) {
           var origForm = $form.find("input[type!='hidden']").serialize();
           if (jQuery(".custom-tooltip").size() > 0) {
-            jQuery(".custom-tooltip").tooltipster();
+            jQuery(".custom-tooltip").tooltipster({
+              interactive: true
+            });
           }
           jQuery("button:submit, .btn.btn-warning.form-submit").click(function (e) {
             beforeunload_enabled = false;
@@ -278,14 +280,14 @@
         }
         // END
 
-        // disable form elements if no overlay image is set
+        // disable form elements if no overlay image is set field_bild_overlay[und][0][fid]
         if (jQuery("input[name='field_bild_overlay[und][0][fid]']").attr('value') === "0") {
           $(".form-item-field-lizenz-overlay-und input:radio").attr('disabled', true);
           $("#edit-field-overlay-jahr-und-0-value").attr("disabled", "disabled");
           $("#edit-field-autor-overlay-und-0-value").attr("disabled", "disabled");
         }
-
-        $(".field-name-field-bild-overlay input[type=hidden]").bind("change", function() {
+        // after ajax call check if overlayimage has been uploaded - enable fields
+       $( document ).ajaxStop(function() {
           if (jQuery("input[name='field_bild_overlay[und][0][fid]']").attr('value') !== "0") {
             $(".form-item-field-lizenz-overlay-und input:radio").removeAttr('disabled');
             $("#edit-field-overlay-jahr-und-0-value").removeAttr("disabled");
@@ -296,6 +298,8 @@
             $("#edit-field-autor-overlay-und-0-value").attr("disabled", "disabled");
           }
         });
+
+
         // END
 
         // Only make this once - Drupal Performance.. ;)

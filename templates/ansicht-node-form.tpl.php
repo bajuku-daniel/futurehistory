@@ -13,8 +13,16 @@ hide($form['ansicht_tabs']);
 $ansicht_button_static = $ansicht_initial['submit_button_static'];
 
 ?>
+
+<?php
+if(strpos($_GET['q'], 'edit') !== FALSE){
+  print '<h4 class="addAnsicht">Eigene Bilder bearbeiten</h4>';
+}else{
+  print '<h4 class="addAnsicht">Eigene Bilder einstellen</h4>';
+}
+?>
+
 <div class="container">
-  <h4 class="addAnsicht">Eigene Bilder einstellen</h4>
   <ul class="nav nav-tabs">
     <?php
     //first print the TABS and check if validation error or not
@@ -178,7 +186,8 @@ $ansicht_button_static = $ansicht_initial['submit_button_static'];
       print($tab_pane);
       if ($tab == 'group_position_der_ansicht') {
         print future_history_replace_tab_legend(render($form[$tab]['field_position_der_aufnahme']),$tab,$tab_content['tab_name']);
-        print future_history_replace_tab_legend(render($form[$tab]['field_stadt']),$tab,$tab_content['tab_name']);
+//        print future_history_replace_tab_legend(render($form[$tab]['field_stadt']),$tab,$tab_content['tab_name']);
+        print render($form[$tab]['field_stadt']);
         print future_history_replace_tab_legend(render($form['group_overlay']),"group_overlay",$form['group_overlay']['#title']);
       }elseif ($tab == 'group_picture_info'){
         print future_history_replace_tab_legend(render($form['group_picture_info']),"group_picture_info",$form['group_picture_info']['#title']);

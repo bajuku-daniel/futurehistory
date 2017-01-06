@@ -284,3 +284,19 @@ h4.addAnsicht {
     vertical-align: middle;
 }
 
+.page-node-edit .btn-warning,
+.page-node-edit .btn-warning:hover
+{
+    color: #ffffff;
+    background-color: #954e94;
+    border-color: #954e94;
+    margin-right: 4px;
+}
+
+
+.form-item-field-bildquelle-url-und-0-value label{
+   display: none;
+}
+.form-item.form-item-field-bildquelle-und-0-value.form-type-textfield.form-group{
+ margin-bottom: 0 !important;
+}
