@@ -46,7 +46,28 @@ function futurehistory_form_alter(&$form, &$form_state, $form_id) {
       $form['actions']['submit']['#attributes']['class'][] = 'ansicht-submit-green';
     }
     $form['actions']['publish']['#value'] = t('Speichern und Publizieren');
+    $form['#validate'][] = 'fu_custom_validate_ansicht_node_form';
   }
+}
+
+/**
+ * Custom validation
+ * set overlay field requiered if image is uploaded
+ *
+ */
+
+function fu_custom_validate_ansicht_node_form($form, &$form_state){
+
+  $R=0;
+  if(isset($form_state['values']['field_bild_overlay']['und'][0]['fid'])){
+    if (!isset($form_state['values']['field_overlay_jahr']['und'][0]['value']) || empty($form_state['values']['field_overlay_jahr']['und'][0]['value'])) {
+      form_set_error('field_overlay_jahr', t('Bitte tragen Sie das Jahr ein.'));
+    }
+    if (!isset($form_state['values']['field_autor_overlay']['und'][0]['value']) || empty($form_state['values']['field_autor_overlay']['und'][0]['value'])) {
+      form_set_error('field_autor_overlay', t('Bitte tragen Sie einen Autor ein.'));
+    }
+  }
+
 }
 
 //preprocess some variables for the ansicht-node-form.tpl
@@ -822,7 +843,7 @@ HTML;
     $js_attach_blickwinkel_hi = fh_node_edit_lable_helper('js_attach_blickwinkel_hi');
     $js_attach_blickwinkelbereich_hi = fh_node_edit_lable_helper('js_attach_blickwinkelbereich_hi');
     $js_attach_field_stadt_hi = fh_node_edit_lable_helper('js_attach_field_stadt_hi');
-    $js_attach_field_title_hi = fh_node_edit_lable_helper('field_title_hi');
+    $js_attach_field_title_hi = fh_node_edit_lable_helper('title');
     if (!empty($js_attach_blickwinkel_hi)) {
       $page['page_bottom']['js_form_lables']['#markup'] = "<div class='js_attach js_attach_blickwinkel_hi hidden'>" . $js_attach_blickwinkel_hi . "</div>";
     }
@@ -839,7 +860,7 @@ HTML;
       jQuery(".js_attach_blickwinkel_hi").appendTo("#edit-field-position-der-aufnahme-und-0-view-direction-item label").removeClass("hidden");
       jQuery(".js_attach_blickwinkelbereich_hi").appendTo("#edit-field-position-der-aufnahme-und-0-angle-item label").removeClass("hidden");
       jQuery(".js_attach_field_stadt_hi").prependTo("#futurehistory-coordinate_known-checkbox_53-0").removeClass("hidden");
-      jQuery(".js_attach_field_stadt_hi").appendTo("[for=\'edit-title\']").removeClass("hidden");
+      jQuery(".js_attach_field_title_hi").appendTo("[for=\'edit-title\']").removeClass("hidden");
     });', 'inline');
   }
 
