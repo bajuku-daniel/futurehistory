@@ -201,7 +201,7 @@ div#accordion.panel-group div.accordion-panel.panel-default div.accordion-panel-
 
 a.droppable-browse-button.button {
     padding-left: 35px;
-    background: rgba(66, 139, 202, 1) url("file_upload_white.png") no-repeat left top !important;
+    background: rgba(66, 139, 202, 1) url("../images/file_upload_white.png") no-repeat left top !important;
 }
 
 .help-block {
@@ -299,4 +299,8 @@ h4.addAnsicht {
 }
 .form-item.form-item-field-bildquelle-und-0-value.form-type-textfield.form-group{
  margin-bottom: 0 !important;
+}
+
+.image-widget-data .input-group{
+    display: block;
 }
