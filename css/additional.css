@@ -308,3 +308,7 @@ h4.addAnsicht {
 .js_attach_field_title_hi{
     display: inline-block;
 }
+
+.messages.error{
+    margin-top: 70px;
+}
