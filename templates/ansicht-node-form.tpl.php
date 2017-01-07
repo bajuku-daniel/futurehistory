@@ -34,23 +34,26 @@ if(strpos($_GET['q'], 'edit') !== FALSE){
     }
     $first_error = 1;
     foreach ($form['ansicht_tabs'] as $tab => $tab_content) {
+      $R=0;
       if ($validation_error == 1 && $tab_content['validation_error'] == 1) {
-        if ($first_error == 1) {
+        if ($first_error == 1 && isset($tab_content['tab_name'])) {
           print('<li class="active validation_error"><a href="#' . $tab . '" data-toggle="tab">' . $tab_content['tab_name'] . '</a></li>');
           $first_error = 0;
         }
         else {
-          if ($first_error == 0) {
+          if ($first_error == 0 && isset($tab_content['tab_name'])) {
             print('<li class="validation_error"><a href="#' . $tab . '" data-toggle="tab">' . $tab_content['tab_name'] . '</a></li>');
-          }
         }
       }
+      }
       else {
-        if ($tab == 'group_add_picture' && $validation_error == 0) {
+        if ($tab == 'group_add_picture' && $validation_error == 0 && isset($tab_content['tab_name'])) {
           print('<li class="active"><a href="#' . $tab . '" data-toggle="tab">' . $tab_content['tab_name'] . '</a></li>');
         }
         else {
-          print('<li class=""><a href="#' . $tab . '" data-toggle="tab">' . $tab_content['tab_name'] . '</a></li>');
+          if (isset($tab_content['tab_name'])) {
+            print('<li class=""><a href="#' . $tab . '" data-toggle="tab">' . $tab_content['tab_name'] . '</a></li>');
+          }
         }
       }
     }
@@ -194,7 +197,9 @@ if(strpos($_GET['q'], 'edit') !== FALSE){
         print future_history_replace_tab_legend(render($form['group_lizenz_blid']),"group_lizenz_blid",$form['group_lizenz_blid']['#title']);
       }
       else {
-        print future_history_replace_tab_legend(render($form[$tab]),$tab,$tab_content['tab_name']);
+        if (isset($tab_content['tab_name'])) {
+          print future_history_replace_tab_legend(render($form[$tab]), $tab, $tab_content['tab_name']);
+        }
       }
       print($form_buttons);
       print('</div>');
