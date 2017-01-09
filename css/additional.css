@@ -312,3 +312,7 @@ h4.addAnsicht {
 .messages.error{
     margin-top: 70px;
 }
+
+.page-node-edit.node-type-ansicht .tabs--primary.nav.nav-tabs{
+    display:none;
+}
