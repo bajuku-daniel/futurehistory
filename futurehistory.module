@@ -49,6 +49,8 @@ function futurehistory_form_alter(&$form, &$form_state, $form_id) {
     $form['#validate'][] = 'fu_custom_validate_ansicht_node_form';
     $form['actions']['submit']['#submit'][] = 'fu_custom_form_submit';
     $form['title']['#title'] = t("Name / Titel");
+    $form['field_autor_overlay']['und'][0]['value']['#attributes']['placeholder'] =token_replace($form['field_autor_overlay']['und'][0]['value']['#attributes']['placeholder']);
+
   }
 }
 
