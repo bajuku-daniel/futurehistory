@@ -58,6 +58,10 @@ function futurehistory_form_alter(&$form, &$form_state, $form_id) {
 
 function fu_custom_form_submit($form, &$form_state) {
 //  $form_state['redirect'] = 'MY_URL';
+  if($form['#node']->status === 0){
+//    $form_state['rebuild'] = TRUE;
+//    $form_state['redirect'] = 'user/meine_ansichten';
+  }
 }
 
 /**
@@ -131,6 +135,9 @@ function futurehistory_preprocess_ansicht_node_form(&$variables) {
       $error_field_name = $error_field_name[0];
 
       $error_group_name = $variables['form']['#group_children'][$error_field_name];
+    if($error_group_name === "group_overlay"){
+        $error_group_name = "group_position_der_ansicht";
+      }
       $variables['form']['ansicht_tabs'][$error_group_name]['validation_error'] = '1';
     }
   }
