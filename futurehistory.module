@@ -47,7 +47,13 @@ function futurehistory_form_alter(&$form, &$form_state, $form_id) {
     }
     $form['actions']['publish']['#value'] = t('Speichern und Publizieren');
     $form['#validate'][] = 'fu_custom_validate_ansicht_node_form';
+    $form['actions']['submit']['#submit'][] = 'fu_custom_form_submit';
+    $form['title']['#title'] = t("Name / Titel");
   }
+}
+
+function fu_custom_form_submit($form, &$form_state) {
+//  $form_state['redirect'] = 'MY_URL';
 }
 
 /**

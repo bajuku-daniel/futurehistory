@@ -52,7 +52,7 @@ if(strpos($_GET['q'], 'edit') !== FALSE){
         }
         else {
           if (isset($tab_content['tab_name'])) {
-            print('<li class=""><a href="#' . $tab . '" data-toggle="tab">' . $tab_content['tab_name'] . '</a></li>');
+            print('<li class=""><a href="#' . $tab . '" data-toggle="tab">' . str_replace('(optional)','',$tab_content['tab_name']) . ' </a></li>');
           }
         }
       }
