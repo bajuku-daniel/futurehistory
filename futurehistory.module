@@ -50,6 +50,8 @@ function futurehistory_form_alter(&$form, &$form_state, $form_id) {
     $form['actions']['submit']['#submit'][] = 'fu_custom_form_submit';
     $form['title']['#title'] = t("Name / Titel");
     $form['field_autor_overlay']['und'][0]['value']['#attributes']['placeholder'] =token_replace($form['field_autor_overlay']['und'][0]['value']['#attributes']['placeholder']);
+//    $form['field_autor_overlay']['und'][0]['value']['#attributes']['placeholder'] =token_replace('[current-user:name]');
+    unset($form['field_lizenz_overlay']['und']['#options']['_none']);
 
   }
 }
