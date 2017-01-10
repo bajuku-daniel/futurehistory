@@ -20,6 +20,9 @@ if(strpos($_GET['q'], 'edit') !== FALSE){
 }else{
   print '<h4 class="addAnsicht">Eigene Bilder einstellen</h4>';
 }
+if(isset($messages)){
+  print $messages;
+}
 ?>
 
 <div class="container">

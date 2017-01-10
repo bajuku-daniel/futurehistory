@@ -35,6 +35,14 @@ function futurehistory_theme($existing, $type, $theme, $path) {
   );
 }
 
+function futurehistory_preprocess_page(&$variables) {
+  // This disables message-printing on ALL page displays
+  if(in_array("page__node__add__ansicht",$variables['theme_hook_suggestions'])){
+    $variables['show_messages'] = FALSE;
+  }
+
+}
+
 function futurehistory_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == "ansicht_node_form") {
     $node_status = $form['#node']->status;
@@ -90,7 +98,7 @@ function futurehistory_preprocess_ansicht_node_form(&$variables) {
   global $user;
   $user_full = user_load($user->uid);
   $user_place = isset($user_full->field_wohnort['und']['0']['value'])?$user_full->field_wohnort['und']['0']['value']:'';
-
+  $variables['messages'] = theme('status_messages');
   if (!isset($variables['form']['#validated']) && !$variables['form']['#node']->title) {
     $initial_run = 1;
   }

@@ -104,7 +104,9 @@
 
     <script>
         $(document).ready(function() {
-            $('.custom-tooltip').tooltipster();
+            $('.custom-tooltip').tooltipster({
+                interactive: true
+            });
         });
     </script>
 	
@@ -388,7 +390,7 @@ data-parent="#accordion" href="#collapseTwo" style="border-bottom:1px dotted #91
     <span id="tooltip_content-title">
      
 	  <img src="tooltiptestbild.jpg" style="float:left; margin-right: 10px;" /> 
-	  Das ist der Inhalt des Tooltipps für den Titel. <br>
+	  Das ist der <a href="http://www.google.de">XXX</a> des Tooltipps für den Titel. <br>
 	  Hier kann auch <b>HTML</b> stehen. Und <em>Bilder</em>.
     </span>
 </div>
