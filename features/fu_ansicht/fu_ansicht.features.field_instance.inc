@@ -37,7 +37,7 @@ function fu_ansicht_field_default_field_instances() {
       'module' => 'field_hidden',
       'settings' => array(),
       'type' => 'field_hidden',
-      'weight' => 5,
+      'weight' => 6,
     ),
   );
 
@@ -99,7 +99,7 @@ function fu_ansicht_field_default_field_instances() {
       'module' => 'dragndrop_upload_file',
       'settings' => array(
         'allow_replace' => 0,
-        'droppable_area_text' => 'Zieh Deine Audio Datei per Drag and Drop in diesen Bereich ',
+        'droppable_area_text' => 'Audio per Drag and Drop hier ablegen',
         'media_browser' => 0,
         'multiupload' => 0,
         'progress_indicator' => 'throbber',
@@ -120,7 +120,7 @@ function fu_ansicht_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
@@ -129,7 +129,8 @@ function fu_ansicht_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_autor_overlay',
-    'label' => 'Autor',
+    'label' => 'Urheber',
+    'placeholder' => '[current-user:name]',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
@@ -161,6 +162,7 @@ function fu_ansicht_field_default_field_instances() {
       'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
+    'use_title_as_placeholder' => 0,
     'widget' => array(
       'active' => 1,
       'module' => 'text',
@@ -242,7 +244,19 @@ function fu_ansicht_field_default_field_instances() {
       'module' => 'dragndrop_upload_image',
       'settings' => array(
         'allow_replace' => 0,
-        'droppable_area_text' => 'Zieh Dein Bild per Drag and Drop in diesen Bereich ',
+        'droppable_area_text' => 'Bild per Drag and Drop hier ablegen',
+        'manualcrop_crop_info' => TRUE,
+        'manualcrop_default_crop_area' => TRUE,
+        'manualcrop_enable' => FALSE,
+        'manualcrop_inline_crop' => FALSE,
+        'manualcrop_instant_crop' => FALSE,
+        'manualcrop_instant_preview' => TRUE,
+        'manualcrop_keyboard' => TRUE,
+        'manualcrop_maximize_default_crop_area' => FALSE,
+        'manualcrop_require_cropping' => array(),
+        'manualcrop_styles_list' => array(),
+        'manualcrop_styles_mode' => 'include',
+        'manualcrop_thumblist' => FALSE,
         'media_browser' => 0,
         'multiupload' => 0,
         'preview_image_style' => 'ansicht_bild_preview',
@@ -297,7 +311,7 @@ function fu_ansicht_field_default_field_instances() {
             'slashes' => 0,
             'transliterate' => 0,
           ),
-          'value' => 'ao-[file:owner:uid]-[file:fid]-[file:timestamp:raw].[file:extension]',
+          'value' => '',
         ),
         'file_path' => array(
           'options' => array(
@@ -305,7 +319,7 @@ function fu_ansicht_field_default_field_instances() {
             'slashes' => 0,
             'transliterate' => 0,
           ),
-          'value' => 'ansicht-pictures-overlay',
+          'value' => '',
         ),
         'redirect' => FALSE,
         'retroactive_update' => 0,
@@ -322,10 +336,24 @@ function fu_ansicht_field_default_field_instances() {
       'module' => 'dragndrop_upload_image',
       'settings' => array(
         'allow_replace' => 0,
-        'droppable_area_text' => 'Zieh Dein Vergleichsbild per Drag and Drop in diesen Bereich ',
+        'droppable_area_text' => 'Vergleichsbild per Drag and Drop hier ablegen',
+        'manualcrop_crop_info' => 0,
+        'manualcrop_default_crop_area' => 1,
+        'manualcrop_enable' => 1,
+        'manualcrop_inline_crop' => 1,
+        'manualcrop_instant_crop' => 1,
+        'manualcrop_instant_preview' => 1,
+        'manualcrop_keyboard' => 0,
+        'manualcrop_maximize_default_crop_area' => 1,
+        'manualcrop_require_cropping' => array(),
+        'manualcrop_styles_list' => array(
+          'ansicht_bild_portal-copy' => 'ansicht_bild_portal-copy',
+        ),
+        'manualcrop_styles_mode' => 'include',
+        'manualcrop_thumblist' => 0,
         'media_browser' => 0,
         'multiupload' => 0,
-        'preview_image_style' => 'ansicht_bild_preview',
+        'preview_image_style' => 'ansicht_bild_portal',
         'progress_indicator' => 'throbber',
         'standard_upload' => 1,
         'upload_button_text' => 'Hochladen',
@@ -339,11 +367,7 @@ function fu_ansicht_field_default_field_instances() {
   // Exported field_instance: 'node-ansicht-field_bildquelle'.
   $field_instances['node-ansicht-field_bildquelle'] = array(
     'bundle' => 'ansicht',
-    'default_value' => array(
-      0 => array(
-        'value' => 'Gebe hier die Bildquelle an',
-      ),
-    ),
+    'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -358,7 +382,7 @@ function fu_ansicht_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_bildquelle',
     'label' => 'Bildquelle',
-    'placeholder' => 'Gebe hier die Bildquelle an',
+    'placeholder' => 'Name der Bildquelle',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
@@ -412,17 +436,23 @@ function fu_ansicht_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
+        'label' => 'hidden',
+        'module' => 'services_views',
+        'settings' => array(
+          'data_element_key' => '',
+          'skip_empty_values' => 0,
+          'skip_safe' => 0,
+          'skip_text_format' => 1,
+          'term_name' => 1,
+        ),
+        'type' => 'services',
         'weight' => 9,
       ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_bildquelle_url',
     'label' => 'Bildquelle URL',
-    'placeholder' => 'Bildquelle URL',
+    'placeholder' => 'http://www.meine-bildquelle.de',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
@@ -526,7 +556,7 @@ function fu_ansicht_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_jahr',
     'label' => 'Jahr',
-    'placeholder' => 'Jahr des Bildes',
+    'placeholder' => '',
     'required' => 1,
     'settings' => array(
       'max' => 2030,
@@ -579,15 +609,25 @@ function fu_ansicht_field_default_field_instances() {
   // Exported field_instance: 'node-ansicht-field_lizenz'.
   $field_instances['node-ansicht-field_lizenz'] = array(
     'bundle' => 'ansicht',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'tid' => 14,
+      ),
+    ),
     'deleted' => 0,
     'description' => 'Unter welcher Lizenz willst du dieses Bild veröffentlichen?',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'taxonomy',
-        'settings' => array(),
-        'type' => 'taxonomy_term_reference_plain',
+        'module' => 'services_views',
+        'settings' => array(
+          'data_element_key' => '',
+          'skip_empty_values' => 0,
+          'skip_safe' => 0,
+          'skip_text_format' => 1,
+          'term_name' => 1,
+        ),
+        'type' => 'services',
         'weight' => 4,
       ),
     ),
@@ -619,10 +659,16 @@ function fu_ansicht_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
-        'module' => 'i18n_taxonomy',
-        'settings' => array(),
-        'type' => 'i18n_taxonomy_term_reference_link',
+        'label' => 'hidden',
+        'module' => 'services_views',
+        'settings' => array(
+          'data_element_key' => '',
+          'skip_empty_values' => 0,
+          'skip_safe' => 0,
+          'skip_text_format' => 1,
+          'term_name' => 1,
+        ),
+        'type' => 'services',
         'weight' => 17,
       ),
     ),
@@ -665,6 +711,7 @@ function fu_ansicht_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_overlay_jahr',
     'label' => 'Jahr',
+    'placeholder' => 2017,
     'required' => 0,
     'settings' => array(
       'max' => 2020,
@@ -673,6 +720,7 @@ function fu_ansicht_field_default_field_instances() {
       'suffix' => '',
       'user_register_form' => FALSE,
     ),
+    'use_title_as_placeholder' => 0,
     'widget' => array(
       'active' => 0,
       'module' => 'number',
@@ -816,7 +864,7 @@ function fu_ansicht_field_default_field_instances() {
     'bundle' => 'ansicht',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Gebe hier einen Kurztext/Teaser ein. (Maximal 60 Zeichen)',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -829,7 +877,7 @@ function fu_ansicht_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_teaser_kurzetext',
     'label' => 'Kurztext / Teaser',
-    'placeholder' => 'Gebe hier einen Kurztext/Teaser ein. ',
+    'placeholder' => 'Maximal 60 Zeichen',
     'required' => 1,
     'settings' => array(
       'better_formats' => array(
@@ -892,16 +940,48 @@ function fu_ansicht_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_text',
-    'label' => 'Beschreibung der Ansicht',
+    'label' => 'Text erstellen',
+    'placeholder' => '',
     'required' => 0,
     'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'filtered_html' => 'filtered_html',
+          'full_html' => 'full_html',
+          'php_code' => 'php_code',
+          'plain_text' => 'plain_text',
+        ),
+        'allowed_formats_toggle' => 0,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
+            'full_html' => array(
+              'weight' => 1,
+            ),
+            'php_code' => array(
+              'weight' => 11,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+          ),
+        ),
+      ),
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
+    'use_title_as_placeholder' => 0,
     'widget' => array(
       'active' => 1,
       'module' => 'text',
       'settings' => array(
+        'maxlength_js' => '',
+        'maxlength_js_enforce' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'maxlength_js_truncate_html' => 0,
         'rows' => 5,
       ),
       'type' => 'text_textarea',
@@ -927,7 +1007,7 @@ function fu_ansicht_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_urheber',
     'label' => 'Urheber',
-    'placeholder' => 'Urheber',
+    'placeholder' => 'Unbekannt',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
@@ -977,15 +1057,12 @@ function fu_ansicht_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('App Transfer checksum');
   t('Audio Datei');
-  t('Autor');
   t('Beschreibe dein Bild hier');
-  t('Beschreibung der Ansicht');
   t('Bild');
   t('Bildposition');
   t('Bildquelle');
   t('Bildquelle URL');
   t('Dieses Feld wird Automatisch ausgefüllt sobald die Position des Bildes Festgelegt ist.');
-  t('Gebe hier einen Kurztext/Teaser ein. (Maximal 60 Zeichen)');
   t('Genauigkeit');
   t('Hier hast du die Möglichkeit einige Suchbegriffe / Tags zu deinem Bild einzugeben. Die einzelnen Schlagworte werden mit  Komma "," getrennt.');
   t('Jahr');
@@ -997,6 +1074,7 @@ function fu_ansicht_field_default_field_instances() {
   t('Lizenz');
   t('Lizenz Vergleichsbild');
   t('Suchbegriffe / Tags');
+  t('Text erstellen');
   t('Unter welcher Lizenz willst du dieses Bild veröffentlichen?');
   t('Urheber');
   t('Vergleichsbild Datei');

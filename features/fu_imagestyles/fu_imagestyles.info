@@ -1,0 +1,14 @@
+name = FU imagestyles
+core = 7.x
+package = Futurehistory
+dependencies[] = image
+features[features_api][] = api:2
+features[image][] = ansicht_bild_portal
+features[image][] = ansicht_bild_portal-copy
+features[image][] = ansicht_bild_preview
+features[image][] = ansicht_bild_thumb
+features[image][] = fh-avatar-menu
+features[image][] = fh_grid_view
+features[image][] = hintergrund_slideshow
+features[image][] = mini_slider
+features[image][] = profile_avatar

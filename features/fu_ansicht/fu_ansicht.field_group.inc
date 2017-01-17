@@ -37,7 +37,7 @@ function fu_ansicht_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $field_groups['group_add_picture|node|ansicht|form'] = $field_group;
+  $field_groups[''] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -47,10 +47,10 @@ function fu_ansicht_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'ansicht';
   $field_group->mode = 'form';
-  $field_group->parent_name = 'group_picture_info';
+  $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Lizenz',
-    'weight' => '9',
+    'label' => 'Lizenzinformationen',
+    'weight' => '2',
     'children' => array(
       0 => 'field_lizenz',
       1 => 'field_bildquelle',
@@ -59,16 +59,17 @@ function fu_ansicht_field_group_info() {
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Lizenzinformationen',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => 'group-lizenz-blid field-group-fieldset',
         'required_fields' => 1,
         'id' => '',
+        'classes' => 'group-lizenz-blid field-group-fieldset',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
-  $field_groups['group_lizenz_blid|node|ansicht|form'] = $field_group;
+  $field_groups[''] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -80,24 +81,25 @@ function fu_ansicht_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Medien hinzufügen',
-    'weight' => '4',
+    'label' => 'Bild beschreiben (optional)',
+    'weight' => '5',
     'children' => array(
       0 => 'field_audio_datei',
       1 => 'field_text',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Bild beschreiben (optional)',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
         'required_fields' => 1,
         'id' => '',
+        'classes' => '',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
-  $field_groups['group_media|node|ansicht|form'] = $field_group;
+  $field_groups[''] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -109,8 +111,8 @@ function fu_ansicht_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Vergleichsbild / Bild-Slider',
-    'weight' => '3',
+    'label' => 'Vergleichsbild / Bild-Slider (optional)',
+    'weight' => '4',
     'children' => array(
       0 => 'field_bild_overlay',
       1 => 'field_overlay_jahr',
@@ -119,7 +121,7 @@ function fu_ansicht_field_group_info() {
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'label' => 'Vergleichsbild / Bild-Slider',
+      'label' => 'Vergleichsbild / Bild-Slider (optional)',
       'instance_settings' => array(
         'required_fields' => 1,
         'id' => '',
@@ -130,7 +132,7 @@ function fu_ansicht_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $field_groups['group_overlay|node|ansicht|form'] = $field_group;
+  $field_groups[''] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -150,10 +152,7 @@ function fu_ansicht_field_group_info() {
       2 => 'field_tags',
       3 => 'field_jahr',
       4 => 'field_genauigkeit',
-      5 => 'field_suchbegrisdfsdfsm',
-      6 => 'field_suchbegriffe_tags_demo_cho',
-      7 => 'title',
-      8 => 'group_lizenz_blid',
+      5 => 'title',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -166,7 +165,7 @@ function fu_ansicht_field_group_info() {
       ),
     ),
   );
-  $field_groups['group_picture_info|node|ansicht|form'] = $field_group;
+  $field_groups[''] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -179,7 +178,7 @@ function fu_ansicht_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Bildposition',
-    'weight' => '2',
+    'weight' => '3',
     'children' => array(
       0 => 'field_stadt',
       1 => 'field_position_der_aufnahme',
@@ -196,16 +195,16 @@ function fu_ansicht_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $field_groups['group_position_der_ansicht|node|ansicht|form'] = $field_group;
+  $field_groups[''] = $field_group;
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Bild beschreiben (optional)');
   t('Bild hochladen');
   t('Bildinformationen');
   t('Bildposition');
-  t('Lizenz');
-  t('Medien hinzufügen');
-  t('Vergleichsbild / Bild-Slider');
+  t('Lizenzinformationen');
+  t('Vergleichsbild / Bild-Slider (optional)');
 
   return $field_groups;
 }
