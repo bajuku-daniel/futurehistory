@@ -85,7 +85,6 @@ function fh_theme_manualcrop_croptool_inline($variables) {
 
 function fh_mc_create_image_style($width, $height){
 $style_name = "mc-".$width."x".$height;
- $style_load3 =  image_style_load("mc-1000x800");
  $style_load =  image_style_load($style_name);
 if(isset($style_load['name'])){
   return $style_load['name'];
@@ -115,7 +114,7 @@ if(isset($style_load['name'])){
 
     'isid' => $style['isid'],
   );
-  image_effect_save($effect);
+  $effect_result = image_effect_save($effect);
 return  $style['name'];
 }
 
