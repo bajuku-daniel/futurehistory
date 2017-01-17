@@ -108,7 +108,7 @@ if(isset($style_load['name'])){
       'width' => $width,
       'height' => $height,
       'upscale' => TRUE,
-      'respectminimum' => 0,
+      'respectminimum' => TRUE,
       'onlyscaleifcrop' => 0,
       'style_name' => $style_name,
     ),
