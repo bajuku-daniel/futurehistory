@@ -24,7 +24,6 @@ if(isset($messages)){
   print $messages;
 }
 ?>
-
 <div class="container">
   <ul class="nav nav-tabs">
     <?php
@@ -66,8 +65,6 @@ if(isset($messages)){
          value="<?php print($ansicht_initial['initial']); ?>">
   <input type="hidden" id="ansicht_initial_city"
          value="<?php print($ansicht_initial['place']); ?>">
-
-
   <div class="tab-content">
     <?php
     // next print the tab content and the buttons - check validation and "button_static"

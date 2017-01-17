@@ -40,7 +40,25 @@ function futurehistory_preprocess_page(&$variables) {
   if(in_array("page__node__add__ansicht",$variables['theme_hook_suggestions'])){
     $variables['show_messages'] = FALSE;
   }
+}
 
+function  futurehistory_preprocess_node(&$variables) {
+$R=0;
+  if ($variables['type'] === "ansicht") {
+    $has_overlay_img = isset($variables['field_bild_overlay'][0]['fid']);
+    $has_img = isset($variables['field_bild'][0]['fid']);
+    if($has_overlay_img && $has_img){
+      $width = $variables['field_bild'][0]['width'];
+      $height = $variables['field_bild'][0]['height'];
+
+      $dimensions = array(
+        'width' => $width,
+        'height' => $height,
+      );
+      image_style_transform_dimensions("ansicht_bild_portal", $dimensions);
+      $variables['mc_style'] = fh_mc_create_image_style((int) $dimensions['width'],(int) $dimensions['height']);
+    }
+  }
 }
 
 function futurehistory_form_alter(&$form, &$form_state, $form_id) {
@@ -55,14 +73,21 @@ function futurehistory_form_alter(&$form, &$form_state, $form_id) {
     }
     $form['actions']['publish']['#value'] = t('Speichern und Publizieren');
     $form['#validate'][] = 'fu_custom_validate_ansicht_node_form';
-    $form['actions']['submit']['#submit'][] = 'fu_custom_form_submit';
+//    $form['actions']['submit']['#submit'][] = 'fu_custom_form_submit';
     $form['title']['#title'] = t("Name / Titel");
+    if(!isset($form['field_autor_overlay']['und'][0]['value']['#attributes']['placeholder'])){
+      $form['field_autor_overlay']['und'][0]['value']['#attributes']['placeholder'] ="";
+    }
     $form['field_autor_overlay']['und'][0]['value']['#attributes']['placeholder'] =token_replace($form['field_autor_overlay']['und'][0]['value']['#attributes']['placeholder']);
 //    $form['field_autor_overlay']['und'][0]['value']['#attributes']['placeholder'] =token_replace('[current-user:name]');
     unset($form['field_lizenz_overlay']['und']['#options']['_none']);
 
   }
+  if ($form_id == "user_login" || $form_id == "user_register") {
+    fu_custom_login_register_form_alter($form, $form_state, $form_id);
+  }
 }
+
 
 function fu_custom_form_submit($form, &$form_state) {
 //  $form_state['redirect'] = 'MY_URL';
@@ -70,8 +95,24 @@ function fu_custom_form_submit($form, &$form_state) {
 //    $form_state['rebuild'] = TRUE;
 //    $form_state['redirect'] = 'user/meine_ansichten';
   }
+  $R=9;
+}
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ */
+
+
+function fu_custom_login_register_form_alter(&$form, &$form_state, $form_id) {
+  $path = current_path();
+    $form['#submit'][] = 'fu_custom_new_register_submit';
 }
 
+function fu_custom_new_register_submit($form, &$form_state) {
+
+  $form_state['redirect'] = 'user';
+
+}
 /**
  * Custom validation
  * set overlay field requiered if image is uploaded

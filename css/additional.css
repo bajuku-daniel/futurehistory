@@ -320,3 +320,18 @@ h4.addAnsicht {
 .tooltipster-base {
     pointer-events: auto!important;
 }
+
+
+#slider {
+    width: 12em;
+    height: 0.2em;
+}
+
+#custom-handle {
+    width: 3em;
+    height: 1.6em;
+    top: 50%;
+    margin-top: -.8em;
+    text-align: center;
+    line-height: 1.6em;
+}
