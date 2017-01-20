@@ -131,7 +131,8 @@ ManualCrop.showCroptool = function(identifier, style, fid) {
         conWidth = origContainer.parent().innerWidth();
         conHeight = $(window).height();
       }
-
+      // conWidth = conWidth /2;
+      // conHeight = conHeight /2;
       // Tool width and height.
       ManualCrop.croptool.css('width', conWidth + 'px');
 
@@ -331,7 +332,7 @@ ManualCrop.showCroptool = function(identifier, style, fid) {
 
 
       // add AlphaSlider UI
-      $('.field-name-field-bild-overlay div').first().append('<div id="slider" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><div id="custom-handle" class="ui-slider-handle ui-corner-all ui-state-default"></div></div></br></br>');
+      $('.field-name-field-bild-overlay div').first().append('<div id="slider" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><div id="custom-handle" class="ui-slider-handle ui-corner-all ui-state-default"></div></br></br></div>');
       var handle = $("#custom-handle");
       $("#slider").slider({
           range: false,
@@ -388,6 +389,8 @@ ManualCrop.closeCroptool = function(reset) {
     }
 
     $('.manualcrop-style-button').show();
+
+    $("#slider").remove();
 
     $(document).unbind('keyup', ManualCrop.handleKeyboard);
 
