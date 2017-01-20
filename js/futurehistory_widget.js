@@ -268,6 +268,7 @@
             console.log("A3");
             jQuery(".custom-tooltip").tooltipster({
               contentAsHTML: true,
+              debug: false,
               interactive: true
             });
           }
