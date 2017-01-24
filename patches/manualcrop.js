@@ -131,8 +131,11 @@ ManualCrop.showCroptool = function(identifier, style, fid) {
         conWidth = origContainer.parent().innerWidth();
         conHeight = $(window).height();
       }
-      // conWidth = conWidth /2;
-      // conHeight = conHeight /2;
+
+      // test preview resize
+       conWidth = conWidth /1.5;
+       conHeight = conHeight /1.5;
+
       // Tool width and height.
       ManualCrop.croptool.css('width', conWidth + 'px');
 
@@ -252,22 +255,23 @@ ManualCrop.showCroptool = function(identifier, style, fid) {
       // Insert the instant preview image.
       var instantPreview = $('.manualcrop-instantpreview', ManualCrop.croptool);
       if (instantPreview.length) {
+        // Change size of preview image
+        var instantPreviewfactor, ipf = 600/instantPreview.width();
         // Save the current width as maximum width and height.
         instantPreview
-          .data('maxWidth', instantPreview.width())
-          .data('maxHeight', instantPreview.width())
+          .data('maxWidth', instantPreview.width()*ipf)
+          .data('maxHeight', instantPreview.width()*ipf)
           .height(instantPreview.width());
 
         // Calculate the instant preview dimensions.
-        resized = ManualCrop.resizeDimensions(dimensions.width, dimensions.height, instantPreview.width(), instantPreview.width());
+        resized = ManualCrop.resizeDimensions(dimensions.width*ipf, dimensions.height*ipf, instantPreview.width()*ipf, instantPreview.width()*ipf);
 
         // Set those dimensions.
         image.clone().appendTo(instantPreview)
           .removeClass()
-          .css('width', resized.width + 'px')
-          .css('height', resized.height + 'px');
+          .css('width', (resized.width*ipf) + 'px')
+          .css('height', (resized.height*ipf) + 'px');
       }
-
       if (!ManualCrop.oldSelection) {
         // Create a default crop area.
         if (elementSettings && elementSettings.defaultCropArea) {
@@ -348,9 +352,12 @@ ManualCrop.showCroptool = function(identifier, style, fid) {
         },
         slide: function (event, ui) {
           handle.text(ui.value);
+          if(ui.value < 10){
+            ui.value = "0" + ui.value;
+          }
+          var opacity =  parseFloat("0."+ui.value);
           var currentStyle = $(".manualcrop-instantpreview img").attr('style');
-          $(".manualcrop-instantpreview img").css('cssText', currentStyle+" opacity: 0." + ui.value+' !important;');
-        }
+          $(".manualcrop-instantpreview img").css('cssText', currentStyle+" opacity: " + opacity +' !important;'); }
       });
 
     }
@@ -539,7 +546,6 @@ ManualCrop.updateSelection = function(image, selection) {
 
       // Save to the hidden field.
       ManualCrop.output.val(selection.x1 + '|' + selection.y1 + '|' + selection.width + '|' + selection.height);
-
       // Update and show the selection info.
       if (selectionInfo.length) {
         $('.manualcrop-selection-x', ManualCrop.croptool).text(selection.x1);
@@ -794,7 +800,6 @@ ManualCrop.parseInt = function(integer) {
 ManualCrop.getImageDimensions = function(image) {
   if (typeof image != 'jQuery') {
     image = $(image).first();
-    console.log(image);
   }
   image = image.get(0);
 

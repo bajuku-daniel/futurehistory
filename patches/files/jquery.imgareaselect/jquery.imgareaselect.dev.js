@@ -572,6 +572,13 @@ $.imgAreaSelect = function (img, options) {
          */
         x1 = min(x1, left + imgWidth);
         y1 = min(y1, top + imgHeight);
+
+        if(maxWidth < minWidth){
+            minWidth = maxWidth;
+        }
+        if(maxHeight < minHeight){
+            minHeight = maxHeight;
+        }
         
         if (abs(x2 - x1) < minWidth) {
             /* Selection width is smaller than minWidth */
@@ -613,7 +620,8 @@ $.imgAreaSelect = function (img, options) {
         selection = { x1: selX(min(x1, x2)), x2: selX(max(x1, x2)),
             y1: selY(min(y1, y2)), y2: selY(max(y1, y2)),
             width: abs(x2 - x1), height: abs(y2 - y1) };
-
+        console.log(selection.x1+ " Cxy "+ selection.y1);
+        console.log(selection.width+ " wCh "+ selection.height);
         update();
 
         options.onSelectChange(img, getSelection());

@@ -255,17 +255,13 @@
   Drupal.behaviors.futurehistory = {
     attach: function(context, settings) {
       $.each(Drupal.settings.futurehistory.defaults, function(i, mapDefaults) {
-        console.log("A0");
-        // Check if dialog confirmation should appear
+         // Check if dialog confirmation should appear
         // trying to serialize form, not working if reediting node ?
         var beforeunload_enabled = true;
         var $form = jQuery(".node-form.node-ansicht-form");
-        console.log("A1");
         if($form.size() > 0) {
-          console.log("A2");
           var origForm = $form.find("input[type!='hidden']").serialize();
           if (jQuery(".custom-tooltip").size() > 0) {
-            console.log("A3");
             jQuery(".custom-tooltip").tooltipster({
               contentAsHTML: true,
               debug: false,

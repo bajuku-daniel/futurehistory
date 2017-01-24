@@ -6,7 +6,7 @@ mkdir -p ../../../../../db_backup
 drush sql-dump > ../../../../../db_backup/$(date +"%Y-%m-%d__%H-%M-%S".sql)
 #
 #cp -avr patches/files/jquery.imagesloaded ../../libraries
-#cp -avr patches/files/jquery.imgareaselect ../../libraries
+cp -avr patches/files/jquery.imgareaselect ../../libraries
 #
 #drush cc all
 #drush dl -y manualcrop
