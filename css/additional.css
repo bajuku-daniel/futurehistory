@@ -337,3 +337,11 @@ h4.addAnsicht {
     text-align: center;
     line-height: 1.6em;
 }
+
+.manualcrop-inline .manualcrop-buttons {
+    margin-top: 20px;
+}
+
+.manualcrop-style-button-holder {
+    display: inline;
+}
