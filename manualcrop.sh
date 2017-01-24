@@ -7,12 +7,13 @@ drush sql-dump > ../../../../../db_backup/$(date +"%Y-%m-%d__%H-%M-%S".sql)
 #
 #cp -avr patches/files/jquery.imagesloaded ../../libraries
 cp -avr patches/files/jquery.imgareaselect ../../libraries
+cp -avr patches/files/manualcrop ../
 #
 #drush cc all
 #drush dl -y manualcrop
 #drush en -y manualcrop
 
-cp patches/manualcrop.js ../manualcrop/manualcrop.js
+#cp patches/manualcrop.js ../manualcrop/manualcrop.js
 
 
 #cp patches/manualcrop_modify.patch ../manualcrop/manualcrop_modify.patch
