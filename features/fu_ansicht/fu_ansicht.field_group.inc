@@ -37,7 +37,7 @@ function fu_ansicht_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $field_groups[''] = $field_group;
+  $field_groups['group_add_picture|node|ansicht|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -69,7 +69,7 @@ function fu_ansicht_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $field_groups[''] = $field_group;
+  $field_groups['group_lizenz_blid|node|ansicht|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -99,7 +99,7 @@ function fu_ansicht_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $field_groups[''] = $field_group;
+  $field_groups['group_media|node|ansicht|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -132,7 +132,7 @@ function fu_ansicht_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $field_groups[''] = $field_group;
+  $field_groups['group_overlay|node|ansicht|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -165,7 +165,7 @@ function fu_ansicht_field_group_info() {
       ),
     ),
   );
-  $field_groups[''] = $field_group;
+  $field_groups['group_picture_info|node|ansicht|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -195,7 +195,7 @@ function fu_ansicht_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $field_groups[''] = $field_group;
+  $field_groups['group_position_der_ansicht|node|ansicht|form'] = $field_group;
 
   // Translatables
   // Included for use with string extractors like potx.

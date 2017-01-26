@@ -67,14 +67,11 @@ function fh_theme_manualcrop_croptool_inline($variables) {
     $output .= t('Image style') . ': <span class="manualcrop-style-name">&nbsp;</span><br />';
     $output .= '</div>';
   }
-
   $output .= '<div class="manualcrop-buttons">';
   $output .= '<input type="button" value="' . t('Abbrechen') . '" class="manualcrop-button manualcrop-cancel form-submit btn btn-danger" onmousedown="ManualCrop.closeCroptool(true);" />';
   $output .= '<input type="button" value="' . t('Speichern') . '" class="manualcrop-button manualcrop-close form-submit btn btn-success" onmousedown="ManualCrop.closeCroptool();" />';
   $output .= '</div>';
-
   $output .= '</div>';
-
   $output .= '</div>';
 
   return $output;
@@ -166,8 +163,6 @@ function futurehistory_field_widget_form_alter(&$element, &$form_state, $context
     }
   }
 }
-
-
 
 
 function futurehistory_image_field_widget_process($element, &$form_state, $form) {
