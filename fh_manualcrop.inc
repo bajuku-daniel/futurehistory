@@ -69,8 +69,8 @@ function fh_theme_manualcrop_croptool_inline($variables) {
   }
 
   $output .= '<div class="manualcrop-buttons">';
-  $output .= '<input type="button" value="' . t('Speichern') . '" class="manualcrop-button manualcrop-close form-submit btn btn-success" onmousedown="ManualCrop.closeCroptool();" />';
   $output .= '<input type="button" value="' . t('Abbrechen') . '" class="manualcrop-button manualcrop-cancel form-submit btn btn-danger" onmousedown="ManualCrop.closeCroptool(true);" />';
+  $output .= '<input type="button" value="' . t('Speichern') . '" class="manualcrop-button manualcrop-close form-submit btn btn-success" onmousedown="ManualCrop.closeCroptool();" />';
   $output .= '</div>';
 
   $output .= '</div>';

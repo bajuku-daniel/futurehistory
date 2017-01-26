@@ -21,7 +21,7 @@ ul.nav.nav-tabs li.active a {
 
 .droppable-message {
     line-height: 25px !important;
-    margin-top: 150px;
+    margin-top: 220px;
 }
 
 a.droppable-browse-button.button {
@@ -131,6 +131,7 @@ div#accordion.panel-group div.accordion-panel.panel-default div.accordion-panel-
     width: 15px;
     margin-left: 5px;
 }
+
 
 .custom-tooltip img {
     height: 15px;
@@ -344,4 +345,33 @@ h4.addAnsicht {
 
 .manualcrop-style-button-holder {
     display: inline;
+}
+
+.ajax-progress .throbber {
+    background: transparent url(fu_loading.gif) no-repeat 0px -18px;
+    float: left; /* LTR */
+    height: 15px;
+    margin: 2px;
+    width: 15px;
+}
+
+
+.image-widget .image-widget-data .droppable.droppable-image{
+    background-image: url(fu_loading.gif);
+    background-position: 50% -9px;
+    background-repeat: no-repeat;
+}
+.image-widget .image-widget-data .droppable.droppable-image img,
+.droppable-preview-image{
+    display: none;
+}
+
+.manualcrop-button.manualcrop-cancel.form-submit.btn.btn-danger,
+.manualcrop-style-button.btn-default,
+.manualcrop-style-button.btn-default:hover
+{
+    background-color: #954e94;
+    border-color: #954e94;
+    margin-right: 4px;
+    color: #ffffff;
 }
