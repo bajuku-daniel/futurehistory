@@ -363,7 +363,7 @@ h4.addAnsicht {
 }
 .image-widget .image-widget-data .droppable.droppable-image img,
 .droppable-preview-image{
-    display: none;
+    display: none !important;
 }
 
 .manualcrop-button.manualcrop-cancel.form-submit.btn.btn-danger,
