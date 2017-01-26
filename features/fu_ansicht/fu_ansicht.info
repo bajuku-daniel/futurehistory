@@ -56,6 +56,7 @@ features[field_instance][] = node-ansicht-field_teaser_kurzetext
 features[field_instance][] = node-ansicht-field_text
 features[field_instance][] = node-ansicht-field_urheber
 features[field_instance][] = taxonomy_term-ansicht_lizenzen-field_lizenz_link
+features[image][] = ansicht_bild_portal-copy
 features[node][] = ansicht
 features[variable][] = comment_anonymous_ansicht
 features[variable][] = comment_ansicht
