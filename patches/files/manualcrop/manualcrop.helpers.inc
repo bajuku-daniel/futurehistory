@@ -154,17 +154,11 @@ function manualcrop_croptool_process(&$form, &$form_state, &$element, $file, $se
   if(variable_get("fu_manualcrop_enabled", false) && isset($form_state['values']['field_bild']['und'][0]['fid']) && $form_state['values']['field_bild']['und'][0]['fid'] !== 0){
     $width = $form_state['values']['field_bild']['und'][0]['width'];
     $height = $form_state['values']['field_bild']['und'][0]['height'];
-
-    $dimensions = array(
-      'width' => $width,
-      'height' => $height,
-    );
-    image_style_transform_dimensions("ansicht_bild_portal", $dimensions);
-    $current_crop_format_style = fh_mc_create_image_style((int) $dimensions['width'],(int) $dimensions['height']);
+    $current_crop_format_style = fh_mc_image_style_by_size((int) $width,(int) $height);
 
     $styles = manualcrop_styles_with_crop();
     if(! isset($styles[$current_crop_format_style])){
-      $current_crop_format_style = fh_mc_create_image_style((int) $dimensions['width'],(int) $dimensions['height']);
+      $current_crop_format_style = fh_mc_image_style_by_size((int) $width,(int) $height);
       $styles = manualcrop_styles_with_crop();
     }
     $R=0;

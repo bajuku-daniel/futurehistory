@@ -336,10 +336,12 @@ ManualCrop.showCroptool = function(identifier, style, fid) {
 
 
       // add AlphaSlider UI
-      $('.field-name-field-bild-overlay div').first().append('<div id="slider" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><div id="custom-handle" class="ui-slider-handle ui-corner-all ui-state-default"></div></br></br></div>');
-      var handle = $("#custom-handle");
+      // $('.field-name-field-bild-overlay div').first().append('<div id="slider" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><div id="custom-handle" class="ui-slider-handle ui-corner-all ui-state-default"></div></br></br></div>');
+      $('.field-name-field-bild-overlay div').first().append('<div id="slider" class=""></div>');
+      // var handle = $("#custom-handle");
       $("#slider").slider({
-          range: false,
+        orientation: "horizontal",
+        range: "min",
           min: 0,
           max: 99,
           step: 1,
@@ -347,11 +349,11 @@ ManualCrop.showCroptool = function(identifier, style, fid) {
           disabled: false,
           animate: false,
         create: function () {
-          handle.text($(this).slider("value"));
+          // handle.text($(this).slider("value"));
           jQuery('html,body').delay( 500 ).animate({scrollTop: jQuery(".manualcrop-image-holder").last().offset().top},1000);
         },
         slide: function (event, ui) {
-          handle.text(ui.value);
+          // handle.text(ui.value);
           if(ui.value < 10){
             ui.value = "0" + ui.value;
           }

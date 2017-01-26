@@ -323,7 +323,7 @@ h4.addAnsicht {
 }
 
 
-#slider {
+/*#slider {
     width: 12em;
     height: 0.2em;
     margin-bottom: 30px;
@@ -337,10 +337,29 @@ h4.addAnsicht {
     margin-top: -.8em;
     text-align: center;
     line-height: 1.6em;
+}*/
+#slider {
+    clear: left;
+    width: 400px;
+    margin-bottom: 30px;
+}
+#swatch {
+    width: 120px;
+    height: 100px;
+    margin-top: 18px;
+    margin-left: 350px;
+    background-image: none;
+}
+#slider .ui-slider-range { background: #ebebeb; }
+#slider .ui-slider-handle {background: #954e94; border-color: #954e94; cursor: pointer}
+#slider .ui-slider-handle:focus{
+    outline: 0 !important;
 }
 
 .manualcrop-inline .manualcrop-buttons {
-    margin-top: 20px;
+    padding-top: 30px;
+    clear: both;
+    display: block;
 }
 
 .manualcrop-style-button-holder {

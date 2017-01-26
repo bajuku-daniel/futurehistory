@@ -80,6 +80,34 @@ function fh_theme_manualcrop_croptool_inline($variables) {
   return $output;
 }
 
+
+/**
+ * Return/Create Imagestyle for manualcrop by proportions of native primary image
+ *
+ * style for primary image: ansicht_bild_portal
+ *
+ * @param $width
+ * @param $height
+ * @return mixed
+ */
+function fh_mc_image_style_by_size($width, $height){
+  $dimensions = array(
+    'width' => $width,
+    'height' => $height,
+  );
+  image_style_transform_dimensions("ansicht_bild_portal", $dimensions);
+  return fh_mc_create_image_style((int) $dimensions['width'],(int) $dimensions['height']);
+}
+
+/**
+ * Return/Create Imagestyle for manualcrop by proportions of transformed primary image
+ *
+ * style for primary image: ansicht_bild_portal
+ *
+ * @param $width
+ * @param $height
+ * @return mixed
+ */
 function fh_mc_create_image_style($width, $height){
 $style_name = "mc-".$width."x".$height;
  $style_load =  image_style_load($style_name);
