@@ -20,8 +20,10 @@ if(strpos($_GET['q'], 'edit') !== FALSE){
 }else{
   print '<h4 class="addAnsicht">Eigene Bilder einstellen</h4>';
 }
+if(isset($messages)){
+  print $messages;
+}
 ?>
-
 <div class="container">
   <ul class="nav nav-tabs">
     <?php
@@ -63,8 +65,6 @@ if(strpos($_GET['q'], 'edit') !== FALSE){
          value="<?php print($ansicht_initial['initial']); ?>">
   <input type="hidden" id="ansicht_initial_city"
          value="<?php print($ansicht_initial['place']); ?>">
-
-
   <div class="tab-content">
     <?php
     // next print the tab content and the buttons - check validation and "button_static"

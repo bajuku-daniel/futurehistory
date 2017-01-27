@@ -21,7 +21,7 @@ ul.nav.nav-tabs li.active a {
 
 .droppable-message {
     line-height: 25px !important;
-    margin-top: 150px;
+    margin-top: 220px;
 }
 
 a.droppable-browse-button.button {
@@ -131,6 +131,7 @@ div#accordion.panel-group div.accordion-panel.panel-default div.accordion-panel-
     width: 15px;
     margin-left: 5px;
 }
+
 
 .custom-tooltip img {
     height: 15px;
@@ -310,9 +311,86 @@ h4.addAnsicht {
 }
 
 .messages.error{
-    margin-top: 70px;
+    margin-top: 50px;
 }
 
 .page-node-edit.node-type-ansicht .tabs--primary.nav.nav-tabs{
     display:none;
+}
+
+.tooltipster-base {
+    pointer-events: auto!important;
+}
+
+
+/*#slider {
+    width: 12em;
+    height: 0.2em;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+#custom-handle {
+    width: 3em;
+    height: 1.6em;
+    top: 50%;
+    margin-top: -.8em;
+    text-align: center;
+    line-height: 1.6em;
+}*/
+#slider {
+    clear: left;
+    width: 400px;
+    margin-bottom: 30px;
+}
+#swatch {
+    width: 120px;
+    height: 100px;
+    margin-top: 18px;
+    margin-left: 350px;
+    background-image: none;
+}
+#slider .ui-slider-range { background: #ebebeb; }
+#slider .ui-slider-handle {background: #954e94; border-color: #954e94; cursor: pointer}
+#slider .ui-slider-handle:focus{
+    outline: 0 !important;
+}
+
+.manualcrop-inline .manualcrop-buttons {
+    padding-top: 30px;
+    clear: both;
+    display: block;
+}
+
+.manualcrop-style-button-holder {
+    display: inline;
+}
+
+.ajax-progress .throbber {
+    background: transparent url(fu_loading.gif) no-repeat 0px -18px;
+    float: left; /* LTR */
+    height: 15px;
+    margin: 2px;
+    width: 15px;
+}
+
+
+.image-widget .image-widget-data .droppable.droppable-image{
+    background-image: url(fu_loading.gif);
+    background-position: 50% -9px;
+    background-repeat: no-repeat;
+}
+.image-widget .image-widget-data .droppable.droppable-image img,
+.droppable-preview-image{
+    display: none !important;
+}
+
+.manualcrop-button.manualcrop-cancel.form-submit.btn.btn-danger,
+.manualcrop-style-button.btn-default,
+.manualcrop-style-button.btn-default:hover
+{
+    background-color: #954e94;
+    border-color: #954e94;
+    margin-right: 4px;
+    color: #ffffff;
 }

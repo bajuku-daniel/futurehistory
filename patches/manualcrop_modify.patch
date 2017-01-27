@@ -1,0 +1,171 @@
+diff -uprb a/manualcrop.helpers.inc b/manualcrop.helpers.inc
+--- manualcrop.helpers.inc	2016-12-04 20:41:03.000000000 +0100
++++ manualcrop.helpers.inc	2017-01-17 11:26:30.338202069 +0100
+@@ -151,6 +151,21 @@ function manualcrop_instance_required_st
+ function manualcrop_croptool_process(&$form, &$form_state, &$element, $file, $settings = array(), $instance = NULL, $preview = 'preview') {
+   static $processed_forms;
+
++  if(variable_get("fu_manualcrop_enabled", false) && isset($form_state['values']['field_bild']['und'][0]['fid']) && $form_state['values']['field_bild']['und'][0]['fid'] !== 0){
++    $width = $form_state['values']['field_bild']['und'][0]['width'];
++    $height = $form_state['values']['field_bild']['und'][0]['height'];
++
++    $dimensions = array(
++      'width' => $width,
++      'height' => $height,
++    );
++    image_style_transform_dimensions("ansicht_bild_portal", $dimensions);
++    $current_crop_format_style = fh_mc_create_image_style((int) $dimensions['width'],(int) $dimensions['height']);
++
++  }else{
++    return FALSE;
++  }
++
+   if (user_access('use manualcrop') && $styles = manualcrop_styles_with_crop()) {
+     // Merge-in the instance or default settings.
+     if (is_array($instance)) {
+@@ -160,6 +175,10 @@ function manualcrop_croptool_process(&$f
+       $settings += manualcrop_default_widget_settings();
+     }
+
++    if(variable_get("fu_manualcrop_enabled", false) && isset($current_crop_format_style)){
++      unset($settings['manualcrop_styles_list']);
++    }
++$R=0;
+     // Exclude or include styles.
+     if (!empty($settings['manualcrop_styles_list'])) {
+       if ($settings['manualcrop_styles_mode'] == 'include') {
+@@ -175,6 +194,10 @@ function manualcrop_croptool_process(&$f
+       }
+     }
+
++    if(variable_get("fu_manualcrop_enabled", false) && isset($current_crop_format_style)){
++      $styles = array_intersect_key( $styles, array($current_crop_format_style=>$current_crop_format_style));
++    }
++
+     // Required image styles.
+     $required = manualcrop_instance_required_styles($settings);
+
+@@ -453,6 +476,11 @@ function _manualcrop_add_croptool(&$elem
+   // Default form element options.
+   $defaults = array('#weight' => (isset($element['title']['#weight']) ? $element['title']['#weight'] : 1));
+
++//  $style_name="mc-1000x800-copy";
++//  unset($style_options['mc-1000x800']);
++//  $style_options['mc-1000x800-copy'] = "mc-1000x800-copy";
++//  $style_options = array('mc-1000x800-copy'=>"mc-1000x800-copy");
++
+   // Element to open the croptool.
+   if (!empty($settings['manualcrop_thumblist'])) {
+     // Thumbnail list, each image style is transformed in a clickable thumbnail.
+diff -uprb a/manualcrop.info b/manualcrop.info
+--- manualcrop.info	2016-12-04 20:48:10.000000000 +0100
++++ manualcrop.info	2017-01-17 12:22:04.246251775 +0100
+@@ -11,8 +11,8 @@ dependencies[] = libraries (>=2.1)
+ files[] = includes/views/manualcrop.views.inc
+
+ ; Information added by Drupal.org packaging script on 2016-12-04
+-version = "7.x-1.6"
++version = "7.x-1.6-Patched"
+ core = "7.x"
+-project = "manualcrop"
++project = "manualcrop Locked: modified."
+ datestamp = "1480880890"
+
+diff -uprb a/manualcrop.js b/manualcrop.js
+--- manualcrop.js	2016-12-04 20:41:03.000000000 +0100
++++ manualcrop.js	2017-01-17 12:26:18.526255566 +0100
+@@ -266,7 +266,6 @@ ManualCrop.showCroptool = function(ident
+           .css('width', resized.width + 'px')
+           .css('height', resized.height + 'px');
+       }
+-
+       if (!ManualCrop.oldSelection) {
+         // Create a default crop area.
+         if (elementSettings && elementSettings.defaultCropArea) {
+@@ -276,7 +275,6 @@ ManualCrop.showCroptool = function(ident
+           else {
+             var minWidth = (typeof options.minWidth != 'undefined' ? options.minWidth : 0);
+             var minHeight = (typeof options.minHeight != 'undefined' ? options.minHeight : 0)
+-
+             // Set a width and height.
+             var selection = {
+               width: (minWidth ? minWidth * 100 : (width / 2)),
+@@ -328,6 +326,30 @@ ManualCrop.showCroptool = function(ident
+       if (!elementSettings || elementSettings.keyboard) {
+         $(document).keyup(ManualCrop.handleKeyboard);
+       }
++
++
++      // add AlphaSlider UI
++      $('.field-name-field-bild-overlay div').first().append('<div id="slider" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><div id="custom-handle" class="ui-slider-handle ui-corner-all ui-state-default"></div></div></br></br>');
++      var handle = $("#custom-handle");
++      $("#slider").slider({
++          range: false,
++          min: 0,
++          max: 99,
++          step: 1,
++          value: 30,
++          disabled: false,
++          animate: false,
++        create: function () {
++          handle.text($(this).slider("value"));
++          jQuery('html,body').delay( 500 ).animate({scrollTop: jQuery(".manualcrop-image-holder").last().offset().top},1000);
++        },
++        slide: function (event, ui) {
++          handle.text(ui.value);
++          var currentStyle = $(".manualcrop-instantpreview img").attr('style');
++          $(".manualcrop-instantpreview img").css('cssText', currentStyle+" opacity: 0." + ui.value+' !important;');
++        }
++      });
++
+     }
+   });
+ }
+@@ -762,10 +784,19 @@ ManualCrop.parseInt = function(integer)
+  *   Object with a width and height property.
+  */
+ ManualCrop.getImageDimensions = function(image) {
++
++  if(jQuery("input[name='field_bild[und][0][width]']").val()){
++    // use values from hidden fields
++    return {
++      width: ManualCrop.parseInt(jQuery("input[name='field_bild[und][0][width]']").val()),
++      height: ManualCrop.parseInt(jQuery("input[name='field_bild[und][0][height]']").val())
++    }
++  }
++
++
+   if (typeof image != 'jQuery') {
+     image = $(image).first();
+   }
+-
+   image = image.get(0);
+
+   if (image.naturalWidth && image.naturalHeight) {
+@@ -781,7 +812,6 @@ ManualCrop.getImageDimensions = function
+     if (rawImage.width && rawImage.height) {
+       image = rawImage;
+     }
+-
+     return {
+       width: ManualCrop.parseInt(image.width),
+       height: ManualCrop.parseInt(image.height)
+@@ -789,6 +819,7 @@ ManualCrop.getImageDimensions = function
+   }
+ }
+
++
+ /**
+  * Calculate new dimensions based upon a maximum width and height.
+  *
+diff -uprb a/manualcrop.module b/manualcrop.module
+--- manualcrop.module	2016-12-04 20:41:03.000000000 +0100
++++ manualcrop.module	2017-01-14 17:57:50.851880169 +0100
+@@ -561,7 +561,6 @@ function manualcrop_entity_update($file,
+ function manualcrop_preprocess_image(&$variables) {
+   if (!empty($variables['style_name'])) {
+     $url = _manualcrop_add_cache_control($variables['style_name'], $variables['path']);
+-
+     if ($url) {
+       $variables['path'] = $url;
+     }

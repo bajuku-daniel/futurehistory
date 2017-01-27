@@ -86,6 +86,9 @@ function fu_ansicht_strongarm() {
       'revision' => array(
         'custom_settings' => FALSE,
       ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -107,6 +110,22 @@ function fu_ansicht_strongarm() {
     ),
   );
   $export['field_bundle_settings_node__ansicht'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'i18n_node_extended_ansicht';
+  $strongarm->value = '1';
+  $export['i18n_node_extended_ansicht'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'i18n_node_options_ansicht';
+  $strongarm->value = array(
+    0 => 'lock',
+  );
+  $export['i18n_node_options_ansicht'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
