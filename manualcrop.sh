@@ -12,5 +12,10 @@ cp -avr patches/files/manualcrop ../
 drush cc all
 drush en -y manualcrop
 drush fr -y fu_ansicht
-
+drush vset fu_manualcrop_enabled true
 drush cc all
+
+## TODOS
+# checkout html
+# checkoout entdecken ..
+# cp /futurehistory_entdecken/futurehistory_entdecken_poi_bbox.inc
