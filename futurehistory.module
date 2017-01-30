@@ -903,7 +903,8 @@ HTML;
 
   // add custom lable informations for widget fields via js // also for title field
   //
-  if (isset($page['content']['system_main']['type']['#value']) && $page['content']['system_main']['type']['#value'] === "ansicht") {
+
+  if (arg(0) == 'node' && isset($page['content']['system_main']['type']['#value']) && $page['content']['system_main']['type']['#value'] === "ansicht") {
     $js_attach_blickwinkel_hi = fh_node_edit_lable_helper('js_attach_blickwinkel_hi');
     $js_attach_blickwinkelbereich_hi = fh_node_edit_lable_helper('js_attach_blickwinkelbereich_hi');
     $js_attach_field_stadt_hi = fh_node_edit_lable_helper('js_attach_field_stadt_hi');
