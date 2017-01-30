@@ -17,5 +17,5 @@ drush cc all
 
 ## TODOS
 # checkout html
-# checkoout entdecken ..
+# checkoout entdecken ..fu
 # cp /futurehistory_entdecken/futurehistory_entdecken_poi_bbox.inc
