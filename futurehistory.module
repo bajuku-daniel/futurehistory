@@ -1015,11 +1015,13 @@ function futurehistory_preprocess_views_view_fields(&$vars) {
   if($vars['view']->name==="flag_bookmarks"){
     $img = file_load($vars['row']->field_field_bild[0]['raw']['fid']);
     $imgRendered = cb_util_render_image($img,'fh_grid_view','img-responsive');
+    $query_string = array('destination' =>  $_GET['q']);
     $vars['myvars']=[
       "node_created" => ff_m_util_format_date($vars['row']->_field_data['nid']['entity']->created,_DATE__12_10_2012),
       "datum" => $vars['row']->_field_data['nid']['entity']->field_jahr['und'][0]['value'],
       "nid" => $vars['row']->nid,
       "bild" => $imgRendered,
+      "unflag" => util_get_string_between($vars['fields']['ops']->content,'href="','"'),
       "title" =>$vars['row']->_field_data['nid']['entity']->title
     ];
   }
@@ -1028,9 +1030,9 @@ function futurehistory_preprocess_views_view_fields(&$vars) {
     $distance = t('Wegstrecke').': '.$vars['row']->flag_lists_flags_tour_distance;
     $query_string = array('destination' =>  $_GET['q']);
     $vars['myvars']=[
-      "edit_url" => url("user/".$vars['row']->flag_lists_flags_uid."/flag/lists/edit/".$vars['row']->fid, array('query' => $query_string)),
+      "edit_url" => util_get_string_between($vars['fields']['edit_list']->content,'href="','"'),
       "view_url" => url("user/".$vars['row']->flag_lists_flags_uid."/flag/lists/".$vars['row']->fid),
-      "delete_url" => url("user/".$vars['row']->flag_lists_flags_uid."/flag/lists/delete/".$vars['row']->fid, array('query' => $query_string)),
+      "delete_url" => util_get_string_between($vars['fields']['delete_list']->content,'href="','"'),
       "images" => $vars['row']->views_field_view_view,
       "title" => $vars['row']->flag_lists_flags_title,
       "distance" => $distance,
