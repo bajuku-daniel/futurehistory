@@ -732,6 +732,7 @@ function futurehistory_field_widget_form(&$form, &$form_state, $field, $instance
         'type' => 'file',
         'scope' => 'footer',
       );
+
       $element['googlemap']['#attached']['js'][] = array(
         'data' => drupal_get_path('module', 'futurehistory') . '/js/tooltipster.bundle.min.js',
         'type' => 'file',
@@ -893,11 +894,22 @@ HTML;
 
     });', 'inline');
   }else if ($theme === "future_history" && user_is_logged_in()){
+    drupal_add_js(drupal_get_path('module', 'futurehistory') . '/js/responsiveslides.min.js');
     drupal_add_js('jQuery(document).ready(function () {
     // recheck
     jQuery("div").removeAttr("data-original-title");
     jQuery("#user-login-add-ansicht-modal").removeClass("modal").attr("id","user-login-add-ansicht-modal-disabled");
     jQuery(".overlay-check.user-login-add-ansicht-message").removeClass("user-login-add-ansicht-message").attr("data-toggle","modal-disabled");
+
+      jQuery(".rslides").responsiveSlides({
+        auto: true,
+        pause: true,
+        speed: 2500,
+        timeout: 10000
+      });
+
+    
+    
     });', 'inline');
   }
 
@@ -982,5 +994,55 @@ function futurehistory_theme_registry_alter(&$theme_registry) {
     //  manualcrop_croptool_inline theme function
     $theme_registry['manualcrop_croptool_inline']['theme path'] = drupal_get_path('module', 'futurehistory');
     $theme_registry['manualcrop_croptool_inline']['function'] = 'fh_theme_manualcrop_croptool_inline';
+  }
+}
+
+
+function futurehistory_preprocess_views_view_fields(&$vars) {
+  $view = $vars['view'];
+  if($vars['view']->name==="meine_ansichten"){
+    $img = file_load($vars['row']->field_field_bild[0]['raw']['fid']);
+    $imgRendered = cb_util_render_image($img,'fh_grid_view','img-responsive');
+    $vars['myvars']=[
+      "node_created" => ff_m_util_format_date($vars['row']->node_created,_DATE__12_10_2012),
+      "datum" => $vars['row']->field_data_field_jahr_field_jahr_value,
+      "nid" => $vars['row']->nid,
+      "bild" => $imgRendered,
+      "stadt" => $vars['row']->field_field_stadt[0]['rendered']['#markup'],
+      "title" =>$vars['row']->node_title
+    ];
+  }
+  if($vars['view']->name==="flag_bookmarks"){
+    $img = file_load($vars['row']->field_field_bild[0]['raw']['fid']);
+    $imgRendered = cb_util_render_image($img,'fh_grid_view','img-responsive');
+    $vars['myvars']=[
+      "node_created" => ff_m_util_format_date($vars['row']->_field_data['nid']['entity']->created,_DATE__12_10_2012),
+      "datum" => $vars['row']->_field_data['nid']['entity']->field_jahr['und'][0]['value'],
+      "nid" => $vars['row']->nid,
+      "bild" => $imgRendered,
+      "title" =>$vars['row']->_field_data['nid']['entity']->title
+    ];
+  }
+  if($vars['view']->name==='meine_touren'){
+    $period = t('Zeitraum').': '. $vars['row']->flag_lists_flags_period_start .' - '. $vars['row']->flag_lists_flags_period_end;
+    $distance = t('Wegstrecke').': '.$vars['row']->flag_lists_flags_tour_distance;
+    $query_string = array('destination' =>  $_GET['q']);
+    $vars['myvars']=[
+      "edit_url" => url("user/".$vars['row']->flag_lists_flags_uid."/flag/lists/edit/".$vars['row']->fid, array('query' => $query_string)),
+      "view_url" => url("user/".$vars['row']->flag_lists_flags_uid."/flag/lists/".$vars['row']->fid),
+      "delete_url" => url("user/".$vars['row']->flag_lists_flags_uid."/flag/lists/delete/".$vars['row']->fid, array('query' => $query_string)),
+      "images" => $vars['row']->views_field_view_view,
+      "title" => $vars['row']->flag_lists_flags_title,
+      "distance" => $distance,
+      "description" => $vars['row']->flag_lists_flags_description,
+      "period" =>$period
+    ];
+  }
+  if($vars['view']->name==="touren_bereich_subview_f_r_erstes_bild_der_tour"){
+    $R=0;
+    $vars['myvars']=[
+
+
+    ];
   }
 }

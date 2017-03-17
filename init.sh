@@ -42,7 +42,7 @@ drush cc all
 drush fr -y fu_hilfetexte
 drush fr -y fu_ansicht
 
-#drush user-password rafael --password="rafael_fuhi_2016"
+#drush user-password Romalu3 --password="test"
 drush user-create rafael --mail="rafael.hiss@gmail.com" --password="rafael_fuhi_2016"
 drush user-create test --mail="test@test.com" --password="test"
 

@@ -34,6 +34,9 @@ function cb_util_render_imagefield(&$node, $fieldname, $imagestyle = NULL, $imag
 
 function cb_util_render_image($image, $imagestyle = NULL, $imageclasses = NULL, $default = NULL) {
   if (!empty($image)) {
+    if(isset($image->fid)){
+      $image = get_object_vars($image);
+    }
     if (empty($image['alt'])) {
       $variables['alt'] = $image['filename'];
     }
@@ -94,4 +97,65 @@ function cb_util_field_item($entity, $fieldname, $attribute = NULL, $default = '
     $item = check_plain($item);
   }
   return isset($item) ? $item : $default;
+}
+
+
+
+/*
+ * DATE FORMATS
+ * */
+define("_DATE__12_10_2012", "d.m.Y");
+define("_DATE__2012-10-12", "Y-m-d");
+define("_DATE__12_", "d.");
+define("_DATE__12", "d");
+define("_DATE__12_10_", "d.m.");
+define("_DATE__2012", "Y");
+define("_DATE__MONTH", "F");
+define("_DATE__15_JULY_2010", "d. F Y");
+define("_DATE__j_n_Y", "j.n.Y");
+define("_TIME__h_i_s", "H:i:s");
+define("_DATE__MICROFORMAT", "c");
+
+
+function ff_m_util_format_date($datevalue, $format) {
+  if (!empty($datevalue)) {
+    if (($timestamp = strtotime($datevalue)) !== false) {
+      // Obtained a valid $timestamp; $format is valid
+      $timestamp = strtotime($datevalue);
+    } else {
+      // $format is invalid
+      $timestamp =  $datevalue;
+    }
+
+    $formateddate = format_date($timestamp, 'custom', $format);
+    return $formateddate;
+  }
+  return '';
+}
+
+function ff_m_util_localise_date_format($format) {
+  global $language;
+  $local_formats = array(
+    'd.m.Y' => array(
+      'en-US' => 'd/m/Y',
+    ),
+    "d." => array(
+      'en-US' => 'd',
+    ),
+    "d.m." => array(
+      'en-US' => 'd/m',
+    ),
+    "Y" => array(
+      'en-US' => 'Y',
+    ),
+    "F" => array(
+      'en-US' => 'F',
+    ),
+    "j.n.Y" => array(
+      'en-US' => 'j/n/Y',
+    )
+  );
+  $local_format = isset($local_formats[$format][$language->language]) ? $local_formats[$format][$language->language] : $format;
+
+  return $local_format;
 }
