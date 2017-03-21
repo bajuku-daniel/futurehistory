@@ -1017,7 +1017,7 @@ function futurehistory_preprocess_views_view_fields(&$vars) {
     $imgRendered = cb_util_render_image($img,'fh_grid_view','img-responsive');
     $query_string = array('destination' =>  $_GET['q']);
     $vars['myvars']=[
-      "node_created" => ff_m_util_format_date($vars['row']->_field_data['nid']['entity']->created,_DATE__12_10_2012),
+      "node_created" => ff_m_util_format_date($vars['fields']['timestamp']->raw,_DATE__12_10_2012),
       "datum" => $vars['row']->_field_data['nid']['entity']->field_jahr['und'][0]['value'],
       "nid" => $vars['row']->nid,
       "bild" => $imgRendered,
