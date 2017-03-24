@@ -1027,7 +1027,14 @@ function futurehistory_preprocess_views_view_fields(&$vars) {
   }
   if($vars['view']->name==='meine_touren'){
     $period = t('Zeitraum').': '. $vars['row']->flag_lists_flags_period_start .' - '. $vars['row']->flag_lists_flags_period_end;
-    $distance = t('Wegstrecke').': '.$vars['row']->flag_lists_flags_tour_distance;
+    $distance_raw = $vars['row']->flag_lists_flags_tour_distance;
+    if($distance_raw > 10000){
+      $distance_raw = number_format((float)($distance_raw/1000), 0, '.', '') .'km';
+    }else{
+      $distance_raw = $distance_raw.'m';
+    }
+    $distance = t('Wegstrecke').': '.$distance_raw;
+
     $query_string = array('destination' =>  $_GET['q']);
     $vars['myvars']=[
       "edit_url" => util_get_string_between($vars['fields']['edit_list']->content,'href="','"'),
