@@ -11,6 +11,7 @@ drush sql-dump > ../db_backup/$(date +"%Y-%m-%d__%H-%M-%S".sql)
 #drush sql-query "DELETE from system where name = 'user_restrictions' AND type = 'module';"
 
 
+
 ## delete menu link 626 :)
 drush ev "menu_link_delete(626);"
 drush ev "module_load_include('inc', 'locale', 'menu');menu_link_delete(626);"
