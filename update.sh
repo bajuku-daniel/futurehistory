@@ -3,6 +3,10 @@
 git pull origin dev
 
 #mkdir -p ../../../../../db_backup
+#mkdir -p ~/db_backup
+#cp sites/default/files ~/db_backup/sites/default/files/
+#mkdir -p ~/db_backup/sites/default/files/
+#drush sql-dump > ~/db_backup/$(date +"%Y-%m-%d__%H-%M-%S".sql)
 #drush sql-dump > ../../../../../db_backup/$(date +"%Y-%m-%d__%H-%M-%S".sql)
 #drush sql-dump > ../db_backup/$(date +"%Y-%m-%d__%H-%M-%S".sql)
 #drush sql-drop -y

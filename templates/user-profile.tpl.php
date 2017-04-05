@@ -46,7 +46,7 @@ if ($currentUser == $profileUrl) {
 else {
   $myAccount = 0;
 }
-
+$R=0;
 ?>
 
 
@@ -60,7 +60,7 @@ else {
       </div>
       <?php if ($myAccount): ?>
         <a class="btn btn-default profile-edit-button"
-           href="/user/<?php print($currentUser); ?>/edit">Profil Bearbeiten </a>
+           href="/user/<?php print($currentUser); ?>/edit">Profils Bearbeiten </a>
       <?php endif ?>
     </div>
 
