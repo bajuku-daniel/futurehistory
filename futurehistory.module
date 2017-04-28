@@ -4,8 +4,8 @@ require_once("fh_util.inc");
 require_once("fh_node_access.inc");
 require_once("fh_manualcrop.inc");
 require_once("fh_node_edit_form.inc");
-//require_once("fh_user_profile.inc.php");
-
+require_once("fh_user_profile.inc.php");
+//
 /* PHP PARSING LIB */
 require_once('simple_html_dom.inc');
 
@@ -1022,7 +1022,7 @@ function futurehistory_preprocess_views_view_fields(&$vars) {
     $img = file_load($vars['row']->field_field_bild[0]['raw']['fid']);
     $imgRendered = cb_util_render_image($img,'fh_grid_view','img-responsive');
     $vars['myvars']=[
-      "node_created" => ff_m_util_format_date($vars['row']->node_created,_DATE__12_10_2012),
+      "node_created" => ff_m_util_format_date($vars['row']->_field_data['nid']['entity']->created,_DATE__12_10_2012),
       "datum" => $vars['row']->field_data_field_jahr_field_jahr_value,
       "nid" => $vars['row']->nid,
       "bild" => $imgRendered,
