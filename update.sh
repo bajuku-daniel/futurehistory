@@ -7,8 +7,8 @@ drush sql-dump > ../../../../../db_backup/$(date +"%Y-%m-%d__%H-%M-%S".sql)
 drush sql-drop -y
 drush sql-cli < ../../../../../db_backup/2017-04-28__16-15-01_from_live.sql
 drush fr -y map_view_update
-cd ../../themes/future_history/ && git pull origin dev && cd -
-cd ../futurehistory_entdecken/ && git pull origin dev_rh && cd -
+cd ../../themes/future_history/ && git checkout dev && git pull origin dev && cd -
+cd ../futurehistory_entdecken/ && git checkout dev_rh && git pull origin dev_rh && cd -
 
 drush user-password Romalu3 --password="test"
 
