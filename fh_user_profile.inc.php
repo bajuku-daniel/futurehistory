@@ -6,7 +6,7 @@ function futurehistory_preprocess_user_profile(&$variables) {
 
   // Preprocess fields.
   field_attach_preprocess('user', $account, $variables['elements'], $variables);
-  $variables['user_picture']=$variables['user_profile']['user_picture'];
+  $variables['user_picture']=isset($variables['elements']['user_picture']['#markup'])?$variables['elements']['user_picture']['#markup']:'';
   $variables['user_name']=$account->name;
 //  unset($variables['user_profile']['user_picture']);
 

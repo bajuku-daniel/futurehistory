@@ -1023,7 +1023,7 @@ function futurehistory_preprocess_views_view_fields(&$vars) {
     $imgRendered = cb_util_render_image($img,'fh_grid_view','img-responsive');
     $vars['myvars']=[
       "node_created" => ff_m_util_format_date($vars['row']->_field_data['nid']['entity']->created,_DATE__12_10_2012),
-      "datum" => $vars['row']->field_data_field_jahr_field_jahr_value,
+      "datum" => $vars['row']->_field_data['nid']['entity']->field_jahr['und'][0]['value'],
       "nid" => $vars['row']->nid,
       "bild" => $imgRendered,
       "stadt" => $vars['row']->field_field_stadt[0]['rendered']['#markup'],
