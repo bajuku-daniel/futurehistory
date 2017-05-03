@@ -1029,6 +1029,12 @@ function futurehistory_preprocess_views_view_fields(&$vars) {
       "stadt" => $vars['row']->field_field_stadt[0]['rendered']['#markup'],
       "title" =>$vars['row']->node_title
     ];
+
+    if(isset($vars['row']->field_field_position_der_aufnahme[0]['raw']['lat'])){
+      $vars['myvars']["lat"] = $vars['row']->field_field_position_der_aufnahme[0]['raw']['lat'];
+      $vars['myvars']["lng"] = $vars['row']->field_field_position_der_aufnahme[0]['raw']['lng'];
+    }
+
   }
   if($vars['view']->name==="flag_bookmarks"){
     $img = file_load($vars['row']->field_field_bild[0]['raw']['fid']);
@@ -1068,8 +1074,6 @@ function futurehistory_preprocess_views_view_fields(&$vars) {
   if($vars['view']->name==="touren_bereich_subview_f_r_erstes_bild_der_tour"){
     $R=0;
     $vars['myvars']=[
-
-
     ];
   }
 }
