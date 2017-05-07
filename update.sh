@@ -28,3 +28,4 @@ drush cc all
 #drush sql-drop -y
 #drush sql-cli < 2017-02-01__15-05-29.sql
 #cd ../../themes/future_history/ && git pull origin dev && cd -
+#sql-dump > ~/db_backup/$(date +"%Y-%m-%d__%H-%M-%S".sql)
