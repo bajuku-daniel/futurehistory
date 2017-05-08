@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-mkdir -p ../../../../../db_backup
-drush sql-dump > ../../../../../db_backup/$(date +"%Y-%m-%d__%H-%M-%S".sql)
-drush sql-drop -y
-drush sql-cli < ../../../../../db_backup/2017-04-28__16-15-01_from_live.sql
+#mkdir -p ../../../../../db_backup
+#drush sql-dump > ../../../../../db_backup/$(date +"%Y-%m-%d__%H-%M-%S".sql)
+#drush sql-drop -y
+#drush sql-cli < ../../../../../db_backup/2017-04-28__16-15-01_from_live.sql
 
-git pull origin dev
-cd ../futurehistory_entdecken/ && git pull origin dev_rh && cd -
-cd ../../themes/future_history/ && git pull origin dev && cd -
+#git pull origin dev
+#cd ../futurehistory_entdecken/ && git pull origin dev_rh && cd -
+#cd ../../themes/future_history/ && git pull origin dev && cd -
 
 
 drush cc all
@@ -18,6 +18,9 @@ drush user-password Romalu3 --password="test"
 
 drush cc all
 
+
+# TODO set permission for users to view profiles
+# check vie behaviour
 
 #mkdir -p ~/db_backup
 #cp sites/default/files ~/db_backup/sites/default/files/
