@@ -9,7 +9,7 @@
 
 git pull origin master
 cd ../../themes/future_history/ && git pull origin master && cd -
-cd ../futurehistory/ && git pull origin master && cd -
+cd ../futurehistory_entdecken/ && git pull origin master && cd -
 drush cc all
 
 
