@@ -19,5 +19,6 @@ drush en -y map_view_update
 drush fr -y map_view_update
 
 #drush user-password Romalu3 --password="test"
+#drush user-password joescheck --password="test"
 
 drush cc all
